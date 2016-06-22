@@ -1,7 +1,7 @@
 'use strict';
 // var _ = require( 'lodash' );
-var TASK = require( '../../shared/js/TASK/TASK' );
-var log = require( '../../shared/js/TASK/utils/log' );
+var TASK = require( './framework/TASKBase' );
+var log = require( './framework/utils/log' );
 var bodyParser = require( 'body-parser' );
 var express = require( 'express' );
 // var favicon = require( 'serve-favicon' );
@@ -11,10 +11,10 @@ var path = require( 'path' );
 var chalk = require( 'chalk' );
 
 class Server extends TASK {
-	constructor( GLOBALS ) {
+	constructor( env ) {
 		super();
 		var app = express();
-		app.set( 'env', GLOBALS.ENV.name );
+		app.set( 'env', env.name );
 
 		// ---------------------------------------------------------
 
@@ -27,18 +27,18 @@ class Server extends TASK {
 		} ) );
 		// parse application/json
 		router.use( bodyParser.json() );
-		router.use( express.static( path.resolve( __dirname, '../' ) ) );
-		router.use( ( req, res ) => {
-			req.method = 'get';
-			res.redirect( '/#' + req.originalUrl );
-		} );
+		// router.use( '/*', ( req, res ) => {
+		// 	req.method = 'get';
+		// 	res.redirect( '/#' + req.originalUrl );
+		// } );
+		router.use( express.static( path.resolve( __dirname, '..' ) ) );
 
 		// ---------------------------------------------------------
 
 		app.use( '/', router );
 		log( chalk.green( 'Front-end server' ), 'starting', __dirname );
-		app.listen( GLOBALS.ENV.DOMAINS[ 'front-end' ].port, function() {
-			log( chalk.green( 'Front-end server' ), 'listening on port:', chalk.green( `${GLOBALS.ENV.DOMAINS[ 'front-end' ].port}` ) );
+		app.listen( env.port, function() {
+			log( chalk.green( 'Front-end server' ), 'listening on port:', chalk.green( `${env.port}` ) );
 
 		} );
 	}

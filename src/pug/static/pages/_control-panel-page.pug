@@ -2,11 +2,11 @@ section#control-panel-page.page
     .background
     .content
         .scrollable
-            h1 #{GLOBALS.COPY["control-panel"].mainTitle}
+            h1 #{copy["control-panel"].mainTitle}
                 .form
                     - var i = 1
                     while (++i < 12)
                         label #{i}
                             input(type="checkbox", value=(i))
-                    button.play #{GLOBALS.COPY["control-panel"].Play}
-                    button.stop #{GLOBALS.COPY["control-panel"].Stop}
+                    button.play #{copy["control-panel"].Play}
+                    button.stop #{copy["control-panel"].Stop}

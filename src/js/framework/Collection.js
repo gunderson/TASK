@@ -1,5 +1,5 @@
 var _ = require( 'lodash' );
-var TASK = require( './TASK' );
+var TASK = require( './TASKBase' );
 var TaskModel = require( './Model' );
 
 class Collection extends TASK {

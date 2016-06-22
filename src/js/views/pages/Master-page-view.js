@@ -1,5 +1,5 @@
 var _ = require( 'lodash' );
-var TaskPage = require( '../../../../shared/js/TASK/Page' );
+var TaskPage = require( '../../framework/Page' );
 
 class MasterPage extends TaskPage {
 	constructor( options ) {

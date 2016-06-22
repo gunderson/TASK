@@ -1,7 +1,7 @@
 'use strict';
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TaskPage = require( '../../../../shared/js/TASK/Page' );
+var TaskPage = require( '../../framework/Page' );
 
 class Page extends TaskPage {
 	constructor( options ) {

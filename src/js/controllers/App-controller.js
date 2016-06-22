@@ -1,6 +1,6 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TaskModel = require( '../../../shared/js/TASK/Model' );
+var TaskModel = require( '../framework/Model' );
 var page = require( 'page' );
 
 class AppModel extends TaskModel {
@@ -10,16 +10,13 @@ class AppModel extends TaskModel {
 		// ---------------------------------------------------------
 		// Local Props
 
-		console.log( this.prototype );
-		console.log( this );
-
 		_.extend( this, {
 			prevRoute: null,
 			_route: {
 				parts: [ 'bootstrap route' ]
 			},
-			deviceAddress: this.GLOBALS.ENV.DOMAINS.device.address,
-			devicePort: this.GLOBALS.ENV.DOMAINS.device.port
+			serverAddress: window.env.address,
+			serverPort: window.env.port
 		} );
 
 		// ---------------------------------------------------------
