@@ -1,7 +1,7 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TASK = require( './TASKBase' );
-var TaskCollection = require( './Collection' );
+var TASK = require( '../TASKBase' );
+var TaskCollection = require( '../collections/Collection' );
 
 class Model extends TASK {
 	constructor( attributes, options ) {

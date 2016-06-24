@@ -47,7 +47,8 @@
     "page": "^1.7.1",
     "q": "^1.4.1",
     "serve-favicon": "^2.3.0",
-    "socketio": "^1.0.0"
+    "socketio": "^1.0.0",
+    "three": "^0.78.0"
   },
   "autoupdate": {
     "pollFrequency": 60000,

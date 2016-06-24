@@ -1,6 +1,6 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TASK = require( './TASKBase' );
+var TASK = require( '../TASKBase' );
 
 class View extends TASK {
 	constructor( options ) {
@@ -62,18 +62,20 @@ class View extends TASK {
 		// ---------------------------------------------------
 		// Bind Functions
 
-		TASK.bindFunctions( this, [
+		this.bindFunctions( this, [
 			'bindData',
 			'delegateEvents',
 			'destroy',
 			'undelegateEvents',
 			'render',
-			'setupElement'
+			'setupElement',
+			'onResize'
 		] );
 
 		// ---------------------------------------------------
-		// Event Handlers
+		// Event Listeners
 
+		this.listenTo( this.APP, 'resize', this.onResize );
 
 		// ---------------------------------------------------
 		// Finish setup
@@ -94,9 +96,16 @@ class View extends TASK {
 		var name = options.name;
 		if ( name ) {
 			options.el = '#' + name;
+			// Assumes the the name correctly ends with "-page" following the pattern
 			options.route = name.slice( 0, -5 );
 		}
 		return options;
+	}
+
+	// ---------------------------------------------------
+
+	onResize() {
+
 	}
 
 	// ---------------------------------------------------
@@ -191,8 +200,9 @@ class View extends TASK {
 
 	delegateEvents() {
 		_.each( this.events, ( e ) => {
+			if ( typeof e.handler === 'string' ) e.handler = this[ e.handler ];
 			this.$( e.selector )
-				.on( e.eventName, this[ e.handler ] );
+				.on( e.eventName, e.handler );
 		} );
 		return this;
 	}
@@ -213,14 +223,17 @@ class View extends TASK {
 		this.unbindData();
 		this.undelegateEvents();
 		this.stopListening();
+		_.each( this.views, ( v ) => v.destroy() );
 	}
 
 	// ---------------------------------------------------
 
 	serialize() {
 		var model = this.model ? this.model.attributes : {};
-		// GLOBALS is a global object on window
-		return _.extend( {}, model, GLOBALS );
+		return _.extend( {
+			// "this.env" is a property of all TASK objects
+			env: this.env
+		}, model );
 	}
 }
 

@@ -103,7 +103,7 @@ gulp.task( 'compile-js', [ 'dynamic-templates' ], function() {
 							loadMaps: true
 						} ) )
 						.pipe( env.name !== 'dev' ? uglify() : buffer() )
-						.pipe( sourcemaps.write( './dist/' ) )
+						.pipe( sourcemaps.write( './' ) )
 						.pipe( gulp.dest( './dist/' ) )
 						.pipe( livereload() )
 						.on( 'error', gutil.log );

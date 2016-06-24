@@ -1,6 +1,6 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TaskView = require( './View' );
+var TaskView = require( '../View' );
 var TweenMax = require( 'TweenMax' );
 
 var PAGE_TRANSITION_DURATION = 1.5;
