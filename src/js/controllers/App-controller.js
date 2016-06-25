@@ -1,7 +1,7 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TaskModel = require( '../framework/Model' );
-var page = require( 'page' );
+var TaskModel = require( '_TASK/models/Model' );
+var router = require( 'page' );
 
 class AppModel extends TaskModel {
 	constructor( options ) {
@@ -15,8 +15,8 @@ class AppModel extends TaskModel {
 			_route: {
 				parts: [ 'bootstrap route' ]
 			},
-			serverAddress: window.env.address,
-			serverPort: window.env.port
+			serverAddress: this.ENV.address,
+			serverPort: this.ENV.port
 		} );
 
 		// ---------------------------------------------------------
@@ -61,13 +61,13 @@ class AppModel extends TaskModel {
 	}
 
 	setupRouter( routes ) {
-		page.base( '/#' );
-		page( '/', `/${routes[0]}` );
+		router.base( '/#' );
+		router( '/', `/${routes[0]}` );
 		_.each( routes, ( route ) => {
-			page( `/${route}`, this.onRoute );
+			router( `/${route}`, this.onRoute );
 		} );
-		page( '*', `/${routes[0]}` );
-		page();
+		router( '*', `/${routes[0]}` );
+		router();
 	}
 
 	onRoute( ctx ) {

@@ -2,6 +2,7 @@ require( 'babelify' );
 
 var _ = require( 'lodash' );
 var browserify = require( 'browserify' );
+var aliasify = require( 'aliasify' );
 var buffer = require( 'vinyl-buffer' );
 var cli = require( './gulp/cli' );
 var csso = require( 'gulp-csso' );
@@ -40,7 +41,7 @@ gulp.task( 'css', function() {
 		.src( './src/sass/**/*.sass' )
 		.pipe( plumber( onError ) )
 		.pipe( sass( {
-			includePaths: [ './src/sass/' ],
+			includePaths: [ './src/sass/', './src/TASK/sass/' ],
 			errLogToConsole: true
 		} ) )
 		.pipe( csso() )
@@ -95,6 +96,9 @@ gulp.task( 'compile-js', [ 'dynamic-templates' ], function() {
 							debug: env.name === 'dev',
 							paths: [ './src/js/', './node_modules' ]
 						} )
+						.transform( {
+							global: true
+						}, aliasify )
 						.bundle()
 						.pipe( plumber( onError ) )
 						.pipe( source( 'index.js' ) )
@@ -211,10 +215,14 @@ gulp.task( 'dynamic-templates', function() {
 gulp.task( 'watch',
 	function() {
 		livereload.listen( env.lrPort );
-		gulp.watch( [ './src/js/**/*.js' ], [ 'compile-js' ] );
-		gulp.watch( [ './src/pug/dynamic/**/*.pug' ], [ 'compile-js' ] );
-		gulp.watch( [ './src/pug/static/**/*.pug' ], [ 'static-templates' ] );
-		gulp.watch( [ './src/sass/**/*.sass' ], [ 'css' ] );
+		gulp.watch( [
+			'./src/**/*.js',
+			'!./src/js/lib/templates.js', // generated from /src/pug/dynamic/**/*.pug
+			'./src/pug/dynamic/**/*.pug',
+			'./package.json', 'data/**/*.json'
+		], [ 'compile-js' ] );
+		gulp.watch( [ './src/pug/static/**/*.pug', './src/TASK/pug/static/**/*.pug' ], [ 'static-templates' ] );
+		gulp.watch( [ './src/sass/**/*.sass', './src/TASK/sass/**/*.sass' ], [ 'css' ] );
 	} );
 
 // --------------------------------------------------

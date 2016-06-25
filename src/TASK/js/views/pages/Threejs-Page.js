@@ -1,8 +1,9 @@
 var _ = require( 'lodash' );
 // var AnimationPlayerPage = require( '../../framework/views/pages/js/Animation-Player-Page' );
 var AnimationPlayerPage = require( './Animation-Player-Page' );
-var ThreeView = require( '../Three-View' );
-var MouseTelemetrics = require( 'art-kit/src/MouseTelemetrics' );
+var TASK = AnimationPlayerPage;
+var ThreeView = require( './Threejs-Page/Three-View' );
+var MouseTelemetrics = require( '_art-kit/MouseTelemetrics' );
 
 class ThreejsPage extends AnimationPlayerPage {
 	constructor( options ) {
@@ -10,6 +11,7 @@ class ThreejsPage extends AnimationPlayerPage {
 			name: 'threejs-page',
 			autoPlay: false,
 			autoStop: true,
+			// ---------------------------------------------------
 			events: [ {
 				eventName: 'click',
 				selector: 'button.play',
@@ -19,8 +21,10 @@ class ThreejsPage extends AnimationPlayerPage {
 				selector: 'button.stop',
 				handler: 'onStopButtonClick'
 			} ],
+			// ---------------------------------------------------
 			views: [
 				new ThreeView( {
+					name: 'three-holder',
 					el: '.three-holder'
 				} )
 			]
@@ -31,44 +35,56 @@ class ThreejsPage extends AnimationPlayerPage {
 		// ---------------------------------------------------
 		// Bind Functions
 
-		this.bindFunctions( this, [
-			'update',
-			'draw',
+		TASK.bindFunctions( this, [
 			'onPlayButtonClick',
 			'onStopButtonClick',
-			'onMouseMove'
+			'onMouseMove',
+			'play',
+			'stop',
+			'update',
+			'draw',
+			'setupThreeView'
 		] );
 
 		// ---------------------------------------------------
 		// Event Listeners
 
-		this.$el( 'mousemove', this.onMouseMove );
+		this.$el.on( 'mousemove', this.onMouseMove );
 
 		// ---------------------------------------------------
 		// Finish setup
 
-		this.setup();
+		this.setupThreeView();
 	}
 
-	setup() {
+	// ---------------------------------------------------
+
+	setupThreeView() {
 		this.threeView = this.views[ 0 ];
 		this.threeView.setup();
-	}
-
-	update() {
-		this.threeView.update( {} );
+		return this;
 	}
 
 	// ---------------------------------------------------
 	// Event Handlers
 
+	onResize() {
+		this.threeView.onResize();
+	}
+
+	// ---------------------------------------------------
+
 	onMouseMove( e ) {
 		this.mouseTelemetrics.update( e );
 	}
 
+	// ---------------------------------------------------
+
 	onPlayButtonClick() {
 		this.play();
 	}
+
+	// ---------------------------------------------------
 
 	onStopButtonClick() {
 		this.stop();
@@ -78,35 +94,46 @@ class ThreejsPage extends AnimationPlayerPage {
 	// TASK/Page Overrides
 
 	transitionInComplete() {
-		super();
+		super.transitionInComplete();
 	}
+
+	// ---------------------------------------------------
 
 	transitionOut() {
-		super();
+		super.transitionOut();
 	}
 
+	// ---------------------------------------------------
+
 	afterRender() {
-		super();
+		super.afterRender();
 	};
 
 	// ---------------------------------------------------
 	// TASK/AnimationPlayerPage Overrides
 
 	play() {
-		super();
-		this.threeView.draw();
-	};
-
-	stop() {
-		super();
-		cancelAnimationFrame( this.raf );
+		super.play();
+		return this;
 	};
 
 	// ---------------------------------------------------
-	// Getter & Setters
 
-	get raf() {
-		return this.threeView.raf;
+	stop() {
+		super.stop();
+		return this;
+	};
+
+	update() {
+		this.threeView.update( {
+			mouseTelemetrics: this.mouseTelemetrics
+		} );
+		return this;
+	}
+
+	draw() {
+		this.threeView.draw();
+		return this;
 	}
 }
 

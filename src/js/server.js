@@ -1,7 +1,7 @@
 'use strict';
 // var _ = require( 'lodash' );
-var TASK = require( './framework/TASKBase' );
-var log = require( './framework/utils/log' );
+var TASK = require( '../TASK/js/TASK-Base' );
+var log = require( '../TASK/utils/log' );
 var bodyParser = require( 'body-parser' );
 var express = require( 'express' );
 // var favicon = require( 'serve-favicon' );

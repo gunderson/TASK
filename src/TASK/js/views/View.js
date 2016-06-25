@@ -1,10 +1,10 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TASK = require( '../TASKBase' );
+var TASK = require( '_TASK/TASK-Base' );
 
 class View extends TASK {
 	constructor( options ) {
-		super();
+		super( options );
 
 		// ---------------------------------------------------
 
@@ -62,7 +62,7 @@ class View extends TASK {
 		// ---------------------------------------------------
 		// Bind Functions
 
-		this.bindFunctions( this, [
+		TASK.bindFunctions( this, [
 			'bindData',
 			'delegateEvents',
 			'destroy',
@@ -93,20 +93,31 @@ class View extends TASK {
 	// ---------------------------------------------------
 
 	static parseName( options ) {
-		var name = options.name;
-		if ( name ) {
-			options.el = '#' + name;
-			// Assumes the the name correctly ends with "-page" following the pattern
-			options.route = name.slice( 0, -5 );
+		if ( options.name ) {
+			if ( !options.el ) options.el = '#' + options.name;
+			if ( !options.route ) {
+				if ( options.type === 'page' ) {
+					// views of type page require '-page' suffix
+					options.route = options.name.slice( 0, -5 );
+				} else {
+					options.route = options.name;
+				}
+			}
 		}
 		return options;
 	}
 
 	// ---------------------------------------------------
 
-	onResize() {
-
+	getView( name ) {
+		return _.find( this.views, {
+			name: name
+		} );
 	}
+
+	// ---------------------------------------------------
+
+	onResize() {}
 
 	// ---------------------------------------------------
 
@@ -134,6 +145,7 @@ class View extends TASK {
 			var html = View.getTemplate( this.template )( this.serialize() );
 			this.$el.html( html );
 		}
+		this.onResize();
 		// render child views
 		_.each( this.views, ( v ) => v.render( this ) );
 

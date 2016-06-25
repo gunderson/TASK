@@ -1,16 +1,16 @@
 var _ = require( 'lodash' );
-var TaskPage = require( '../../framework/Page' );
+var TaskPage = require( '_TASK/views/pages/Page' );
 
-class MasterPage extends TaskPage {
+class DefaultPage extends TaskPage {
 	constructor( options ) {
 
 		// ---------------------------------------------------
 		// Local Properties
 
 		super( _.defaults( options, {
-			name: 'master-page'
+			name: 'default-page'
 		} ) );
 	}
 }
 
-module.exports = MasterPage;
+module.exports = DefaultPage;

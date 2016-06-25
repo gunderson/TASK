@@ -1,6 +1,5 @@
 var _ = require( 'lodash' );
-// var $ = require( 'jquery' );
-var TaskModel = require( './Model' );
+var TaskModel = require( '_TASK/models/Model' );
 var io = require( 'socket-io/client' );
 
 class SocketModel extends TaskModel {

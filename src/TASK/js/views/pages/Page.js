@@ -1,6 +1,6 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TaskView = require( '../View' );
+var TaskView = require( '_TASK/views/View' );
 var TweenMax = require( 'TweenMax' );
 
 var PAGE_TRANSITION_DURATION = 1.5;
@@ -16,7 +16,7 @@ class Page extends TaskView {
 			row: 0,
 			page: null,
 			name: '',
-			loadType: 'page',
+			type: 'page',
 			layerAnimationOffset: 0.25
 		}, options ) );
 
@@ -73,7 +73,7 @@ class Page extends TaskView {
 		} else if ( this.loadPromise && this.loadPromise.state() === 'pending' ) {
 			console.log( this.el.id + ' waiting for load' );
 			this.trigger( 'loadStart', {
-				type: this.loadType,
+				type: this.type,
 				id: this.route
 			} );
 
@@ -176,9 +176,11 @@ class Page extends TaskView {
 		this.$el.find( '>.content' )
 			.scrollTop( 0 );
 
+		this.$el.show();
+		this.onResize();
+
 		if ( !prev ) {
 			// console.log('No Previous Page');
-			this.$el.show();
 			TweenMax.to( this.$( '.cover' ), 0, {
 				autoAlpha: 0
 			} );

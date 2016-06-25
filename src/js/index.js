@@ -1,8 +1,8 @@
 'use strict';
 var $ = require( 'jquery' );
-require( 'jquery.browser' );
+var browser = require( 'jquery.browser' );
 var _ = require( 'lodash' );
-var TASK = require( './framework/TASKBase' );
+var TASK = require( '_TASK/TASK-Base' );
 
 
 // Distribute Global Vars
@@ -14,7 +14,9 @@ var AppPage = require( './views/App-view' );
 
 // Start App
 var AppController = require( './controllers/App-controller' );
-var APP = new AppController( {} );
+var APP = new AppController( {
+	browser: browser
+} );
 TASK.prototype.APP = APP;
 
 var appPage = new AppPage( {

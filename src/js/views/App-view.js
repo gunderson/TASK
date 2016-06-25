@@ -1,8 +1,9 @@
 var _ = require( 'lodash' );
-var TaskPage = require( '../framework/Page' );
+var TaskPage = require( '_TASK/views/pages/Page' );
+var ThreejsPage = require( '_TASK/views/pages/Threejs-Page' );
 var MainMenuView = require( './ui/Main-menu-view' );
-var MasterPageView = require( './pages/Master-page-view' );
-var ControlPanelPageView = require( './pages/Control-panel-page-view' );
+var MasterPage = require( './pages/Master-Page' );
+var ControlPanelPage = require( './pages/Control-Panel-Page' );
 
 class AppPage extends TaskPage {
 	constructor( options ) {
@@ -15,12 +16,16 @@ class AppPage extends TaskPage {
 		];
 
 		var pageViews = [
-			new MasterPageView( {
+			new MasterPage( {
 				col: 0,
 				row: 0
 			} ),
-			new ControlPanelPageView( {
+			new ControlPanelPage( {
 				col: 1,
+				row: 0
+			} ),
+			new ThreejsPage( {
+				col: 2,
 				row: 0
 			} )
 		];

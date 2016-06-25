@@ -1,6 +1,6 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TaskView = require( '../../framework/View' );
+var TaskView = require( '_TASK/views/View' );
 
 class Menu extends TaskView {
 	constructor( options ) {
