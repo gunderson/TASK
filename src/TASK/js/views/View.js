@@ -24,15 +24,15 @@ class View extends TASK {
 			parentView: null,
 			views: [
 				/*
-                    new ChildView0({
-                        el: '#child-id-0',
-                        model: this.model.widgets.at(0)
-                    }),
-                    new ChildView1({
-                        el: '#child-id-1',
-                        model: this.model.widgets.at(1)
-                    }), ...
-                */
+					new ChildView0({
+						el: '#child-id-0',
+						model: this.model.widgets.at(0)
+					}),
+					new ChildView1({
+						el: '#child-id-1',
+						model: this.model.widgets.at(1)
+					}), ...
+				*/
 			],
 			events: [
 				// TODO: change 'selector' to target to allow event delegation to non js elements
@@ -40,24 +40,26 @@ class View extends TASK {
 
 				/*
 				{
-                    eventName: 'click',
-                    selector: 'button.play',
-                    handler: 'handleButtonClick'
+					eventName: 'click',
+					selector: 'button.play',
+					handler: 'handleButtonClick'
 				}
 				*/
 			],
 			dataBindings: [
 				/*
 				{
-                    element: '.selector',
-                    attributeName: 'name',
-                    model: 'model',
+					element: '.selector',
+					attributeName: 'name',
+					model: 'model',
 					elementChangeEventName: 'change',
 					mode: 'get' || 'send'
 				}
 				*/
 			]
 		}, options );
+
+		console.log( this, options )
 
 		// ---------------------------------------------------
 		// Bind Functions
@@ -74,7 +76,6 @@ class View extends TASK {
 
 		// ---------------------------------------------------
 		// Event Listeners
-
 		this.listenTo( this.APP, 'resize', this.onResize );
 
 		// ---------------------------------------------------
@@ -118,7 +119,6 @@ class View extends TASK {
 		// otherwise, create one
 		this.$el = this.el ? $( this.el )
 			.first() : $( `<${this.tagname} class='${this.classname}' id='${this.id}' />` );
-
 		this.el = this.$el[ 0 ];
 		this.$ = this.$el.find.bind( this.$el );
 	}

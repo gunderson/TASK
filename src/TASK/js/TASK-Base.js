@@ -15,5 +15,4 @@ class TASK {
 
 Events.mixin( TASK.prototype );
 
-
 module.exports = TASK;

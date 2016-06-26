@@ -13,21 +13,20 @@ if ( console ) {
 TASK.prototype.TEMPLATES = require( './lib/templates' );
 TASK.prototype.ENV = window.env;
 
-// Get Views
-var AppPage = require( './views/App-view' );
-
-// Start App
+// App Controller
 var AppController = require( './controllers/App-controller' );
-var APP = new AppController( {
+var appController = new AppController( {
 	browser: browser
 } );
-TASK.prototype.APP = APP;
+TASK.prototype.APP = appController;
 
+// Main App View
+var AppPage = require( './views/App-View' );
 var appPage = new AppPage( {
-	model: APP
+	model: appController
 } );
 
-var routes = _.map( appPage.pageViews, ( v ) => v.name.slice( 0, -5 ) );
+var routes = _.map( appPage.pageViews, ( v ) => v.name );
 
-appPage.once( 'afterRender', () => APP.setupRouter( routes ) );
+appPage.once( 'afterRender', () => appController.setupRouter( routes ) );
 appPage.render();

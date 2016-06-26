@@ -7,7 +7,7 @@ $menu-margin: 10rem
 	font-family: $header-font-family
 	color: #ccc
 	z-index: 5
-	@include transition(transform 0.35s ease-out, box-shadow 0.35s ease-out)
+	@include transition(transform $menu-transition-time ease-out, box-shadow $menu-transition-time ease-out)
 	@include box-shadow(0)
 
 	.menu-open &
@@ -24,12 +24,12 @@ $menu-margin: 10rem
 	position: absolute
 	top: 0
 	right: -$menu-width
-	height: calc(100% - #{$header-height + $footer-height})
-	margin: $header-height 0 $footer-height
+	height: 100% //calc(100% - #{$header-height + $footer-height})
+	margin: 0//$header-height 0 $footer-height
 	width: $menu-width
 	background-color: #111
 	a
-		@include transition(box-shadow 0.35s ease-out, background-color 0.05s, color 0.05s)
+		@include transition(box-shadow $menu-transition-time ease-out, background-color 0.05s, color 0.05s)
 
 		font-size: 18rem
 		text-transform: uppercase
@@ -47,7 +47,7 @@ $menu-margin: 10rem
 			background-color: #222
 			color: #ddd
 	.handle
-		@include transition(transform 0.35s ease-out, box-shadow 0.35s ease-out, background-color 0.025s, color 0.025s)
+		@include transition(transform $menu-transition-time ease-out, box-shadow $menu-transition-time ease-out, background-color 0.025s, color 0.025s)
 		@include box-shadow(.25)
 		display: block
 		/*position: absolute*/

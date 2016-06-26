@@ -45,7 +45,7 @@ gulp.task( 'css', function() {
 			includePaths: [ './src/sass/', './src/TASK/sass/' ],
 			errLogToConsole: true
 		} ) )
-		.pipe( csso() )
+		// .pipe( csso() )
 		.pipe( gulp.dest( './dist/' ) )
 		.pipe( livereload() )
 		.on( 'error', gutil.log );

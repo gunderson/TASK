@@ -91,7 +91,6 @@ class AppModel extends TaskModel {
 		this._route = ctx;
 		this._route.prevRoute = this.prevRoute;
 
-		// console.log( 'ROUTE :: ', this._route );
 		this.trigger( 'route', this._route );
 		return ctx;
 	}

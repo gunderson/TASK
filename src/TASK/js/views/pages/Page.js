@@ -21,10 +21,6 @@ class Page extends TaskView {
 		}, options ) );
 
 		// ---------------------------------------------------
-
-		this.parseName( options );
-
-		// ---------------------------------------------------
 		// Bind Functions
 
 		TaskView.bindFunctions( this, [
@@ -99,7 +95,7 @@ class Page extends TaskView {
 
 			// then you're good to go
 		} else {
-
+			console.log( this );
 			console.log( this.el.id + ' finished fetching view' );
 			if ( this.loadPromise ) {
 				console.log( this.el.id, this.loadPromise.state() );
@@ -140,7 +136,7 @@ class Page extends TaskView {
 
 				// determine new page
 				newPage = _.find( this.views, {
-					name: route.parts[ 0 ] + '-page'
+					name: route.parts[ 0 ]
 				} );
 			}
 
