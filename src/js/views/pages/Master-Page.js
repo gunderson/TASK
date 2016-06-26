@@ -8,7 +8,7 @@ class MasterPage extends TaskPage {
 		// Local Properties
 
 		super( _.defaults( options, {
-			name: 'master-page'
+			name: 'Master'
 		} ) );
 	}
 }

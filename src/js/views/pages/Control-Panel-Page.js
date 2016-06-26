@@ -10,7 +10,7 @@ class Page extends TaskPage {
 		// Local Properties
 
 		super( _.defaults( options, {
-			name: 'control-panel-page',
+			name: 'Control-Panel',
 			events: [ {
 				eventName: 'click',
 				selector: 'button.play',
