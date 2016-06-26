@@ -1,19 +1,19 @@
 // imports
-var MasterPage = require( './Master-Page' );
-var ControlPanelPage = require( './Control-Panel-Page' );
-var ThreejsPage = require( '_TASK/views/pages/Threejs-Page' );
+var Master = require( './Master-Page' );
+var ControlPanel = require( './Control-Panel-Page' );
+var Threejs = require( '_TASK/views/pages/Threejs-Page' );
 
 module.exports = [
 	// exports
-	new MasterPage( {
+	new Master( {
 		col: 0,
 		row: 0
 	} ),
-	new ControlPanelPage( {
+	new ControlPanel( {
 		col: 1,
 		row: 0
 	} ),
-	new ThreejsPage( {
+	new Threejs( {
 		col: 2,
 		row: 0
 	} )
