@@ -1,5 +1,4 @@
 var _ = require( 'lodash' );
-var $ = require( 'jquery' );
 var TaskView = require( '_TASK/views/View' );
 var TASK = TaskView;
 var THREE = require( 'three' );
@@ -12,7 +11,7 @@ class ThreeView extends TaskView {
 		// Local Properties
 
 		super( _.extend( {
-			name: 'three-holder',
+			name: 'Three-Holder',
 			el: '.three-holder'
 		}, options ) );
 

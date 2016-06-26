@@ -8,7 +8,7 @@ class DefaultPage extends TaskPage {
 		// Local Properties
 
 		super( _.defaults( options, {
-			name: 'default-page'
+			name: 'Default'
 		} ) );
 	}
 }

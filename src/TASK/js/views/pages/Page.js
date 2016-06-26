@@ -59,14 +59,6 @@ class Page extends TaskView {
 	parseName( options ) {
 		if ( options.name ) {
 			if ( !options.el ) options.el = '#' + options.name;
-			if ( !options.route ) {
-				if ( options.type === 'page' ) {
-					// views of type page require '-page' suffix
-					options.route = options.name.slice( 0, -5 );
-				} else {
-					options.route = options.name;
-				}
-			}
 		}
 		return options;
 	}

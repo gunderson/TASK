@@ -8,7 +8,7 @@ var MouseTelemetrics = require( '_art-kit/MouseTelemetrics' );
 class ThreejsPage extends AnimationPlayerPage {
 	constructor( options ) {
 		super( _.defaults( options, {
-			name: 'threejs-page',
+			name: 'Threejs',
 			autoPlay: true,
 			autoStop: true,
 			// ---------------------------------------------------

@@ -6,7 +6,7 @@ var AnimationPlayer = require( '_art-kit/AnimationPlayer' );
 class AnimationPlayerPage extends TaskPage {
 	constructor( options ) {
 		super( _.defaults( options, {
-			name: 'animation-player-page',
+			name: 'Animation-Player',
 			autoPlay: false,
 			autoStop: true
 		} ) );
