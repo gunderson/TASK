@@ -1,0 +1,4 @@
+"*":
+	core:
+		customFileTypes:
+			"text.html.jsp": ["ust"]

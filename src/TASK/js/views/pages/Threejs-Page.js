@@ -9,7 +9,7 @@ class ThreejsPage extends AnimationPlayerPage {
 	constructor( options ) {
 		super( _.defaults( options, {
 			name: 'threejs-page',
-			autoPlay: false,
+			autoPlay: true,
 			autoStop: true,
 			// ---------------------------------------------------
 			events: [ {

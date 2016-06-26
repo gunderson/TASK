@@ -4,8 +4,8 @@
   "description": "Tool Application Starter Kit",
   "main": "dist/main.js",
   "scripts": {
-    "start": "gulp --env prod && node --harmony ./dist/main",
-    "watch": "gulp --env dev && (gulp watch --env dev &) && node --harmony ./dist/main"
+    "start": "gulp --env prod && node --harmony ./dist/main --env prod",
+    "watch": "gulp --env dev && (gulp watch --env dev &) && node --harmony ./dist/main --env dev"
   },
   "browserify": {
     "transform": [
@@ -37,7 +37,7 @@
   },
   "author": "Patrik Gunderson",
   "license": "MIT",
-  "repository": "https://github.com/gunderson/ditkajs-client.git",
+  "repository": "https://github.com/gunderson/TASK.git",
   "dependencies": {
     "art-kit": "github:gunderson/art-kit",
     "backbone-events-standalone": "^0.2.7",
@@ -93,6 +93,7 @@
     "gulp-util": "^3.0.7",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-alpha7",
+    "stringify": "^5.1.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-named": "^1.1.0",
     "vinyl-source-stream": "^1.1.0"

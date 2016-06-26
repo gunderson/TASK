@@ -3,6 +3,7 @@ require( 'babelify' );
 var _ = require( 'lodash' );
 var browserify = require( 'browserify' );
 var aliasify = require( 'aliasify' );
+var stringify = require( 'stringify' );
 var buffer = require( 'vinyl-buffer' );
 var cli = require( './gulp/cli' );
 var csso = require( 'gulp-csso' );
@@ -66,7 +67,7 @@ gulp.task( 'copy-assets',
 
 // --------------------------------------------------
 
-gulp.task( 'compile-js', [ 'dynamic-templates' ], function() {
+gulp.task( 'compile-js', [ 'dynamic-templates' ], function( cb ) {
 
 	return gulp
 		.src( './src/js/index.js', {
@@ -86,32 +87,34 @@ gulp.task( 'compile-js', [ 'dynamic-templates' ], function() {
 				);
 			} );
 
-			// these line breaks are weird becasue the linter and auto-saver can't decide how many tabs to indent
-			// for some reason these line breaks fix the problem
-			d
-				.run( function() {
-					file
-						.contents = browserify( {
-							entries: [ file.path ],
-							debug: env.name === 'dev',
-							paths: [ './src/js/', './node_modules' ]
-						} )
-						.transform( {
-							global: true
-						}, aliasify )
-						.bundle()
-						.pipe( plumber( onError ) )
-						.pipe( source( 'index.js' ) )
-						.pipe( buffer() )
-						.pipe( sourcemaps.init( {
-							loadMaps: true
-						} ) )
-						.pipe( env.name !== 'dev' ? uglify() : buffer() )
-						.pipe( sourcemaps.write( './' ) )
-						.pipe( gulp.dest( './dist/' ) )
-						.pipe( livereload() )
-						.on( 'error', gutil.log );
-				} );
+			d.run( function() {
+				file
+					.contents = browserify( {
+						entries: [ file.path ],
+						debug: env.name === 'dev',
+						paths: [ './src/js/', './node_modules' ]
+					} )
+					.transform( {
+						global: true
+					}, aliasify )
+					.transform( stringify, {
+						appliesTo: {
+							includeExtensions: [ '.txt', '.vert', '.frag' ]
+						}
+					} )
+					.bundle()
+					.pipe( plumber( onError ) )
+					.pipe( source( 'index.js' ) )
+					.pipe( buffer() )
+					.pipe( sourcemaps.init( {
+						loadMaps: true
+					} ) )
+					.pipe( env.name !== 'dev' ? uglify() : buffer() )
+					.pipe( sourcemaps.write( './' ) )
+					.pipe( gulp.dest( './dist/' ) )
+					.pipe( livereload() )
+					.on( 'error', gutil.log );
+			} );
 		} ) );
 } );
 
