@@ -59,8 +59,6 @@ class View extends TASK {
 			]
 		}, options );
 
-		console.log( this, options )
-
 		// ---------------------------------------------------
 		// Bind Functions
 
@@ -76,7 +74,6 @@ class View extends TASK {
 
 		// ---------------------------------------------------
 		// Event Listeners
-		this.listenTo( this.APP, 'resize', this.onResize );
 
 		// ---------------------------------------------------
 		// Finish setup
@@ -114,6 +111,14 @@ class View extends TASK {
 
 	// ---------------------------------------------------
 
+	beforeRender() {}
+
+	// ---------------------------------------------------
+
+	afterRender() {}
+
+	// ---------------------------------------------------
+
 	setupElement() {
 		// if an el property exists, attempt to find it
 		// otherwise, create one
@@ -130,6 +135,7 @@ class View extends TASK {
 		this.parentView = parentView;
 		this.undelegateEvents();
 		this.unbindData();
+		this.beforeRender();
 		this.trigger( 'beforeRender', this );
 
 		// put rendered JST template into $el
@@ -143,6 +149,7 @@ class View extends TASK {
 
 		this.delegateEvents();
 		this.bindData();
+		this.afterRender();
 		this.trigger( 'afterRender', this );
 		this.hasRendered = true;
 	}

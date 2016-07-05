@@ -1,7 +1,7 @@
 var Scene = require( './Scene' );
 var _ = require( 'lodash' );
 var THREE = require( 'three' );
-var TweenMax = require( 'TweenMax' );
+// var TweenLite = require( 'TweenLite' );
 
 class BasicScene extends Scene {
 	constructor( options ) {
@@ -12,23 +12,6 @@ class BasicScene extends Scene {
 				far: 10000
 			}
 		}, options ) );
-	}
-
-	setupScene( options ) {
-		this.scene = new THREE.Scene();
-		_.each( this.meshes, ( m ) => this.scene.add( m ) );
-		_.each( this.lights, ( l ) => this.scene.add( l ) );
-		return this;
-	}
-
-	setupCamera( options ) {
-		this.camera = new THREE.PerspectiveCamera(
-			options.camera.fov,
-			options.el.innerWidth / options.el.innerHeight,
-			options.camera.near,
-			options.camera.far );
-		this.camera.position.z = 1000;
-		return this;
 	}
 
 	setupGeometry( options ) {
@@ -47,10 +30,6 @@ class BasicScene extends Scene {
 	setupMeshes( options ) {
 		this.meshes.cube = new THREE.Mesh( this.geometry.boxgeometry, this.materials.basicMaterial );
 		return this;
-	}
-
-	onResize() {
-		super.onResize();
 	}
 }
 

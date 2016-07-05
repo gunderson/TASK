@@ -32,6 +32,10 @@ class AnimationPlayerPage extends TaskPage {
 		if ( this.autoPlay ) this.play();
 	}
 
+	// transitionIn() {
+	// 	super.transitionIn();
+	// }
+
 	transitionOut() {
 		super.transitionOut();
 		if ( this.autoStop ) this.stop();

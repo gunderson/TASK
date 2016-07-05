@@ -1,8 +1,8 @@
 var _ = require( 'lodash' );
-// var AnimationPlayerPage = require( '../../framework/views/pages/js/Animation-Player-Page' );
 var AnimationPlayerPage = require( './Animation-Player-Page' );
 var TASK = AnimationPlayerPage;
 var ThreeView = require( './Threejs-Page/Three-View' );
+var TransportBar = require( '_TASK/views/ui/Transport-Bar' );
 var MouseTelemetrics = require( '_art-kit/MouseTelemetrics' );
 
 class ThreejsPage extends AnimationPlayerPage {
@@ -26,10 +26,17 @@ class ThreejsPage extends AnimationPlayerPage {
 				new ThreeView( {
 					name: 'three-holder',
 					el: '.three-holder'
+				} ),
+				new TransportBar( {
+					name: 'transport-bar',
+					el: '.transport-bar'
 				} )
 			]
 		} ) );
 
+		this.transportBar = _.find( this.views, {
+			name: 'transport-bar'
+		} );
 		this.mouseTelemetrics = new MouseTelemetrics();
 
 		// ---------------------------------------------------
@@ -50,11 +57,12 @@ class ThreejsPage extends AnimationPlayerPage {
 		// Event Listeners
 
 		this.$el.on( 'mousemove', this.onMouseMove );
+		this.listenTo( this.transportBar, 'play', this.onClickPlay );
+		this.listenTo( this.transportBar, 'stop', this.onClickPlay );
 
 		// ---------------------------------------------------
 		// Finish setup
 
-		this.setupThreeView();
 	}
 
 	// ---------------------------------------------------
@@ -69,7 +77,7 @@ class ThreejsPage extends AnimationPlayerPage {
 	// Event Handlers
 
 	onResize() {
-		this.threeView.onResize();
+		if ( this.threeView ) this.threeView.onResize();
 	}
 
 	// ---------------------------------------------------
@@ -93,20 +101,31 @@ class ThreejsPage extends AnimationPlayerPage {
 	// ---------------------------------------------------
 	// TASK/Page Overrides
 
-	transitionInComplete() {
-		super.transitionInComplete();
-	}
-
-	// ---------------------------------------------------
-
-	transitionOut() {
-		super.transitionOut();
-	}
+	// transitionIn() {
+	// 	super.transitionIn();
+	// 	}
+	//
+	// transitionInComplete() {
+	// 	super.transitionInComplete();
+	// }
+	//
+	// // ---------------------------------------------------
+	//
+	// transitionOut() {
+	// 	super.transitionOut();
+	// }
+	//
+	// // ---------------------------------------------------
+	//
+	// beforeRender() {
+	// 	super.beforeRender();
+	// }
 
 	// ---------------------------------------------------
 
 	afterRender() {
 		super.afterRender();
+		this.setupThreeView();
 	};
 
 	// ---------------------------------------------------

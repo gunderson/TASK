@@ -1,7 +1,9 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
 var TaskView = require( '_TASK/views/View' );
-var TweenMax = require( 'TweenMax' );
+var TweenLite = require( '_gsap/TweenLite' );
+var CSSPlugin = require( '_gsap/plugins/CSSPlugin' );
+var Easing = require( '_gsap/easing/EasePack' );
 
 var PAGE_TRANSITION_DURATION = 1.5;
 
@@ -38,6 +40,7 @@ class Page extends TaskView {
 
 		this.on( 'transitionInComplete', this.transitionInComplete );
 		this.on( 'transitionOutComplete', this.transitionOutComplete );
+		this.listenTo( this.APP, 'resize', this.onResize );
 	}
 
 	// ---------------------------------------------------
@@ -65,24 +68,24 @@ class Page extends TaskView {
 
 		promise = promise || new $.Deferred();
 
-		var recallFetch = function() {
+		var recallFetch = () => {
 			this.fetch( params, promise );
 			return promise;
-		}.bind( this );
+		};
 
-		// first load the model if there is one
-		if ( false && this.model && this.model.url ) {
+		var fetchModel = () => {
 			console.log( this.el.id + ' fetching the model' );
 			this.loadPromise = this.model.fetch()
 				.done( recallFetch );
+		};
 
-			// then render
-		} else if ( !this.hasRendered ) {
+		var renderView = () => {
 			console.log( this.el.id + ' render' );
 			this.render();
 			recallFetch();
-			// then wait for the components to load
-		} else if ( this.loadPromise && this.loadPromise.state() === 'pending' ) {
+		};
+
+		var loadAssets = () => {
 			console.log( this.el.id + ' waiting for load' );
 			this.trigger( 'loadStart', {
 				type: this.type,
@@ -92,9 +95,9 @@ class Page extends TaskView {
 			this.loadAssets();
 			this.loadPromise
 				.then( recallFetch );
+		};
 
-			// then you're good to go
-		} else {
+		var finishRender = () => {
 			console.log( this );
 			console.log( this.el.id + ' finished fetching view' );
 			if ( this.loadPromise ) {
@@ -108,7 +111,21 @@ class Page extends TaskView {
 				type: 'page',
 				id: this.name
 			} );
+		};
 
+		// first load the model if there is one
+		// TODO Reenable loading the model if needed
+		if ( false && this.model && this.model.url ) {
+			fetchModel();
+			// then render
+		} else if ( !this.hasRendered ) {
+			renderView();
+			// then wait for the components to load
+		} else if ( this.loadPromise && this.loadPromise.state() === 'pending' ) {
+			loadAssets();
+			// then you're good to go
+		} else {
+			finishRender();
 		}
 
 		return promise;
@@ -193,7 +210,7 @@ class Page extends TaskView {
 
 		if ( !prev ) {
 			// console.log('No Previous Page');
-			TweenMax.to( this.$( '.cover' ), 0, {
+			TweenLite.to( this.$( '.cover' ), 0, {
 				autoAlpha: 0
 			} );
 			this.trigger( 'transitionInComplete' );
@@ -201,11 +218,11 @@ class Page extends TaskView {
 		}
 
 		// hide the cover
-		TweenMax.fromTo( this.$( '.cover' ), PAGE_TRANSITION_DURATION, {
+		TweenLite.fromTo( this.$( '.cover' ), PAGE_TRANSITION_DURATION, {
 			autoAlpha: 1
 		}, {
 			autoAlpha: 0,
-			ease: 'Power4.easeOut',
+			ease: Easing.Power4.easeOut,
 			overwrite: true
 		} );
 
@@ -226,14 +243,14 @@ class Page extends TaskView {
 		}
 
 		// animate page layer
-		TweenMax.fromTo( this.$el, PAGE_TRANSITION_DURATION, {
+		TweenLite.fromTo( this.$el, PAGE_TRANSITION_DURATION, {
 			display: 'block',
 			x: startX + '%',
 			y: startY + '%'
 		}, {
 			x: '0%',
 			y: '0%',
-			ease: 'Power4.easeOut',
+			ease: Easing.Power4.easeOut,
 			onComplete: () => {
 				this.$el.css( {
 					transform: ''
@@ -244,13 +261,14 @@ class Page extends TaskView {
 		} );
 
 		// animate content layer
-		TweenMax.fromTo( this.$el.find( '> .content' ), PAGE_TRANSITION_DURATION, {
+		console.log( "Page::transitionIn", this.$el.find( '> .content' ) );
+		TweenLite.fromTo( this.$el.find( '> .content' ), PAGE_TRANSITION_DURATION, {
 			x: ( startX * this.layerAnimationOffset ) + '%',
 			y: ( startY * this.layerAnimationOffset ) + '%'
 		}, {
 			x: '0%',
 			y: '0%',
-			ease: 'Power4.easeOut',
+			ease: Easing.Power4.easeOut,
 			overwrite: true
 		} );
 
@@ -261,11 +279,11 @@ class Page extends TaskView {
 		this.$el.removeClass( 'active' );
 		this.$( '.cover' )
 			.off( 'mousewheel' );
-		TweenMax.fromTo( this.$( '.cover' ), PAGE_TRANSITION_DURATION, {
+		TweenLite.fromTo( this.$( '.cover' ), PAGE_TRANSITION_DURATION, {
 			autoAlpha: 0
 		}, {
 			autoAlpha: 1,
-			ease: 'Power4.easeOut',
+			ease: Easing.Power4.easeOut,
 			overwrite: true
 		} );
 
@@ -285,14 +303,14 @@ class Page extends TaskView {
 		}
 
 		// animate page layer
-		TweenMax.fromTo( this.$el, PAGE_TRANSITION_DURATION, {
+		TweenLite.fromTo( this.$el, PAGE_TRANSITION_DURATION, {
 			// display: 'block',
 			x: '0%',
 			y: '0%'
 		}, {
 			x: endX + '%',
 			y: endY + '%',
-			ease: 'Power4.easeOut',
+			ease: Easing.Power4.easeOut,
 			onComplete: () => {
 				this.$el.hide();
 				this.trigger( 'transitionOutComplete' );
@@ -301,14 +319,14 @@ class Page extends TaskView {
 		} );
 
 		// animate content layer
-		TweenMax.fromTo( this.$el.find( '> .content' ), PAGE_TRANSITION_DURATION, {
+		TweenLite.fromTo( this.$el.find( '> .content' ), PAGE_TRANSITION_DURATION, {
 			// display: 'block',
 			x: '0%',
 			y: '0%'
 		}, {
 			x: ( endX * this.layerAnimationOffset ) + '%',
 			y: ( endY * this.layerAnimationOffset ) + '%',
-			ease: 'Power4.easeOut',
+			ease: Easing.Power4.easeOut,
 			overwrite: true
 		} );
 

@@ -19,5 +19,6 @@
 	"wrap_attributes": "auto",
 	"wrap_attributes_indent_size": 4,
 	"end_with_newline": true,
-	"align_assignments": false,
+	"align_assignments": true,
+	"space_in_paren": true
 }

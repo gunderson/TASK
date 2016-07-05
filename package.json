@@ -1,103 +1,121 @@
 {
-  "name": "TASK",
-  "version": "1.0.0",
-  "description": "Tool Application Starter Kit",
-  "main": "dist/main.js",
-  "scripts": {
-    "start": "gulp --env prod && node --harmony ./dist/main --env prod",
-    "watch": "gulp --env dev && (gulp watch --env dev &) && node --harmony ./dist/main --env dev"
-  },
-  "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "es2015"
-          ]
-        },
-        "aliasify"
-      ]
-    ]
-  },
-  "browser": {
-    "TweenMax": "./node_modules/gsap/src/minified/TweenMax.min.js",
-    "jquery.gsap": "./node_modules/gsap/src/minified/jquery.gsap.min.js",
-    "jquery.browser": "./node_modules/jquery.browser/dist/jquery.browser.js",
-    "howler": "./node_modules/howler/howler.js"
-  },
-  "aliasify": {
-    "aliases": {
-      "underscore": "lodash"
-    },
-    "replacements": {
-      "_TASK/(\\w+)": "./src/TASK/js/$1",
-      "_art-kit/(\\w+)": "./node_modules/art-kit/src/$1"
-    }
-  },
-  "author": "Patrik Gunderson",
-  "license": "MIT",
-  "repository": "https://github.com/gunderson/TASK.git",
-  "dependencies": {
-    "art-kit": "github:gunderson/art-kit",
-    "backbone-events-standalone": "^0.2.7",
-    "body-parser": "^1.15.0",
-    "domain": "0.0.1",
-    "express": "^4.13.4",
-    "forever": "^0.15.1",
-    "gsap": "^1.18.4",
-    "howler": "^1.1.29",
-    "jquery": "^2.2.3",
-    "jquery.browser": "^0.1.0",
-    "lodash": "^4.11.2",
-    "marked": "^0.3.5",
-    "method-override": "^2.3.5",
-    "multer": "^1.1.0",
-    "npm": "^3.8.8",
-    "page": "^1.7.1",
-    "q": "^1.4.1",
-    "serve-favicon": "^2.3.0",
-    "socketio": "^1.0.0",
-    "three": "^0.78.0"
-  },
-  "autoupdate": {
-    "pollFrequency": 60000,
-    "srcPath": "/usr/src/app/",
-    "remoteHost": "raw.githubusercontent.com",
-    "remotePath": "/gunderson/ditkajs-client/master/package.json"
-  },
-  "build-id": "26fe926c40621bc46667855744ed1fffb91c0841388f6424a73736c982dcb239",
-  "devDependencies": {
-    "aliasify": "^2.0.0",
-    "babel": "^6.5.2",
-    "babel-core": "^6.8.0",
-    "babel-preset-es2015": "^6.6.0",
-    "babelify": "^7.3.0",
-    "bourbon": "^4.2.7",
-    "browserify": "^13.0.1",
-    "graceful-fs": "^4.1.3",
-    "gulp": "*",
-    "gulp-babel": "^6.1.2",
-    "gulp-browserify": "^0.5.1",
-    "gulp-csso": "*",
-    "gulp-docco": "0.0.4",
-    "gulp-jst-concat": "github:gunderson/gulp-jst-concat",
-    "gulp-livereload": "*",
-    "gulp-plumber": "^1.1.0",
-    "gulp-pug": "^3.0.2",
-    "gulp-rename": "github:gunderson/gulp-rename",
-    "gulp-rm": "^1.0.1",
-    "gulp-sass": "^2.3.2",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-tap": "^0.1.3",
-    "gulp-uglify": "*",
-    "gulp-util": "^3.0.7",
-    "morgan": "^1.7.0",
-    "pug": "^2.0.0-alpha7",
-    "scss-lint": "0.0.0",
-    "stringify": "^5.1.0",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-named": "^1.1.0",
-    "vinyl-source-stream": "^1.1.0"
-  }
+	"name": "TASK",
+	"version": "1.0.0",
+	"description": "Tool Application Starter Kit",
+	"main": "dist/main.js",
+	"scripts": {
+		"start": "gulp --env prod && node --harmony ./dist/main --env prod",
+		"watch": "gulp --env dev && (gulp watch --env dev &) && node --harmony ./dist/main --env dev"
+	},
+	"browserify": {
+		"debug": true,
+		"externalHelpers": false,
+		"runtimeHelpers": true,
+		"transform": [
+			[
+				"babelify", {
+					"compact": false,
+					"presets": [
+						"es2015"
+					],
+					"extensions": [ ".js" ]
+				}
+			]
+		]
+	},
+	"stringify": {
+		"appliesTo": {
+			"includeExtensions": [
+				".txt",
+				".vert",
+				".frag"
+			]
+		}
+	},
+	"aliasify": {
+		"aliases": {
+			"underscore": "lodash"
+		},
+		"replacements": {
+			"_TASK/(\\w+)": "./src/TASK/js/$1",
+			"_art-kit/(\\w+)": "/Users/pg/Development/repositories/art-kit/src/$1",
+			"_gsap/(\\w+)": "./node_modules/gsap/src/uncompressed/$1",
+			"postprocessing": "/Users/pg/Development/repositories/postprocessing/src/index.js"
+		}
+	},
+	"browser": {
+		"jquery.gsap": "./node_modules/gsap/src/minified/jquery.gsap.min.js"
+	},
+	"author": "Patrik Gunderson",
+	"license": "MIT",
+	"repository": "https://github.com/gunderson/TASK.git",
+	"dependencies": {
+		"acorn": "^3.2.0",
+		"art-kit": "github:gunderson/art-kit",
+		"backbone-events-standalone": "^0.2.7",
+		"body-parser": "^1.15.0",
+		"domain": "0.0.1",
+		"express": "^4.13.4",
+		"forever": "^0.15.1",
+		"gsap": "^1.18.4",
+		"howler": "^1.1.29",
+		"jquery": "^2.2.3",
+		"jquery.browser": "^0.1.0",
+		"lodash": "^4.11.2",
+		"marked": "^0.3.5",
+		"method-override": "^2.3.5",
+		"multer": "^1.1.0",
+		"npm": "^3.8.8",
+		"page": "^1.7.1",
+		"q": "^1.4.1",
+		"serve-favicon": "^2.3.0",
+		"socketio": "^1.0.0",
+		"three": "*"
+	},
+	"autoupdate": {
+		"pollFrequency": 60000,
+		"srcPath": "/usr/src/app/",
+		"remoteHost": "raw.githubusercontent.com",
+		"remotePath": "/gunderson/ditkajs-client/master/package.json"
+	},
+	"build-id": "26fe926c40621bc46667855744ed1fffb91c0841388f6424a73736c982dcb239",
+	"devDependencies": {
+		"aliasify": "^2.0.0",
+		"babel": "^6.5.2",
+		"babel-core": "^6.8.0",
+		"babel-plugin-transform-runtime": "^6.9.0",
+		"babel-polyfill": "^6.9.1",
+		"babel-preset-es2015": "^6.6.0",
+		"babel-preset-es2015-rollup": "^1.1.1",
+		"babelify": "^7.3.0",
+		"babelify-external-helpers": "^1.1.0",
+		"bourbon": "^4.2.7",
+		"browserify": "^13.0.1",
+		"graceful-fs": "^4.1.3",
+		"gulp": "*",
+		"gulp-babel": "^6.1.2",
+		"gulp-browserify": "^0.5.1",
+		"gulp-csso": "*",
+		"gulp-docco": "0.0.4",
+		"gulp-jst-concat": "github:gunderson/gulp-jst-concat",
+		"gulp-livereload": "*",
+		"gulp-plumber": "^1.1.0",
+		"gulp-pug": "^3.0.2",
+		"gulp-rename": "github:gunderson/gulp-rename",
+		"gulp-rm": "^1.0.1",
+		"gulp-sass": "^2.3.2",
+		"gulp-sourcemaps": "^1.6.0",
+		"gulp-tap": "^0.1.3",
+		"gulp-uglify": "*",
+		"gulp-util": "^3.0.7",
+		"morgan": "^1.7.0",
+		"pug": "^2.0.0-alpha7",
+		"rollup-plugin-babel": "^2.6.1",
+		"scss-lint": "0.0.0",
+		"stringify": "^5.1.0",
+		"vinyl-buffer": "^1.0.0",
+		"vinyl-named": "^1.1.0",
+		"vinyl-source-stream": "^1.1.0",
+		"vinyl-transform": "^1.0.0"
+	}
 }

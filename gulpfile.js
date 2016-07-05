@@ -4,7 +4,10 @@ var _ = require( 'lodash' );
 var browserify = require( 'browserify' );
 var aliasify = require( 'aliasify' );
 var stringify = require( 'stringify' );
+var babelify = require( 'babelify' );
+var helpers = require( 'babelify-external-helpers' );
 var buffer = require( 'vinyl-buffer' );
+var transform = require( 'vinyl-transform' );
 var cli = require( './gulp/cli' );
 var csso = require( 'gulp-csso' );
 var docco = require( 'gulp-docco' );
@@ -68,7 +71,6 @@ gulp.task( 'copy-assets',
 // --------------------------------------------------
 
 gulp.task( 'compile-js', [ 'dynamic-templates' ], function( cb ) {
-
 	return gulp
 		.src( './src/js/index.js', {
 			read: false
@@ -83,7 +85,8 @@ gulp.task( 'compile-js', [ 'dynamic-templates' ], function( cb ) {
 					err.message,
 					'\n\t',
 					gutil.colors.cyan( 'in file' ),
-					file.path
+					file.path,
+					err
 				);
 			} );
 
@@ -92,16 +95,19 @@ gulp.task( 'compile-js', [ 'dynamic-templates' ], function( cb ) {
 					.contents = browserify( {
 						entries: [ file.path ],
 						debug: env.name === 'dev',
-						paths: [ './src/js/', './node_modules' ]
+						// paths: [ './src/js/' ],
+						paths: [ './src/js/', './node_modules' ],
+						externalHelpers: false,
+						runtimeHelpers: true
 					} )
-					.transform( {
-						global: true
-					}, aliasify )
-					.transform( stringify, {
-						appliesTo: {
-							includeExtensions: [ '.txt', '.vert', '.frag' ]
-						}
+					.transform( babelify, {
+						presets: [
+							'es2015'
+						]
 					} )
+					.transform( aliasify )
+					.transform( stringify )
+					.plugin( helpers )
 					.bundle()
 					.pipe( plumber( onError ) )
 					.pipe( source( 'index.js' ) )
@@ -116,6 +122,7 @@ gulp.task( 'compile-js', [ 'dynamic-templates' ], function( cb ) {
 					.on( 'error', gutil.log );
 			} );
 		} ) );
+
 } );
 
 function listFolders( dir ) {
@@ -208,7 +215,7 @@ gulp.task( 'dynamic-templates', function() {
 			exportString: 'module.exports'
 		} ) )
 		.pipe( gulp.dest( './src/js/lib/' ) )
-		.pipe( livereload() )
+		// .pipe( livereload() )
 		.on( 'error', gutil.log );
 	return stream;
 } );

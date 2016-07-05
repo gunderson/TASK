@@ -2,7 +2,10 @@ var _ = require( 'lodash' );
 var TaskView = require( '_TASK/views/View' );
 var TASK = TaskView;
 var THREE = require( 'three' );
+
 var BasicScene = require( './scenes/BasicScene' );
+var BoxLine = require( './scenes/BoxLine' );
+
 
 class ThreeView extends TaskView {
 	constructor( options ) {
@@ -14,6 +17,7 @@ class ThreeView extends TaskView {
 			name: 'Three-Holder',
 			el: '.three-holder'
 		}, options ) );
+
 
 		// ---------------------------------------------------
 		// Bind Functions
@@ -35,29 +39,50 @@ class ThreeView extends TaskView {
 	setup() {
 		// Renderer
 		this.renderer = new THREE.WebGLRenderer();
+		this.renderer.setClearColor( 0xffffff, 1 );
 		this.renderer.setSize( this.el.innerWidth, this.el.innerHeight );
 		this.$el.append( this.renderer.domElement );
 
 		// Scenes
-		var scenes = {
-			main: new BasicScene( {
-				el: this.el
+		this.scenes = {
+			'Box Line': new BoxLine( {
+				el: this.el,
+				renderer: this.renderer
+			} ),
+			'Single Box': new BasicScene( {
+				el: this.el,
+				renderer: this.renderer
 			} )
 		};
-
-		this.activeScene = scenes.main;
+		this.changeScene( 'Box Line' );
 	}
 
 	changeScene( name ) {
+		console.log( 'Three-View changeScene to:', name, this.activeScene ? `from: ${this.activeScene.name}` : null );
 		// TODO: fade out
+		this.onResize();
 		this.activeScene = this.scenes[ name ];
-		this.activeScene.onResize();
+		this.activeScene.setup( {
+			renderer: this.renderer
+		} );
 		// TODO: fade up
 	}
 
 	onResize() {
-		this.activeScene.onResize();
-		this.renderer.setSize( this.el.offsetWidth, this.el.offsetHeight );
+		console.trace( 'Three-View onResize' );
+		this.width = this.el.offsetWidth;
+		this.height = this.el.offsetHeight;
+		this.halfWidth = this.width * 0.5;
+		this.halfHeight = this.height * 0.5;
+
+		_.each( this.scenes, ( s ) => {
+			s.width = this.width;
+			s.height = this.height;
+			s.halfWidth = this.halfWidth;
+			s.halfHeight = this.halfHeight;
+		} );
+		if ( this.renderer ) this.renderer.setSize( this.width, this.height );
+		if ( this.activeScene ) this.activeScene.onResize();
 	};
 
 	update( data ) {
@@ -65,7 +90,9 @@ class ThreeView extends TaskView {
 	};
 
 	draw() {
-		this.renderer.render( this.activeScene.scene, this.activeScene.camera );
+		this.activeScene.render( {
+			time: Date.now()
+		} );
 	};
 
 }

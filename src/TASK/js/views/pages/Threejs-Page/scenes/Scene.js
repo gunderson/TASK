@@ -6,48 +6,56 @@ var THREE = require( 'three' );
 class Scene extends TASKView {
 	constructor( options ) {
 		super( options );
-		options = _.merge( {
+		this.options = _.merge( {
 			camera: {
 				fov: 75,
 				near: 1,
-				far: 10000
-			}
-		}, options );
+				far: 100000
+			},
+			clearColor: 0xffffff,
+			clearAlpha: 1
+		}, this.options );
 
+		// this.renderer = this.options.renderer;
 		this.geometry = {};
 		this.materials = {};
 		this.meshes = {};
 		this.lights = {};
 		this.shaders = {};
 		this.textures = {};
+	}
 
-
-		this.loadAssets()
+	setup() {
+		console.log( 'Scene::setup' );
+		return this.loadAssets()
 			.then( () => {
-				this.setupShaders( options );
-				this.setupMaterials( options );
-				this.setupGeometry( options );
-				this.setupMeshes( options );
-				this.setupCamera( options );
-				this.setupLights( options );
-				this.setupScene( options );
+				// this.renderer.setClearColor( this.options.clearColor, this.options.clearAlpha );
+				this.setupShaders( this.options );
+				this.setupMaterials( this.options );
+				this.setupGeometry( this.options );
+				this.setupMeshes( this.options );
+				this.setupScene( this.options );
+				this.layoutScene( this.options );
+				this.setupLights( this.options );
+				this.setupCamera( this.options );
 			} );
 	}
 
 	// setup scene
-	// TODO: move asset load to individual scenes
 	loadAssets() {
 		var deferred = $.Deferred();
 		// load stuff in here
 		// resolve the deferred when load is complete
+		deferred.notify( 1 );
 		deferred.resolve();
-		return deferred;
+		return deferred.promise();
 	};
 
 	setupScene( options ) {
 		this.scene = new THREE.Scene();
 		_.each( this.meshes, ( m ) => this.scene.add( m ) );
 		_.each( this.lights, ( l ) => this.scene.add( l ) );
+		this.layoutScene();
 		return this;
 	}
 
@@ -59,7 +67,10 @@ class Scene extends TASKView {
 			options.el.innerWidth / options.el.innerHeight,
 			options.camera.near,
 			options.camera.far );
-		this.camera.position.z = 1000;
+		this.camera.position.x = options.camera.position.x;
+		this.camera.position.y = options.camera.position.y;
+		this.camera.position.z = options.camera.position.z;
+		this.camera.lookAt( options.camera.lookAt || this.scene.position );
 		return this;
 	}
 
@@ -85,10 +96,17 @@ class Scene extends TASKView {
 		return this;
 	}
 
+	layoutScene( options ) {
+		return this;
+	}
+
+	render() {
+		this.renderer.render();
+	}
+
 	onResize() {
-		var w = this.options.el.offsetWidth;
-		var h = this.options.el.offsetHeight;
-		this.camera.aspect = w / h;
+		console.trace( 'Scene onResize' );
+		this.camera.aspect = this.width / this.height;
 		this.camera.updateProjectionMatrix();
 	}
 

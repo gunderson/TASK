@@ -4,6 +4,8 @@ TASK is based on [Backbone.js](http://backbonejs.com) with [layoutmanager](http:
 
 ## Environment setup
 
+npm falafel currently only supports a very old version of acron that doesn't work well with es6 files. You'll need to manually bump versions in falafel, and acorn inside node_modules :(
+
 We prefer [Atom](http://atom.io) as our IDE and have provided a number of package and configuration files to help ensure we're all using the same coding standards.
 
 You will need node.js and git to be able to setup, build and run this project.

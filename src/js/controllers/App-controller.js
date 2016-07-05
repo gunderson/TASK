@@ -33,6 +33,12 @@ class AppModel extends TaskModel {
 
 		// this.setupRouter();
 		// this.setupSocket();
+
+		// ---------------------------------------------------------
+		// Event Listeners
+
+		$( window )
+			.on( 'resize', () => this.trigger( 'resize' ) );
 	}
 
 	// ---------------------------------------------------------
