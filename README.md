@@ -1,6 +1,6 @@
 # Tool Application Starter Kit (TASK)
 
-TASK is based on [Backbone.js](http://backbonejs.com) with [layoutmanager](http://layoutmanager.org), but has eliminated functionality that is unnecessary in a fully compiled, self contained build. We have extended it to be a full framework supporting multiple domains running on node.js.
+TASK is based on the ethos of [Backbone.js](http://backbonejs.com), but has eliminated functionality that is unnecessary in a fully compiled, self contained build. We have extended it to be a full framework supporting multiple domains running on node.js.
 
 ## Environment setup
 
