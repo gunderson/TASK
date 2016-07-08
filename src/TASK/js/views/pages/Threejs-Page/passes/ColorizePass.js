@@ -11,7 +11,9 @@ class ColorizePass extends Pass {
 
 		this.options = options || {};
 
-		this.color = options.color ? options.color : THREE.Color( 0, 0, 0 );
+		this.color = options.color ? options.color : new THREE.Color( 0 );
+
+		this.renderToScreen = options.renderToScreen;
 
 		this.needsSwap = true;
 

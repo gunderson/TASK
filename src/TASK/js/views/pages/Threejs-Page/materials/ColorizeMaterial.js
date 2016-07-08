@@ -24,7 +24,7 @@ class ColorizeMaterial extends THREE.ShaderMaterial {
 					value: new THREE.Color( 0 )
 				}
 			},
-			vertexShader: require( './shaders/Identity.vert' ),
+			vertexShader: require( './shaders/Colorize.vert' ),
 			fragmentShader: require( './shaders/Colorize.frag' )
 
 		} );

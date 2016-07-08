@@ -38,8 +38,10 @@ class ThreeView extends TaskView {
 
 	setup() {
 		// Renderer
-		this.renderer = new THREE.WebGLRenderer();
-		this.renderer.setClearColor( 0xffffff, 1 );
+		this.renderer = new THREE.WebGLRenderer( {
+			alpha: true
+		} );
+		this.renderer.setClearColor( 0xffffff, 0 );
 		this.renderer.setSize( this.el.innerWidth, this.el.innerHeight );
 		this.$el.append( this.renderer.domElement );
 

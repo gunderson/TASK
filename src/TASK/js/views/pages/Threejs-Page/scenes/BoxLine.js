@@ -64,25 +64,26 @@ class BoxLineScene extends PostProcessedOrthographicScene {
 
 		// PINK BRANCH
 		// let pinkBranch = this.composer.branch( null, 'pinkBranch' );
-		//
-		// let makePink = new ColorizePass( {
-		// 	color: new THREE.Color( 1, 0, 1 )
-		// } );
-		// pinkBranch.addPass( makePink );
+
+		let makePink = new ColorizePass( {
+			color: new THREE.Color( 0xff00ff ),
+			renderToScreen: true
+		} );
+		this.composer.addPass( makePink );
 
 		// MAIN PATH
-		let effect0 = new VerticalBlurPass();
-		this.composer.addPass( effect0 );
-
-		let effect1 = new HorizontalBlurPass();
-		effect1.renderToScreen = true;
-		this.composer.addPass( effect1 );
-
-		// MERGE AND RENDER TO SCREEN
-		// let mergePinkBranch = new MergePass( pinkBranch, {
+		// let effect0 = new VerticalBlurPass();
+		// this.composer.addPass( effect0 );
+		//
+		// let effect1 = new HorizontalBlurPass();
+		// // effect1.renderToScreen = true;
+		// this.composer.addPass( effect1 );
+		//
+		// // MERGE AND RENDER TO SCREEN
+		// let mergePinkBranch = new MergePass( pinkBranch, this.composer.branches.main, {
 		// 	renderToScreen: true
 		// } );
-		// pinkBranch.addPass( mergePinkBranch );
+		// this.composer.addPass( mergePinkBranch );
 
 		return this;
 	}
