@@ -1,6 +1,6 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TASK = require( '_TASK/TASK-Base' );
+var TASK = require( '_TASK/Base' );
 var TaskCollection = require( '_TASK/collections/Collection' );
 
 class Model extends TASK {
@@ -44,7 +44,6 @@ class Model extends TASK {
 			'removeFromCollection'
 		] );
 
-
 		// ---------------------------------------------------
 		// Make Attribute getters & setters
 
@@ -58,7 +57,6 @@ class Model extends TASK {
 	[ Symbol.iterator ]() {
 		return this._attributes.values();
 	}
-
 
 	// ---------------------------------------------------
 

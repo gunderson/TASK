@@ -45,6 +45,7 @@ gulp.task( 'css', function() {
 		.src( './src/sass/**/*.sass' )
 		.pipe( plumber( onError ) )
 		.pipe( sass( {
+
 			includePaths: [ './src/sass/', './src/TASK/sass/' ],
 			errLogToConsole: true
 		} ) )
@@ -53,7 +54,6 @@ gulp.task( 'css', function() {
 		.pipe( livereload() )
 		.on( 'error', gutil.log );
 } );
-
 
 // --------------------------------------------------
 
@@ -177,7 +177,8 @@ gulp.task( 'static-templates', function() {
 					copy: langData[ lang ],
 					lang: lang,
 					meta: meta
-				}
+				},
+				basedir: './src/'
 			} ) )
 			.pipe( gulp.dest( './dist' ) )
 			.pipe( livereload() )
@@ -247,7 +248,6 @@ gulp.task( 'default', [
 ] );
 
 // --------------------------------------------------
-
 
 // --------------------------------------------------
 // General project tasks

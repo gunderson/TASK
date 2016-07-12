@@ -1,9 +1,11 @@
 'use strict';
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TaskPage = require( '_TASK/views/pages/Page' );
+var ThreejsPage = require( '_TASK/views/pages/Threejs-Page' );
+var ThreeView = require( './Control-Panel-Page/Three-View' );
+var TransportBar = require( '_TASK/views/ui/Transport-Bar' );
 
-class Page extends TaskPage {
+class ControlPanelPage extends ThreejsPage {
 	constructor( options ) {
 
 		// ---------------------------------------------------
@@ -14,38 +16,55 @@ class Page extends TaskPage {
 			events: [ {
 				eventName: 'click',
 				selector: 'button.play',
-				handler: 'onClickPlay'
+				handler: 'onPlayButtonClick'
 			}, {
 				eventName: 'click',
 				selector: 'button.stop',
-				handler: 'onClickStop'
-			}, {
-				eventName: 'change',
-				selector: 'input:checkbox',
-				handler: 'onChangeCheckbox'
-			} ]
+				handler: 'onStopButtonClick'
+			} ],
+			views: [
+				new ThreeView( {
+					name: 'three-holder',
+					el: '.three-holder'
+				} ),
+				new TransportBar( {
+					name: 'transport-bar',
+					el: '.transport-bar'
+				} )
+			]
 		} ) );
+
+		console.log( this.bindFunctions, this.views );
+
+		this.threeView = _.find( this.views, {
+			name: 'three-holder'
+		} );
+		this.transportBar = _.find( this.views, {
+			name: 'transport-bar'
+		} );
 
 		// ---------------------------------------------------
 		// Bind Functions
 
-		TaskPage.bindFunctions( this, [
-			'onClickPlay',
-			'onClickStop',
+		ThreejsPage.bindFunctions( this, [
+			'onPlayButtonClick',
+			'onStopButtonClick',
 			'onChangeCheckbox'
 		] );
 
 		// ---------------------------------------------------
 		// Event Handlers
 
+		this.listenTo( this.transportBar, 'play', this.onClickPlay );
+		this.listenTo( this.transportBar, 'stop', this.onClickPlay );
 	}
 
-	onClickPlay() {
-		APP.play();
+	onPlayButtonClick() {
+		this.play();
 	}
 
-	onClickStop() {
-		APP.stop();
+	onStopButtonClick() {
+		this.stop();
 	}
 
 	onChangeCheckbox( evt ) {
@@ -61,4 +80,4 @@ class Page extends TaskPage {
 	}
 }
 
-module.exports = Page;
+module.exports = ControlPanelPage;

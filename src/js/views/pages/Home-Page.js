@@ -1,6 +1,5 @@
 /* exlint-env es6 */
 var _ = require( 'lodash' );
-var TASK = require( '_TASK/TASK-Base' );
 var TaskPage = require( '_TASK/views/pages/Page' );
 
 class HomePage extends TaskPage {

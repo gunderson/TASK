@@ -1,6 +1,6 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TASK = require( '_TASK/TASK-Base' );
+var TASK = require( '_TASK/Base' );
 
 class View extends TASK {
 	constructor( options ) {

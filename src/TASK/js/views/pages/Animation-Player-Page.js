@@ -1,7 +1,8 @@
 var _ = require( 'lodash' );
 var TaskPage = require( '_TASK/views/pages/Page' );
-var TASK = require( '_TASK/TASK-Base' );
-var AnimationPlayer = require( '_art-kit/AnimationPlayer' );
+// var AnimationPlayer = require( '_art-kit/media/AnimationPlayer' );
+
+import AnimationPlayer from '_art-kit/media/AnimationPlayer';
 
 class AnimationPlayerPage extends TaskPage {
 	constructor( options ) {
@@ -17,7 +18,7 @@ class AnimationPlayerPage extends TaskPage {
 		// ---------------------------------------------------
 		// Bind Functions
 
-		TASK.bindFunctions( this, [
+		TaskPage.bindFunctions( this, [
 			'play',
 			'stop',
 			'update',
@@ -43,13 +44,15 @@ class AnimationPlayerPage extends TaskPage {
 
 	play() {
 		this.player.play();
+		this.trigger( 'play' );
 	};
 
 	stop() {
 		this.player.stop();
+		this.trigger( 'stop' );
 	};
 
-	update() {
+	update( data ) {
 
 	};
 
