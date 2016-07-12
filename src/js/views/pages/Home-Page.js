@@ -8,7 +8,7 @@ class HomePage extends TaskPage {
 		// ---------------------------------------------------
 		// Local Properties
 
-		super( _.defaults( options, {
+		super( _.merge( {
 			name: 'Home',
 			el: null,
 			col: 0,
@@ -16,7 +16,7 @@ class HomePage extends TaskPage {
 			type: 'page',
 			views: null,
 			events: null
-		} ) );
+		}, options ) );
 
 		// ---------------------------------------------------
 		// Event Listeners

@@ -5,26 +5,36 @@ var TaskView = require( '_TASK/views/View' );
 class Menu extends TaskView {
 	constructor( options ) {
 
-		// ---------------------------------------------------
-		// Local Properties
+		super( _.merge( {
 
-		super( _.extend( {
+			// ---------------------------------------------------
+			// Class Properties
+
 			el: '#main-menu',
+
+			// ---------------------------------------------------
+			// Event handlers
+
 			events: [ {
-				eventName: 'click',
-				selector: '.handle',
-				handler: 'toggleMenu'
-			}, {
-				eventName: 'click',
-				selector: '.closer',
-				handler: 'closeMenu'
-			} ]
+					eventName: 'click',
+					selector: '.handle',
+					handler: 'toggleMenu'
+				}, {
+					eventName: 'click',
+					selector: '.closer',
+					handler: 'closeMenu'
+				}
+
+				// ---------------------------------------------------
+				// Local Properties
+
+			]
 		}, options ) );
 
 		// ---------------------------------------------------
 		// Bind Functions
 
-		TaskView.bindFunctions( this, [
+		this.bindFunctions( this, [
 			'openMenu',
 			'closeMenu',
 			'toggleMenu'

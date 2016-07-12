@@ -5,24 +5,20 @@ var router = require( 'page' );
 
 class AppModel extends TaskModel {
 	constructor( options ) {
-		super( options );
+		super( {}, _.merge( {
+			prevRoute: null,
+			_route: {
+				parts: [ 'bootstrap route' ]
+			}
+		}, options ) );
 
 		// ---------------------------------------------------------
 		// Local Props
 
-		_.extend( this, {
-			prevRoute: null,
-			_route: {
-				parts: [ 'bootstrap route' ]
-			},
-			serverAddress: this.ENV.address,
-			serverPort: this.ENV.port
-		} );
-
 		// ---------------------------------------------------------
 		// Bind Functions
 
-		TaskModel.bindFunctions( this, [
+		this.bindFunctions( this, [
 			'setupRouter',
 			'setupSocket',
 			'onRoute'
@@ -45,15 +41,15 @@ class AppModel extends TaskModel {
 	// Controls
 
 	play() {
-		return $.get( `http://${this.deviceAddress}:${this.devicePort}/play` );
+		return $.get( `http://${ this.ENV.address}:${this.ENV.port}/play` );
 	}
 
 	stop() {
-		return $.get( `http://${this.deviceAddress}:${this.devicePort}/stop` );
+		return $.get( `http://${ this.ENV.address}:${this.ENV.port}/stop` );
 	}
 
 	setLed( id, state ) {
-		return $.get( `http://${this.deviceAddress}:${this.devicePort}/led/${id}/${state}` );
+		return $.get( `http://${ this.ENV.address}:${this.ENV.port}/led/${id}/${state}` );
 	}
 
 	// ---------------------------------------------------------

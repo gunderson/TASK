@@ -4,11 +4,11 @@ var io = require( 'socket-io/client' );
 
 class SocketModel extends TaskModel {
 	constructor( attributes, options ) {
-		super( _.defaults( attributes, {
+		super( _.merge( {
 			// default attributes
-		} ), _.defaults( options, {
+		}, attributes ), _.merge( {
 			// default options
-		} ) );
+		}, options ) );
 
 		// ---------------------------------------------------
 		// Local Properties

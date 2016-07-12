@@ -9,7 +9,7 @@ class AppPage extends TaskPage {
 		// ---------------------------------------------------
 		// Local Properties
 
-		super( _.extend( {
+		super( _.merge( {
 			name: 'app-page',
 			views: [].concat( uiViews, pageViews )
 		}, options ) );

@@ -12,7 +12,7 @@ class View extends TASK {
 
 		// ---------------------------------------------------
 
-		_.extend( this, {
+		_.merge( this, {
 			el: null,
 			model: null,
 			template: '',
@@ -41,7 +41,7 @@ class View extends TASK {
 				/*
 				{
 					eventName: 'click',
-					selector: 'button.play',
+					target: 'button.play',
 					handler: 'handleButtonClick'
 				}
 				*/
@@ -62,7 +62,7 @@ class View extends TASK {
 		// ---------------------------------------------------
 		// Bind Functions
 
-		TASK.bindFunctions( this, [
+		View.bindFunctions( this, [
 			'bindData',
 			'delegateEvents',
 			'destroy',
@@ -107,15 +107,21 @@ class View extends TASK {
 
 	// ---------------------------------------------------
 
-	onResize() {}
+	onResize() {
+		// override me
+	}
 
 	// ---------------------------------------------------
 
-	beforeRender() {}
+	beforeRender() {
+		// override me
+	}
 
 	// ---------------------------------------------------
 
-	afterRender() {}
+	afterRender() {
+		// override me
+	}
 
 	// ---------------------------------------------------
 
@@ -210,10 +216,12 @@ class View extends TASK {
 	// ---------------------------------------------------
 
 	delegateEvents() {
-		_.each( this.events, ( e ) => {
-			if ( typeof e.handler === 'string' ) e.handler = this[ e.handler ];
-			this.$( e.selector )
-				.on( e.eventName, e.handler );
+		super.delegateEvents();
+		_.each( this.eventsfilter( ( e ) => e.selector ), ( e ) => {
+			if ( e.selector ) {
+				this.$( e.selector )
+					.on( e.eventName, e.handler );
+			}
 		} );
 		return this;
 	}
@@ -221,7 +229,8 @@ class View extends TASK {
 	// ---------------------------------------------------
 
 	undelegateEvents() {
-		_.each( this.events, ( e ) => {
+		super.undelegateEvents();
+		_.each( this.events.filter( ( e ) => e.selector ), ( e ) => {
 			this.$( e.selector )
 				.off( e.eventName );
 		} );

@@ -7,6 +7,9 @@
 		"start": "gulp --env prod && node --harmony ./dist/main --env prod",
 		"watch": "gulp --env dev && (gulp watch --env dev &) && node --harmony ./dist/main --env dev"
 	},
+	"engines": {
+		"node": "^6.0.0"
+	},
 	"browserify": {
 		"debug": true,
 		"externalHelpers": false,

@@ -1,6 +1,5 @@
 var _ = require( 'lodash' );
 var AnimationPlayerPage = require( './Animation-Player-Page' );
-var TASK = AnimationPlayerPage;
 // TODO abstract three-view
 // var ThreeView = require( './Threejs-Page/Three-View' );
 // var TransportBar = require( '_TASK/views/ui/Transport-Bar' );
@@ -10,49 +9,32 @@ import MouseTelemetrics from '_art-kit/position/MouseTelemetrics';
 
 class ThreejsPage extends AnimationPlayerPage {
 	constructor( options ) {
-		super( _.defaults( options, {
+		super( _.merge( {
 			name: 'Threejs',
 			autoPlay: true,
-			autoStop: true
-				// ---------------------------------------------------
-				// events: [ {
-				// 	eventName: 'click',
-				// 	selector: 'button.play',
-				// 	handler: 'onPlayButtonClick'
-				// }, {
-				// 	eventName: 'click',
-				// 	selector: 'button.stop',
-				// 	handler: 'onStopButtonClick'
-				// } ],
-				// // ---------------------------------------------------
-				// views: [
-				// 	new ThreeView( {
-				// 		name: 'three-holder',
-				// 		el: '.three-holder'
-				// 	} )
-				// 	new TransportBar( {
-				// 		name: 'transport-bar',
-				// 		el: '.transport-bar'
-				// 	} )
-				// ]
-		} ) );
+			autoStop: true,
+			// ---------------------------------------------------
+			// Bind Functions
 
-		// this.transportBar = _.find( this.views, {
-		// 	name: 'transport-bar'
-		// } );
+			bindFunctions: [
+				'onMouseMove',
+				'play',
+				'stop',
+				'update',
+				'draw',
+				'setupThreeView'
+			],
+			// ---------------------------------------------------
+			// Event Listeners
+
+			events: [ {
+				eventName: 'mousemove',
+				target: '$el',
+				handler: 'onMouseMove'
+			} ]
+		}, options ) );
+
 		this.mouseTelemetrics = new MouseTelemetrics();
-
-		// ---------------------------------------------------
-		// Bind Functions
-
-		TASK.bindFunctions( this, [
-			'onMouseMove',
-			'play',
-			'stop',
-			'update',
-			'draw',
-			'setupThreeView'
-		] );
 
 		// ---------------------------------------------------
 		// Event Listeners

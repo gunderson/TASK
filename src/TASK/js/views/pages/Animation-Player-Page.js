@@ -6,11 +6,11 @@ import AnimationPlayer from '_art-kit/media/AnimationPlayer';
 
 class AnimationPlayerPage extends TaskPage {
 	constructor( options ) {
-		super( _.defaults( options, {
+		super( _.merge( {
 			name: 'Animation-Player',
 			autoPlay: false,
 			autoStop: true
-		} ) );
+		}, options ) );
 
 		// ---------------------------------------------------
 		// Local Properties
@@ -18,7 +18,7 @@ class AnimationPlayerPage extends TaskPage {
 		// ---------------------------------------------------
 		// Bind Functions
 
-		TaskPage.bindFunctions( this, [
+		this.bindFunctions( this, [
 			'play',
 			'stop',
 			'update',

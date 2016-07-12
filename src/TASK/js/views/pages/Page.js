@@ -9,38 +9,44 @@ var PAGE_TRANSITION_DURATION = 1.5;
 
 class Page extends TaskView {
 	constructor( options ) {
+		super( _.merge( {
 
-		// ---------------------------------------------------
-		// Local Properties
+			// ---------------------------------------------------
+			// Class Properties
 
-		super( _.extend( {
+			name: '',
+			type: 'page',
+
+			// ---------------------------------------------------
+			// Local Properties
+
 			col: 0,
 			row: 0,
 			page: null,
-			name: '',
-			type: 'page',
-			layerAnimationOffset: 0.25
-		}, options ) );
+			layerAnimationOffset: 0.25,
 
-		// ---------------------------------------------------
-		// Bind Functions
+			// ---------------------------------------------------
+			// Event Handlers
 
-		TaskView.bindFunctions( this, [
-			'fetch',
-			'loadAssets',
-			'onRoute',
-			'transitionIn',
-			'transitionOut',
-			'transitionInComplete',
-			'transitionOutComplete'
-		] );
+			events: [ {
+					target: '',
+					eventName: 'transitionInComplete',
+					handler: 'transitionInComplete'
+				},
 
-		// ---------------------------------------------------
-		// Event Handlers
+				{
+					target: '',
+					eventName: 'transitionOutComplete',
+					handler: 'transitionOutComplete'
+				},
 
-		this.on( 'transitionInComplete', this.transitionInComplete );
-		this.on( 'transitionOutComplete', this.transitionOutComplete );
-		this.listenTo( this.APP, 'resize', this.onResize );
+				{
+					target: 'APP',
+					eventName: 'resize',
+					handler: 'onResize'
+				}
+			]
+		} ) );
 	}
 
 	// ---------------------------------------------------
@@ -226,7 +232,6 @@ class Page extends TaskView {
 			overwrite: true
 		} );
 
-
 		var startX = 0,
 			startY = 0;
 
@@ -287,7 +292,6 @@ class Page extends TaskView {
 			overwrite: true
 		} );
 
-
 		var endX = 0,
 			endY = 0;
 
@@ -342,7 +346,6 @@ class Page extends TaskView {
 		} );
 		this.$el.find( '>.content' )
 			.scrollTop( 0 );
-
 
 		this.$( '.cover' )
 			.off( 'mousewheel' );

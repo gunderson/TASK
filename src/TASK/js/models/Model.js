@@ -15,27 +15,27 @@ class Model extends TASK {
 		// ---------------------------------------------------
 		// Record Options
 
-		this._options = _.defaults( options, {
+		this._options = _.merge( {
 			// Whether or not to convert attributes that are collections to a list of model ids rather than saving the complete model
 			'toJSONRefs': false,
 			// List Attribute names you don't want to save when converting to json
 			// useful when you have a property that you want to monitor changes on
 			// but that doesn't need to be saved to the server
 			'omitAttributes': []
-		} );
+		}, options );
 
 		// ---------------------------------------------------
 		// Record Attributes
 
-		this._attributes = _.defaults( attributes, {
+		this._attributes = _.merge( {
 			id: _.uniqueId(),
 			url: null
-		} );
+		}, attributes );
 
 		// ---------------------------------------------------
 		// Bind functions
 
-		TASK.bindFunctions( this, [
+		this.bindFunctions( this, [
 			'addToCollection',
 			'destroy',
 			'fetch',

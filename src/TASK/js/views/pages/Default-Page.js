@@ -7,9 +7,9 @@ class DefaultPage extends TaskPage {
 		// ---------------------------------------------------
 		// Local Properties
 
-		super( _.defaults( options, {
+		super( _.merge( {
 			name: 'Default'
-		} ) );
+		}, options ) );
 	}
 }
 

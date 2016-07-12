@@ -1,19 +1,35 @@
 var _ = require( 'lodash' );
+var Model = require( '_TASK/models/Model' );
 var TaskView = require( '_TASK/views/View' );
 
 class TransportBar extends TaskView {
 	constructor( options ) {
+		super( _.merge( {
 
-		// ---------------------------------------------------
-		// Local Properties
+			// ---------------------------------------------------
+			// Class Properties
 
-		super( _.defaults( options, {
-			name: '<%=name%>',
+			name: '',
 			el: null,
-			col: 0,
-			row: 0,
-			type: 'page',
 			views: null,
+
+			// ---------------------------------------------------
+			// Local Properties
+
+			target: null,
+			model: new Model( {
+				title: '',
+				isPlaying: false,
+				currentTime: 0,
+				duration: 0,
+				isFullscreen: false,
+				isMuted: false,
+				volume: 1
+			} ),
+
+			// ---------------------------------------------------
+			// Event Listeners
+
 			events: [ {
 				eventName: 'click',
 				selector: 'button.play',
@@ -22,17 +38,16 @@ class TransportBar extends TaskView {
 				eventName: 'click',
 				selector: 'button.stop',
 				handler: 'onStopButtonClick'
+			}, {
+				eventName: 'click',
+				selector: 'button.fullscreen',
+				handler: 'onFullscreenButtonClick'
 			} ]
-		} ) );
 
-		// ---------------------------------------------------
-		// Event Listeners
+			// ---------------------------------------------------
+			// Function Bindings
+		}, options ) );
 
-		// ---------------------------------------------------
-		// Function Bindings
-
-		// ---------------------------------------------------
-		// Local Properties
 	}
 
 	// ---------------------------------------------------
@@ -53,6 +68,12 @@ class TransportBar extends TaskView {
 
 	// ---------------------------------------------------
 
+	onFullscreenButtonClick() {
+		this.trigger( 'fullscreen' );
+	}
+
+	// ---------------------------------------------------
+
 	onChangeVolume( e ) {
 		this.model.volume = e.target.value;
 	}
@@ -64,7 +85,6 @@ class TransportBar extends TaskView {
 	}
 
 	// ---------------------------------------------------
-
 
 	// ---------------------------------------------------
 	// Getters & Setters

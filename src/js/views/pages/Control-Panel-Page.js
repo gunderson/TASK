@@ -11,7 +11,7 @@ class ControlPanelPage extends ThreejsPage {
 		// ---------------------------------------------------
 		// Local Properties
 
-		super( _.defaults( options, {
+		super( _.merge( {
 			name: 'Control-Panel',
 			events: [ {
 				eventName: 'click',
@@ -32,7 +32,7 @@ class ControlPanelPage extends ThreejsPage {
 					el: '.transport-bar'
 				} )
 			]
-		} ) );
+		}, options ) );
 
 		console.log( this.bindFunctions, this.views );
 
@@ -46,7 +46,7 @@ class ControlPanelPage extends ThreejsPage {
 		// ---------------------------------------------------
 		// Bind Functions
 
-		ThreejsPage.bindFunctions( this, [
+		this.bindFunctions( this, [
 			'onPlayButtonClick',
 			'onStopButtonClick',
 			'onChangeCheckbox'

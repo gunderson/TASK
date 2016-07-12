@@ -7,7 +7,7 @@ class Collection extends TASK {
 	constructor( models, options ) {
 		super();
 		this._options = _.extend( {
-			Model: TaskModel,
+			model: TaskModel,
 			url: null
 		}, options );
 

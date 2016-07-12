@@ -1,6 +1,5 @@
 var _ = require( 'lodash' );
 var TaskView = require( '_TASK/views/View' );
-var TASK = TaskView;
 var THREE = require( 'three' );
 
 var BasicScene = require( './scenes/BasicScene' );
@@ -13,7 +12,7 @@ class ThreeView extends TaskView {
 		// ---------------------------------------------------
 		// Local Properties
 
-		super( _.extend( {
+		super( _.merge( {
 			name: 'three-holder',
 			el: '.three-holder'
 		}, options ) );
@@ -21,7 +20,7 @@ class ThreeView extends TaskView {
 		// ---------------------------------------------------
 		// Bind Functions
 
-		TASK.bindFunctions( this, [
+		this.bindFunctions( this, [
 			'update',
 			'draw',
 			'setup'

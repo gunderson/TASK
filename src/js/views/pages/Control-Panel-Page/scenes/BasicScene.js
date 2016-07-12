@@ -17,6 +17,7 @@ class BasicScene extends PostProcessedScene {
 
 	update( data ) {}
 
+	// ---------------------------------------------------
 	// setup elements
 
 	setupRenderChain( options ) {
@@ -25,14 +26,20 @@ class BasicScene extends PostProcessedScene {
 		return this;
 	}
 
+	// ---------------------------------------------------
+
 	setupShaders( options ) {
 		return this;
 	}
+
+	// ---------------------------------------------------
 
 	setupGeometry( options ) {
 		this.geometry.boxgeometry = new THREE.BoxGeometry( 200, 200, 200 );
 		return this;
 	}
+
+	// ---------------------------------------------------
 
 	setupMaterials( options ) {
 		this.materials.basicMaterial = new THREE.MeshBasicMaterial( {
@@ -42,14 +49,20 @@ class BasicScene extends PostProcessedScene {
 		return this;
 	}
 
+	// ---------------------------------------------------
+
 	setupMeshes( options ) {
 		this.meshes.cube = new THREE.Mesh( this.geometry.boxgeometry, this.materials.basicMaterial );
 		return this;
 	}
 
+	// ---------------------------------------------------
+
 	setupLights( options ) {
 		return this;
 	}
+
+	// ---------------------------------------------------
 
 	layoutScene( options ) {
 		return this;

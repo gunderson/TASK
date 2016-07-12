@@ -5,24 +5,21 @@ var THREE = require( 'three' );
 
 class Scene extends TASKView {
 	constructor( options ) {
-		super( options );
-		this.options = _.merge( {
+		super( _.merge( {
 			camera: {
 				fov: 75,
 				near: 1,
 				far: 100000
 			},
 			clearColor: 0xffffff,
-			clearAlpha: 1
-		}, this.options );
-
-		// this.renderer = this.options.renderer;
-		this.geometry = {};
-		this.materials = {};
-		this.meshes = {};
-		this.lights = {};
-		this.shaders = {};
-		this.textures = {};
+			clearAlpha: 1,
+			geometry: {},
+			materials: {},
+			meshes: {},
+			lights: {},
+			shaders: {},
+			textures: {}
+		}, options ) );
 	}
 
 	setup() {
