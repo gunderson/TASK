@@ -8,11 +8,11 @@ class HorizontalBlurPass extends Pass {
 
 		super();
 
-		// this.options = options || {};
+		this.options = options || {};
 		// // commutate options to local object
-		// for ( let key in this.options ) {
-		// 	this[ key ] = this.options[ key ];
-		// }
+		for ( let key in this.options ) {
+			this[ key ] = this.options[ key ];
+		}
 
 		this.needsSwap = true;
 
@@ -27,8 +27,7 @@ class HorizontalBlurPass extends Pass {
 		this.material.uniforms.tDiffuse.value = readBuffer.texture;
 		this.material.uniforms.h.value = 0.001;
 
-		// console.log( 'HorizontalBlurPass.renderToScreen', this.renderToScreen )
-		if ( this.renderToScreen ) {
+		if ( this.renderToScreen || this.options.renderToScreen ) {
 			renderer.render( this.scene, this.camera );
 
 		} else {

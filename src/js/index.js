@@ -27,6 +27,8 @@ var appPage = new AppPage( {
 	model: appController
 } );
 
+window.appPage = appPage;
+
 var routes = _.map( appPage.pageViews, ( v ) => v.name );
 
 appPage.once( 'afterRender', () => appController.setupRouter( routes ) );

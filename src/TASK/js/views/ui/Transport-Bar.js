@@ -1,22 +1,22 @@
 var _ = require( 'lodash' );
 var Model = require( '_TASK/models/Model' );
-var TaskView = require( '_TASK/views/View' );
+var View = require( '_TASK/views/View' );
 
-class TransportBar extends TaskView {
+class TransportBar extends View {
 	constructor( options ) {
-		super( _.merge( {
+		super( _.mergeWith( {
 
 			// ---------------------------------------------------
 			// Class Properties
 
 			name: '',
-			el: null,
-			views: null,
+			el: undefined,
+			views: [],
 
 			// ---------------------------------------------------
 			// Local Properties
 
-			target: null,
+			target: undefined,
 			model: new Model( {
 				title: '',
 				isPlaying: false,
@@ -42,11 +42,18 @@ class TransportBar extends TaskView {
 				eventName: 'click',
 				selector: 'button.fullscreen',
 				handler: 'onFullscreenButtonClick'
-			} ]
+			} ],
 
 			// ---------------------------------------------------
 			// Function Bindings
-		}, options ) );
+			bindFunctions: [
+				'onPlayButtonClick',
+				'onStopButtonClick',
+				'onFullscreenButtonClick',
+				'onChangeVolume',
+				'onClickToggleMute'
+			]
+		}, options, View.mergeRules ) );
 
 	}
 

@@ -1,11 +1,15 @@
-var TASKView = require( '_TASK/views/View' );
+var View = require( '_TASK/views/View' );
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
 var THREE = require( 'three' );
 
-class Scene extends TASKView {
+class Scene extends View {
 	constructor( options ) {
-		super( _.merge( {
+		super( _.mergeWith( {
+
+			// ---------------------------------------------------
+			// Local Properties
+
 			camera: {
 				fov: 75,
 				near: 1,
@@ -19,11 +23,11 @@ class Scene extends TASKView {
 			lights: {},
 			shaders: {},
 			textures: {}
-		}, options ) );
+		}, options, View.mergeRules ) );
 	}
 
 	setup() {
-		console.log( 'Scene::setup' );
+		// console.log( 'Scene::setup' );
 		return this.loadAssets()
 			.then( () => {
 				// this.renderer.setClearColor( this.options.clearColor, this.options.clearAlpha );
@@ -31,10 +35,10 @@ class Scene extends TASKView {
 				this.setupMaterials( this.options );
 				this.setupGeometry( this.options );
 				this.setupMeshes( this.options );
-				this.setupScene( this.options );
-				this.layoutScene( this.options );
 				this.setupLights( this.options );
 				this.setupCamera( this.options );
+				this.setupScene( this.options );
+				this.layoutScene( this.options );
 			} );
 	}
 
@@ -52,7 +56,6 @@ class Scene extends TASKView {
 		this.scene = new THREE.Scene();
 		_.each( this.meshes, ( m ) => this.scene.add( m ) );
 		_.each( this.lights, ( l ) => this.scene.add( l ) );
-		this.layoutScene();
 		return this;
 	}
 
@@ -64,10 +67,6 @@ class Scene extends TASKView {
 			options.el.innerWidth / options.el.innerHeight,
 			options.camera.near,
 			options.camera.far );
-		this.camera.position.x = options.camera.position.x;
-		this.camera.position.y = options.camera.position.y;
-		this.camera.position.z = options.camera.position.z;
-		this.camera.lookAt( options.camera.lookAt || this.scene.position );
 		return this;
 	}
 
@@ -94,6 +93,10 @@ class Scene extends TASKView {
 	}
 
 	layoutScene( options ) {
+		this.camera.position.x = options.camera.position.x;
+		this.camera.position.y = options.camera.position.y;
+		this.camera.position.z = options.camera.position.z;
+		this.camera.lookAt( options.camera.lookAt || this.scene.position );
 		return this;
 	}
 
@@ -102,7 +105,8 @@ class Scene extends TASKView {
 	}
 
 	onResize() {
-		console.trace( 'Scene onResize' );
+		// console.trace( 'Scene onResize' );
+		this.renderer.setPixelRatio( window.devicePixelRatio );
 		this.camera.aspect = this.width / this.height;
 		this.camera.updateProjectionMatrix();
 	}

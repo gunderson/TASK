@@ -5,6 +5,9 @@ var THREE = require( 'three' );
 class OrthographicScene extends Scene {
 	constructor( options ) {
 		super( _.merge( {
+			// ---------------------------------------------------
+			// Class Properties
+
 			camera: {
 				near: 1,
 				far: 10000,

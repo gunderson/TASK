@@ -1,31 +1,37 @@
 /* exlint-env es6 */
 var _ = require( 'lodash' );
-var TaskPage = require( '_TASK/views/pages/Page' );
+var Page = require( '_TASK/views/pages/Page' );
 
-class HomePage extends TaskPage {
+class HomePage extends Page {
 	constructor( options ) {
 
 		// ---------------------------------------------------
 		// Local Properties
 
-		super( _.merge( {
+		super( _.mergeWith( {
+			// ---------------------------------------------------
+			// Class Properties
+
 			name: 'Home',
-			el: null,
-			col: 0,
-			row: 0,
-			type: 'page',
-			views: null,
-			events: null
-		}, options ) );
 
-		// ---------------------------------------------------
-		// Event Listeners
+			// ---------------------------------------------------
+			// Local Properties
 
-		// ---------------------------------------------------
-		// Function Bindings
+			// ---------------------------------------------------
+			// Child views
 
-		// ---------------------------------------------------
-		// Local Properties
+			//views: [],
+
+			// ---------------------------------------------------
+			// Event Handlers
+
+			//events: [],
+
+			// ---------------------------------------------------
+			// Bind Functions
+
+			//bindFunctions: []
+		}, options, Page.mergeRules ) );
 	}
 
 	// ---------------------------------------------------

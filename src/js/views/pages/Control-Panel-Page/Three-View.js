@@ -1,34 +1,38 @@
 var _ = require( 'lodash' );
-var TaskView = require( '_TASK/views/View' );
+var View = require( '_TASK/views/View' );
 var THREE = require( 'three' );
 
 var BasicScene = require( './scenes/BasicScene' );
 var BoxLine = require( './scenes/BoxLine' );
 var FacebookInstallation = require( './scenes/FacebookInstallation' );
 
-class ThreeView extends TaskView {
+class ThreeView extends View {
 	constructor( options ) {
 
-		// ---------------------------------------------------
-		// Local Properties
-
 		super( _.merge( {
+
+			// ---------------------------------------------------
+			// Class Properties
+
 			name: 'three-holder',
-			el: '.three-holder'
-		}, options ) );
+			el: '.three-holder',
 
-		// ---------------------------------------------------
-		// Bind Functions
+			// ---------------------------------------------------
+			// Local Properties
 
-		this.bindFunctions( this, [
-			'update',
-			'draw',
-			'setup'
-		] );
+			// ---------------------------------------------------
+			// Event Listeners
 
-		// ---------------------------------------------------
-		// Event Listeners
+			// ---------------------------------------------------
+			// Bind Functions
 
+			bindFunctions: [
+				'update',
+				'draw',
+				'setup',
+				'onResize'
+			]
+		}, options, View.mergeRules ) );
 	}
 
 	// ---------------------------------------------------
@@ -63,20 +67,20 @@ class ThreeView extends TaskView {
 	}
 
 	changeScene( name ) {
-		console.log( 'Three-View changeScene to:', name, this.activeScene ? `from: ${this.activeScene.name}` : null );
+		// console.log( 'Three-View changeScene to:', name, this.activeScene ? `from: ${this.activeScene.name}` : '' );
 		// TODO: fade out
-		this.onResize();
 		this.activeScene = this.scenes[ name ];
 		this.activeScene.setup( {
 			renderer: this.renderer
 		} );
+		this.onResize();
+		// console.log( 'Three-View activeScene:', this.activeScene );
 		// TODO: fade up
 	}
 
 	onResize() {
-		console.trace( 'Three-View onResize' );
-		this.width = this.el.offsetWidth;
-		this.height = this.el.offsetHeight;
+		this.width = this.$el.width();
+		this.height = this.$el.height();
 		this.halfWidth = this.width * 0.5;
 		this.halfHeight = this.height * 0.5;
 

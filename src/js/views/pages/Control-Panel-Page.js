@@ -7,21 +7,36 @@ var TransportBar = require( '_TASK/views/ui/Transport-Bar' );
 
 class ControlPanelPage extends ThreejsPage {
 	constructor( options ) {
-
-		// ---------------------------------------------------
-		// Local Properties
-
 		super( _.merge( {
+
+			// ---------------------------------------------------
+			// Class Properties
+
 			name: 'Control-Panel',
+
+			// ---------------------------------------------------
+			// Local Properties
+
+			// ---------------------------------------------------
+			// Event Handlers
+
 			events: [ {
-				eventName: 'click',
-				selector: 'button.play',
-				handler: 'onPlayButtonClick'
+				eventName: 'play',
+				target: 'transportBar',
+				handler: 'onPlay'
 			}, {
-				eventName: 'click',
-				selector: 'button.stop',
-				handler: 'onStopButtonClick'
+				eventName: 'stop',
+				target: 'transportBar',
+				handler: 'onStop'
+			}, {
+				eventName: 'fullscreen',
+				target: 'transportBar',
+				handler: 'onFullscreen'
 			} ],
+
+			// ---------------------------------------------------
+			// Child Views
+
 			views: [
 				new ThreeView( {
 					name: 'three-holder',
@@ -31,10 +46,23 @@ class ControlPanelPage extends ThreejsPage {
 					name: 'transport-bar',
 					el: '.transport-bar'
 				} )
-			]
-		}, options ) );
+			],
 
-		console.log( this.bindFunctions, this.views );
+			// ---------------------------------------------------
+			// Bind Functions
+
+			bindFunctions: [
+				'onPlay',
+				'onStop',
+				'onFullscreen',
+				'onEnterFullscreen',
+				'onExitFullscreen',
+				'onChangeCheckbox'
+			]
+		}, options, ThreejsPage.mergeRules ) );
+
+		// ---------------------------------------------------
+		// finish setup
 
 		this.threeView = _.find( this.views, {
 			name: 'three-holder'
@@ -42,30 +70,36 @@ class ControlPanelPage extends ThreejsPage {
 		this.transportBar = _.find( this.views, {
 			name: 'transport-bar'
 		} );
-
-		// ---------------------------------------------------
-		// Bind Functions
-
-		this.bindFunctions( this, [
-			'onPlayButtonClick',
-			'onStopButtonClick',
-			'onChangeCheckbox'
-		] );
-
-		// ---------------------------------------------------
-		// Event Handlers
-
-		this.listenTo( this.transportBar, 'play', this.onClickPlay );
-		this.listenTo( this.transportBar, 'stop', this.onClickPlay );
 	}
 
-	onPlayButtonClick() {
+	// ---------------------------------------------------
+	// ThreeView Handlers
+
+	// ---------------------------------------------------
+	// TransportBar Handlers
+
+	onPlay() {
 		this.play();
 	}
 
-	onStopButtonClick() {
+	onStop() {
 		this.stop();
 	}
+
+	onFullscreen() {
+		// make three-view full screen
+	}
+
+	onEnterFullscreen() {
+
+	}
+
+	onExitFullscreen() {
+
+	}
+
+	// ---------------------------------------------------
+	// ControlPanel Handlers
 
 	onChangeCheckbox( evt ) {
 		var target = evt.target;

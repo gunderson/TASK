@@ -1,25 +1,44 @@
 var _ = require( 'lodash' );
-var TaskPage = require( '_TASK/views/pages/Page' );
+var Page = require( '_TASK/views/pages/Page' );
 var pageViews = require( './pages/index' );
 var uiViews = require( './ui/index' );
 
-class AppPage extends TaskPage {
+class AppPage extends Page {
 	constructor( options ) {
 
-		// ---------------------------------------------------
-		// Local Properties
+		super( _.mergeWith( {
 
-		super( _.merge( {
+			// ---------------------------------------------------
+			// Class Properties
+
 			name: 'app-page',
-			views: [].concat( uiViews, pageViews )
-		}, options ) );
+			// ---------------------------------------------------
+			// Local Properties
+
+			// ---------------------------------------------------
+			// Child Views
+
+			views: [].concat( uiViews, pageViews ),
+
+			// ---------------------------------------------------
+			// Event Listeners
+
+			events: [ {
+				eventName: 'route',
+				target: 'model',
+				handler: 'onRoute'
+			} ],
+
+			// ---------------------------------------------------
+			// Bind Functions
+
+			bindFunctions: [
+				'onRoute'
+			]
+		}, options, Page.mergeRules ) );
 
 		this.pageViews = pageViews;
 
-		// ---------------------------------------------------
-		// Event Handling
-
-		this.listenTo( this.model, 'route', this.onRoute );
 	}
 }
 

@@ -1,29 +1,36 @@
 var _ = require( 'lodash' );
-var TaskPage = require( '_TASK/views/pages/Page' );
+var Page = require( '_TASK/views/pages/Page' );
 // var AnimationPlayer = require( '_art-kit/media/AnimationPlayer' );
 
 import AnimationPlayer from '_art-kit/media/AnimationPlayer';
 
-class AnimationPlayerPage extends TaskPage {
+class AnimationPlayerPage extends Page {
 	constructor( options ) {
-		super( _.merge( {
+		super( _.mergeWith( {
+
+			// ---------------------------------------------------
+			// Classs Properties
+
 			name: 'Animation-Player',
+
+			// ---------------------------------------------------
+			// Local Properties
+
 			autoPlay: false,
-			autoStop: true
-		}, options ) );
+			autoStop: true,
 
-		// ---------------------------------------------------
-		// Local Properties
+			// ---------------------------------------------------
+			// Bind Functions
 
-		// ---------------------------------------------------
-		// Bind Functions
-
-		this.bindFunctions( this, [
-			'play',
-			'stop',
-			'update',
-			'draw'
-		] );
+			bindFunctions: [
+				'play',
+				'stop',
+				'update',
+				'draw',
+				'transitionInComplete',
+				'transitionOut'
+			]
+		}, options, Page.mergeRules ) );
 
 		this.player = new AnimationPlayer( this.update, this.draw );
 	}

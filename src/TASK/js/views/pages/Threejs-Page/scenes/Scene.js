@@ -6,6 +6,9 @@ var THREE = require( 'three' );
 class Scene extends TASKView {
 	constructor( options ) {
 		super( _.merge( {
+			// ---------------------------------------------------
+			// Local Properties
+
 			camera: {
 				fov: 75,
 				near: 1,
@@ -13,6 +16,7 @@ class Scene extends TASKView {
 			},
 			clearColor: 0xffffff,
 			clearAlpha: 1,
+			assets: [],
 			geometry: {},
 			materials: {},
 			meshes: {},
@@ -24,7 +28,7 @@ class Scene extends TASKView {
 
 	setup() {
 		console.log( 'Scene::setup' );
-		return this.loadAssets()
+		return this.loadAssets( this.options )
 			.then( () => {
 				// this.renderer.setClearColor( this.options.clearColor, this.options.clearAlpha );
 				this.setupShaders( this.options );
@@ -39,8 +43,9 @@ class Scene extends TASKView {
 	}
 
 	// setup scene
-	loadAssets() {
+	loadAssets( options ) {
 		var deferred = $.Deferred();
+		// load options.assets
 		// load stuff in here
 		// resolve the deferred when load is complete
 		deferred.notify( 1 );

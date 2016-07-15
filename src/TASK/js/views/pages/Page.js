@@ -1,15 +1,15 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TaskView = require( '_TASK/views/View' );
+var View = require( '_TASK/views/View' );
 var TweenLite = require( '_gsap/TweenLite' );
 var CSSPlugin = require( '_gsap/plugins/CSSPlugin' );
 var Easing = require( '_gsap/easing/EasePack' );
 
 var PAGE_TRANSITION_DURATION = 1.5;
 
-class Page extends TaskView {
+class Page extends View {
 	constructor( options ) {
-		super( _.merge( {
+		super( _.mergeWith( {
 
 			// ---------------------------------------------------
 			// Class Properties
@@ -26,27 +26,30 @@ class Page extends TaskView {
 			layerAnimationOffset: 0.25,
 
 			// ---------------------------------------------------
-			// Event Handlers
+			// Event Listeners
 
 			events: [ {
-					target: '',
-					eventName: 'transitionInComplete',
-					handler: 'transitionInComplete'
-				},
-
-				{
-					target: '',
-					eventName: 'transitionOutComplete',
-					handler: 'transitionOutComplete'
-				},
-
-				{
-					target: 'APP',
-					eventName: 'resize',
-					handler: 'onResize'
-				}
+				target: 'this',
+				eventName: 'transitionInComplete',
+				handler: 'transitionInComplete'
+			}, {
+				target: 'this',
+				eventName: 'transitionOutComplete',
+				handler: 'transitionOutComplete'
+			}, {
+				target: 'APP',
+				eventName: 'resize',
+				handler: 'onResize'
+			} ],
+			bindFunctions: [
+				'fetch',
+				'onRoute',
+				'transitionIn',
+				'transitionOut',
+				'transitionInComplete',
+				'transitionOutComplete'
 			]
-		} ) );
+		}, options, View.mergeRules ) );
 	}
 
 	// ---------------------------------------------------
@@ -63,7 +66,7 @@ class Page extends TaskView {
 
 	parseName( options ) {
 		if ( options.name ) {
-			if ( !options.el ) options.el = '#' + options.name;
+			if ( !options.el ) this.el = options.el = '#' + options.name;
 		}
 		return options;
 	}
@@ -80,19 +83,19 @@ class Page extends TaskView {
 		};
 
 		var fetchModel = () => {
-			console.log( this.el.id + ' fetching the model' );
+			console.log( this.name + ' fetching the model' );
 			this.loadPromise = this.model.fetch()
 				.done( recallFetch );
 		};
 
 		var renderView = () => {
-			console.log( this.el.id + ' render' );
+			console.log( this.name + ' render' );
 			this.render();
 			recallFetch();
 		};
 
 		var loadAssets = () => {
-			console.log( this.el.id + ' waiting for load' );
+			console.log( this.name + ' waiting for load' );
 			this.trigger( 'loadStart', {
 				type: this.type,
 				id: this.route
@@ -104,10 +107,10 @@ class Page extends TaskView {
 		};
 
 		var finishRender = () => {
-			console.log( this );
-			console.log( this.el.id + ' finished fetching view' );
+			// console.log( this );
+			console.log( this.name + ' finished fetching view' );
 			if ( this.loadPromise ) {
-				console.log( this.el.id, this.loadPromise.state() );
+				console.log( this.name, 'loadpromise state:', this.loadPromise.state() );
 			}
 			_.defer( function() {
 				promise.resolve();
@@ -266,8 +269,8 @@ class Page extends TaskView {
 		} );
 
 		// animate content layer
-		console.log( "Page::transitionIn", this.$el.find( '> .content' ) );
-		TweenLite.fromTo( this.$el.find( '> .content' ), PAGE_TRANSITION_DURATION, {
+		console.log( 'Page::transitionIn', this.$( '> .content' ) );
+		TweenLite.fromTo( this.$( '> .content' ), PAGE_TRANSITION_DURATION, {
 			x: ( startX * this.layerAnimationOffset ) + '%',
 			y: ( startY * this.layerAnimationOffset ) + '%'
 		}, {

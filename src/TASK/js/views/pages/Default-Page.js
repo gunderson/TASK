@@ -1,15 +1,15 @@
 var _ = require( 'lodash' );
-var TaskPage = require( '_TASK/views/pages/Page' );
+var Page = require( '_TASK/views/pages/Page' );
 
-class DefaultPage extends TaskPage {
+class DefaultPage extends Page {
 	constructor( options ) {
+		super( _.mergeWith( {
 
-		// ---------------------------------------------------
-		// Local Properties
+			// ---------------------------------------------------
+			// Classs Properties
 
-		super( _.merge( {
 			name: 'Default'
-		}, options ) );
+		}, options, Page.mergeRules ) );
 	}
 }
 

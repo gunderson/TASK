@@ -1,14 +1,14 @@
 var _ = require( 'lodash' );
-var TaskModel = require( '_TASK/models/Model' );
+var Model = require( '_TASK/models/Model' );
 var io = require( 'socket-io/client' );
 
-class SocketModel extends TaskModel {
+class SocketModel extends Model {
 	constructor( attributes, options ) {
-		super( _.merge( {
+		super( _.mergeWith( {
 			// default attributes
-		}, attributes ), _.merge( {
+		}, attributes, Model.mergeRules ), _.mergeWith( {
 			// default options
-		}, options ) );
+		}, options, Model.mergeRules ) );
 
 		// ---------------------------------------------------
 		// Local Properties
@@ -18,7 +18,7 @@ class SocketModel extends TaskModel {
 		// ---------------------------------------------------
 		// Bind Functions
 
-		TaskModel.bindFunctions( this, [
+		Model.bindFunctions( this, [
 			'onConnect'
 		] );
 

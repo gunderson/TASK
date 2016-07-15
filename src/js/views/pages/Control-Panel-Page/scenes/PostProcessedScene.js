@@ -10,7 +10,10 @@ window.THREE = THREE;
 
 class PostProcessedScene extends Scene {
 	constructor( options ) {
-		super( _.merge( {
+		super( _.mergeWith( {
+			// ---------------------------------------------------
+			// Class Properties
+
 			camera: {
 				fov: 10,
 				near: 1,
@@ -18,7 +21,7 @@ class PostProcessedScene extends Scene {
 				zoom: 1,
 				position: new THREE.Vector3( 0, 1, -1 )
 			}
-		}, options ) );
+		}, options, Scene.mergeRules ) );
 	}
 
 	setup() {
@@ -28,11 +31,21 @@ class PostProcessedScene extends Scene {
 	}
 
 	setupRenderChain( options ) {
+		this.postProcessingPasses = {
+			render: new RenderPass( this.scene, this.camera )
+		};
 		this.composer = new EffectComposer( this.renderer );
 		// INITIALIZE COMPOSER w/ RENDER PASS
-		this.renderPass = new RenderPass( this.scene, this.camera );
-		this.composer.addPass( this.renderPass );
+		this.composer.addPass( this.postProcessingPasses.render );
 		return this;
+	}
+
+	activatePass( name ) {
+
+	}
+
+	deactivatePass( name ) {
+
 	}
 
 	render() {

@@ -5,18 +5,27 @@ var AnimationPlayerPage = require( './Animation-Player-Page' );
 // var TransportBar = require( '_TASK/views/ui/Transport-Bar' );
 // var MouseTelemetrics = require( '_art-kit/position/MouseTelemetrics' );
 
-import MouseTelemetrics from '_art-kit/position/MouseTelemetrics';
+import MouseTelemetrics from '_art-kit/io/MouseTelemetrics';
 
 class ThreejsPage extends AnimationPlayerPage {
 	constructor( options ) {
-		super( _.merge( {
+		super( _.mergeWith( {
+
+			// ---------------------------------------------------
+			// Class Properties
+
 			name: 'Threejs',
 			autoPlay: true,
 			autoStop: true,
+
+			// ---------------------------------------------------
+			// local Properties
+
 			// ---------------------------------------------------
 			// Bind Functions
 
 			bindFunctions: [
+				'afterRender',
 				'onMouseMove',
 				'play',
 				'stop',
@@ -24,26 +33,27 @@ class ThreejsPage extends AnimationPlayerPage {
 				'draw',
 				'setupThreeView'
 			],
+
 			// ---------------------------------------------------
 			// Event Listeners
 
+			// TODO: Build in a workaround in TASK/Base and TASK/View so all events can use the target name rather than the selector name of assigning events
 			events: [ {
 				eventName: 'mousemove',
 				target: '$el',
 				handler: 'onMouseMove'
-			} ]
-		}, options ) );
+			} ],
 
-		this.mouseTelemetrics = new MouseTelemetrics();
+			// ---------------------------------------------------
+			// Data Binding
 
-		// ---------------------------------------------------
-		// Event Listeners
-
-		this.$el.on( 'mousemove', this.onMouseMove );
+			dataBindings: []
+		}, options, ThreejsPage.mergeRules ) );
 
 		// ---------------------------------------------------
 		// Finish setup
 
+		this.mouseTelemetrics = new MouseTelemetrics();
 	}
 
 	// ---------------------------------------------------
@@ -116,6 +126,7 @@ class ThreejsPage extends AnimationPlayerPage {
 	};
 
 	update( data ) {
+		// console.log( 'update' )
 		this.threeView.update( _.extend( {
 			mouseTelemetrics: this.mouseTelemetrics
 		}, data ) );
@@ -123,6 +134,7 @@ class ThreejsPage extends AnimationPlayerPage {
 	}
 
 	draw() {
+		// console.log( 'draw' )
 		this.threeView.draw();
 		return this;
 	}

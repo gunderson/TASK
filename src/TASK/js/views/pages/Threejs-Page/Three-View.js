@@ -7,27 +7,29 @@ var BoxLine = require( './scenes/BoxLine' );
 
 class ThreeView extends TaskView {
 	constructor( options ) {
-
-		// ---------------------------------------------------
-		// Local Properties
-
 		super( _.merge( {
+
+			// ---------------------------------------------------
+			// Class Properties
+
 			name: 'Three-Holder',
-			el: '.three-holder'
+			el: '.three-holder',
+
+			// ---------------------------------------------------
+			// Local Properties
+
+			// ---------------------------------------------------
+			// Event Listeners
+
+			// ---------------------------------------------------
+			// Bind Functions
+
+			bindFunctions: [
+				'update',
+				'draw',
+				'setup'
+			]
 		}, options ) );
-
-		// ---------------------------------------------------
-		// Bind Functions
-
-		this.bindFunctions( this, [
-			'update',
-			'draw',
-			'setup'
-		] );
-
-		// ---------------------------------------------------
-		// Event Listeners
-
 	}
 
 	// ---------------------------------------------------

@@ -5,24 +5,39 @@ var TaskCollection = require( '_TASK/collections/Collection' );
 
 class Model extends TASK {
 	constructor( attributes, options ) {
-		super();
+		super( _.mergeWith( {
+
+			// ---------------------------------------------------
+			// Local Properties
+
+			// Whether or not to convert attributes that are collections to a list of model ids rather than saving the complete model
+			'toJSONRefs': false,
+
+			// List Attribute names you don't want to save when converting to json
+			// useful when you have a property that you want to monitor changes on
+			// but that doesn't need to be saved to the server
+			'omitAttributes': [],
+
+			// ---------------------------------------------------
+			// Event Listeners
+
+			// ---------------------------------------------------
+			// Bind functions
+
+			bindFunctions: [
+				'addToCollection',
+				'destroy',
+				'fetch',
+				'forwardEvent',
+				'makeAttribute',
+				'removeFromCollection'
+			]
+		}, options, TASK.mergeRules ) );
 
 		// ---------------------------------------------------
 		// Non-attribute Properties
 
 		this._collections = [];
-
-		// ---------------------------------------------------
-		// Record Options
-
-		this._options = _.merge( {
-			// Whether or not to convert attributes that are collections to a list of model ids rather than saving the complete model
-			'toJSONRefs': false,
-			// List Attribute names you don't want to save when converting to json
-			// useful when you have a property that you want to monitor changes on
-			// but that doesn't need to be saved to the server
-			'omitAttributes': []
-		}, options );
 
 		// ---------------------------------------------------
 		// Record Attributes
@@ -33,24 +48,9 @@ class Model extends TASK {
 		}, attributes );
 
 		// ---------------------------------------------------
-		// Bind functions
-
-		this.bindFunctions( this, [
-			'addToCollection',
-			'destroy',
-			'fetch',
-			'forwardEvent',
-			'makeAttribute',
-			'removeFromCollection'
-		] );
-
-		// ---------------------------------------------------
 		// Make Attribute getters & setters
 
 		_.each( this._attributes, this.makeAttribute );
-
-		// ---------------------------------------------------
-		// Event Handlers
 
 	}
 
@@ -89,12 +89,12 @@ class Model extends TASK {
 		if ( justId ) return this._attributes.id;
 
 		return _( this._attributes )
-			.omit( this._options.omitAttributes )
+			.omit( this.options.omitAttributes )
 			.cloneDeepWith( ( a ) => {
 				// pass toJSONRefs to tell collections that may be children of this model whether to
 				// save their children as objects or just IDs that can be picked up as references from a master collection when rebuilding
 				if ( a.toJSON ) {
-					return a.toJSON( this._options.toJSONRefs );
+					return a.toJSON( this.options.toJSONRefs );
 				};
 				return a;
 			} )

@@ -12,12 +12,19 @@ var THREE = require( 'three' );
 class BoxLineScene extends PostProcessedOrthographicScene {
 	constructor( options ) {
 		super( _.merge( {
+			// ---------------------------------------------------
+			// Class Properties
+
 			camera: {
 				near: 1,
 				far: 100000,
 				zoom: 5,
 				position: new THREE.Vector3( 0, 300, -300 )
 			},
+
+			// ---------------------------------------------------
+			// Local Properties
+
 			settings: {
 				numMeshes: 30
 			}

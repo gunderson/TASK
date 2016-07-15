@@ -1,28 +1,39 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TaskModel = require( '_TASK/models/Model' );
+var Model = require( '_TASK/models/Model' );
 var router = require( 'page' );
 
-class AppModel extends TaskModel {
+class AppModel extends Model {
 	constructor( options ) {
-		super( {}, _.merge( {
+		super( {}, _.mergeWith( {
+
+			// ---------------------------------------------------------
+			// Local Properties
+
 			prevRoute: null,
 			_route: {
 				parts: [ 'bootstrap route' ]
-			}
-		}, options ) );
+			},
 
-		// ---------------------------------------------------------
-		// Local Props
+			// ---------------------------------------------------------
+			// Event Listeners
 
-		// ---------------------------------------------------------
-		// Bind Functions
+			events: [ {
+				eventName: 'resize',
+				selector: window,
+				handler: 'onResize'
+			} ],
 
-		this.bindFunctions( this, [
-			'setupRouter',
-			'setupSocket',
-			'onRoute'
-		] );
+			// ---------------------------------------------------------
+			// Bind Functions
+
+			bindFunctions: [
+				'setupRouter',
+				'setupSocket',
+				'onRoute',
+				'onResize'
+			]
+		}, options, Model.mergeRules ) );
 
 		// ---------------------------------------------------------
 		// Init chain
@@ -30,26 +41,25 @@ class AppModel extends TaskModel {
 		// this.setupRouter();
 		// this.setupSocket();
 
-		// ---------------------------------------------------------
-		// Event Listeners
-
-		$( window )
-			.on( 'resize', () => this.trigger( 'resize' ) );
 	}
 
 	// ---------------------------------------------------------
 	// Controls
 
 	play() {
-		return $.get( `http://${ this.ENV.address}:${this.ENV.port}/play` );
+		return $.get( `http://${this.ENV.address}:${this.ENV.port}/play` );
 	}
 
 	stop() {
-		return $.get( `http://${ this.ENV.address}:${this.ENV.port}/stop` );
+		return $.get( `http://${this.ENV.address}:${this.ENV.port}/stop` );
 	}
 
 	setLed( id, state ) {
-		return $.get( `http://${ this.ENV.address}:${this.ENV.port}/led/${id}/${state}` );
+		return $.get( `http://${this.ENV.address}:${this.ENV.port}/led/${id}/${state}` );
+	}
+
+	onResize() {
+		this.trigger( 'resize' );
 	}
 
 	// ---------------------------------------------------------
@@ -73,7 +83,6 @@ class AppModel extends TaskModel {
 	}
 
 	onRoute( ctx ) {
-		// console.log( ctx );
 		this.route = ctx;
 	}
 

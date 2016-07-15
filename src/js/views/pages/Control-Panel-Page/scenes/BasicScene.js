@@ -6,6 +6,9 @@ var THREE = require( 'three' );
 class BasicScene extends PostProcessedScene {
 	constructor( options ) {
 		super( _.merge( {
+			// ---------------------------------------------------
+			// Class Properties
+
 			camera: {
 				fov: 75,
 				near: 1,

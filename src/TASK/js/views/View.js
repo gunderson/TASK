@@ -4,24 +4,23 @@ var TASK = require( '_TASK/Base' );
 
 class View extends TASK {
 	constructor( options ) {
-		super( options );
+		super( _.mergeWith( {
+			// ---------------------------------------------------
+			// Local Properties
 
-		// ---------------------------------------------------
-
-		this.parseName( options );
-
-		// ---------------------------------------------------
-
-		_.merge( this, {
-			el: null,
-			model: null,
+			el: undefined,
+			model: undefined,
 			template: '',
 			id: '',
-			tagname: '',
+			tagname: 'div',
 			classname: '',
-			hasRendered: false,
-			loadPromise: null,
-			parentView: null,
+			// hasRendered: false,
+			loadPromise: undefined,
+			parentView: undefined,
+
+			// ---------------------------------------------------
+			// Child Views
+
 			views: [
 				/*
 					new ChildView0({
@@ -34,50 +33,54 @@ class View extends TASK {
 					}), ...
 				*/
 			],
-			events: [
-				// TODO: change 'selector' to target to allow event delegation to non js elements
-				// Helpful for data binding to the model
 
+			// ---------------------------------------------------
+			// Event Listeners
+
+			events: [
 				/*
 				{
 					eventName: 'click',
-					target: 'button.play',
+					target: 'objectName', // relative to this
+					selector: 'button.play',
 					handler: 'handleButtonClick'
 				}
 				*/
 			],
+
+			// ---------------------------------------------------
+			// Data Binding
+
 			dataBindings: [
 				/*
 				{
 					element: '.selector',
-					attributeName: 'name',
+					attributeName: 'attr',
 					model: 'model',
 					elementChangeEventName: 'change',
 					mode: 'get' || 'send'
 				}
 				*/
+			],
+
+			// ---------------------------------------------------
+			// Function Scope Binding
+
+			bindFunctions: [
+				'bindData',
+				'delegateEvents',
+				'destroy',
+				'undelegateEvents',
+				'render',
+				'setupElement',
+				'onResize'
 			]
-		}, options );
-
-		// ---------------------------------------------------
-		// Bind Functions
-
-		View.bindFunctions( this, [
-			'bindData',
-			'delegateEvents',
-			'destroy',
-			'undelegateEvents',
-			'render',
-			'setupElement',
-			'onResize'
-		] );
-
-		// ---------------------------------------------------
-		// Event Listeners
+		}, options, View.mergeRules ) );
 
 		// ---------------------------------------------------
 		// Finish setup
 
+		this.parseName( this.options );
 		this.setupElement();
 	}
 
@@ -92,7 +95,7 @@ class View extends TASK {
 
 	parseName( options ) {
 		if ( options.name ) {
-			if ( !options.el ) options.el = '.' + options.name;
+			if ( !options.el ) this.el = options.el = '.' + options.name;
 		}
 		return options;
 	}
@@ -128,8 +131,11 @@ class View extends TASK {
 	setupElement() {
 		// if an el property exists, attempt to find it
 		// otherwise, create one
-		this.$el = this.el ? $( this.el )
-			.first() : $( `<${this.tagname} class='${this.classname}' id='${this.id}' />` );
+		this.$el = this.$( this.el )
+			.first() ||
+			$( this.el )
+			.first() ||
+			$( `<${this.tagname} class='${this.classname}' id='${this.id}' />` );
 		this.el = this.$el[ 0 ];
 		this.$ = this.$el.find.bind( this.$el );
 	}
@@ -138,7 +144,7 @@ class View extends TASK {
 
 	render( parentView ) {
 		this.hasRendered = false;
-		this.parentView = parentView;
+		this.parentView = parentView || this.parentView;
 		this.undelegateEvents();
 		this.unbindData();
 		this.beforeRender();
@@ -216,24 +222,25 @@ class View extends TASK {
 	// ---------------------------------------------------
 
 	delegateEvents() {
+		// FIXME: this is a pass-through to translate old code from using selector to use target
+		_( this.options.events )
+			.filter( ( e ) => e.selector )
+			.each( ( e ) => {
+				e.target = e.selector;
+			} );
 		super.delegateEvents();
-		_.each( this.eventsfilter( ( e ) => e.selector ), ( e ) => {
-			if ( e.selector ) {
-				this.$( e.selector )
-					.on( e.eventName, e.handler );
-			}
-		} );
 		return this;
 	}
 
 	// ---------------------------------------------------
 
 	undelegateEvents() {
+		_( this.options.events )
+			.filter( ( e ) => e.selector )
+			.each( ( e ) => {
+				e.target = e.selector;
+			} );
 		super.undelegateEvents();
-		_.each( this.events.filter( ( e ) => e.selector ), ( e ) => {
-			this.$( e.selector )
-				.off( e.eventName );
-		} );
 		return this;
 	}
 
@@ -254,6 +261,21 @@ class View extends TASK {
 			// "this.env" is a property of all TASK objects
 			env: this.env
 		}, model );
+	}
+
+	// ---------------------------------------------------
+
+	$( selector ) {
+		return this.$el ? this.$el.find( selector ) : $( selector );
+	}
+
+	// ---------------------------------------------------
+
+	static mergeRules( objValue, srcValue ) {
+		if ( _.isArray( objValue ) ) {
+			if ( objValue.length && objValue[ 0 ] instanceof View ) return objValue;
+			return objValue.concat( srcValue );
+		}
 	}
 }
 

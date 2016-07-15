@@ -1,11 +1,11 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var TaskView = require( '_TASK/views/View' );
+var View = require( '_TASK/views/View' );
 
-class Menu extends TaskView {
+class Menu extends View {
 	constructor( options ) {
 
-		super( _.merge( {
+		super( _.mergeWith( {
 
 			// ---------------------------------------------------
 			// Class Properties
@@ -13,7 +13,10 @@ class Menu extends TaskView {
 			el: '#main-menu',
 
 			// ---------------------------------------------------
-			// Event handlers
+			// Local Properties
+
+			// ---------------------------------------------------
+			// Event Listeners
 
 			events: [ {
 					eventName: 'click',
@@ -25,20 +28,18 @@ class Menu extends TaskView {
 					handler: 'closeMenu'
 				}
 
-				// ---------------------------------------------------
-				// Local Properties
+			],
 
+			// ---------------------------------------------------
+			// Bind Functions
+
+			bindFunctions: [
+				'openMenu',
+				'closeMenu',
+				'toggleMenu'
 			]
-		}, options ) );
+		}, options, View.mergeRules ) );
 
-		// ---------------------------------------------------
-		// Bind Functions
-
-		this.bindFunctions( this, [
-			'openMenu',
-			'closeMenu',
-			'toggleMenu'
-		] );
 	}
 
 	openMenu( e ) {
@@ -52,7 +53,6 @@ class Menu extends TaskView {
 	}
 
 	toggleMenu( e ) {
-		console.log( this.$el );
 		$( 'html' )
 			.toggleClass( 'menu-open' );
 	}
