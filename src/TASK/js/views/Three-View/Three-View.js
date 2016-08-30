@@ -5,7 +5,7 @@ var THREE = require( 'three' );
 class ThreeView extends View {
 	constructor( options ) {
 
-		super( _.merge( {
+		super( _.mergeWith( {
 
 			// ---------------------------------------------------
 			// Class Properties
@@ -41,9 +41,9 @@ class ThreeView extends View {
 	setup() {
 		// Renderer
 		this.renderer = new THREE.WebGLRenderer( {
-			alpha: true
+			alpha: false
 		} );
-		this.renderer.setClearColor( 0xffffff, 0 );
+		this.renderer.setClearColor( 0x000000, 1 );
 		this.renderer.setSize( this.el.innerWidth, this.el.innerHeight );
 		this.$el.append( this.renderer.domElement );
 
@@ -66,11 +66,16 @@ class ThreeView extends View {
 		// console.log( 'Three-View changeScene to:', name, this.activeScene ? `from: ${this.activeScene.name}` : '' );
 		// TODO: fade out
 		this.activeScene = this.scenes[ name ];
-		this.activeScene.setup( {
+		var loadPromise = this.activeScene.setup( {
 			renderer: this.renderer
 		} );
-		this.onResize();
-		// console.log( 'Three-View activeScene:', this.activeScene );
+
+		// TODO: Show Loader
+		loadPromise.then( () => {
+			// TODO: hide Loader
+			this.onResize();
+		} );
+
 		// TODO: fade up
 	}
 
@@ -91,13 +96,13 @@ class ThreeView extends View {
 	};
 
 	update( data ) {
-		if ( this.activeScene ) {
+		if ( this.activeScene && this.activeScene.isLoaded ) {
 			this.activeScene.update( data );
 		}
 	};
 
 	draw() {
-		if ( this.activeScene ) {
+		if ( this.activeScene && this.activeScene.isLoaded ) {
 			this.activeScene.render( {
 				time: Date.now()
 			} );

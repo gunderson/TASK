@@ -2,7 +2,7 @@ var _ = require( 'lodash' );
 var ThreeView = require( '_TASK/views/Three-View/Three-View' );
 
 var BasicScene = require( '_TASK/views/Three-View//scenes/BasicScene' );
-var BoxLine = require( './scenes/BoxLine' );
+var TriangleViz = require( './scenes/TriangleViz' );
 var FacebookInstallation = require( './scenes/FacebookInstallation' );
 // TODO abstract three-view
 
@@ -19,8 +19,8 @@ class ControlPanelThreeView extends ThreeView {
 
 			rendererOptions: {},
 			scenes: {
+				'TriangleViz': TriangleViz,
 				'facebook': FacebookInstallation,
-				'Box Line': BoxLine,
 				'Single Box': BasicScene,
 			}
 

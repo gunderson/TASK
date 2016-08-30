@@ -6,3 +6,7 @@ section#Projector.Threejs.page
 			include /TASK/pug/static/ui/_Transport-bar
 		.scrollable
 			.scenes
+			select.cameraPosition
+				option(value='-1') Left
+				option(value='0', selected=true) Center
+				option(value='1') Right

@@ -3,7 +3,7 @@ var TASK = require( '_TASK/Base' );
 var ThreeView = require( '_TASK/views/Three-View/Three-View' );
 
 var BasicScene = require( '_TASK/views/Three-View//scenes/BasicScene' );
-var BoxLine = require( './scenes/BoxLine' );
+var TriangleViz = require( './scenes/TriangleViz' );
 var FacebookInstallation = require( './scenes/FacebookInstallation' );
 // TODO abstract three-view
 
@@ -20,18 +20,27 @@ class ProjectorThreeView extends ThreeView {
 
 			rendererOptions: {},
 			scenes: {
-				'Box Line': BoxLine,
+				'TriangleViz': TriangleViz,
+				'facebook': FacebookInstallation,
 				'Single Box': BasicScene,
-				'facebook': FacebookInstallation
-			}
+			},
 
 			// ---------------------------------------------------
 			// Event Listeners
+
 			// ---------------------------------------------------
 			// Bind Functions
+			bindFunctions: [
+				'setCameraPosition'
+			]
 		}, options, TASK.mergeRules ) );
 
 	}
+
+	setCameraPosition( index ) {
+		if ( this.activeScene && this.activeScene.setCameraPosition ) this.activeScene.setCameraPosition( index );
+	}
+
 }
 
 module.exports = ProjectorThreeView;

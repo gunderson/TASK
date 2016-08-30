@@ -1,17 +1,10 @@
-var _ = require("underscore");
-var THREE = require("three.js");
-require("underscore.filledArray");
+var _ = require( "underscore" );
+var THREE = require( "three.js" );
+require( "underscore.filledArray" );
 
+var Visualizer = function( options ) {
 
-var prefixMethod = require("../prefixmethod");
-prefixMethod("requestAnimationFrame");
-prefixMethod("cancelAnimationFrame");
-
-
-
-var Visualizer = function(options) {
-
-	var THE_ORIGIN = new THREE.Vector3(0, 0, 0);
+	var THE_ORIGIN = new THREE.Vector3( 0, 0, 0 );
 	Math.PHI = 2.399963229728653;
 	Math.TAU = 2 * Math.PI;
 
@@ -36,39 +29,33 @@ var Visualizer = function(options) {
 		colormapMix: 0
 	};
 
-
-
 	var renderer,
 		WIDTH = 720,
 		HEIGHT = 420,
 		tick = 0,
 		prevTick = -1;
 
-
-	function update(fftData, time, _tick) {
+	function update( fftData, time, _tick ) {
 		tick = _tick;
 		var tickDelta = tick - prevTick;
 
 		colorMapOffset.x += tickDelta * colorMapDrift.x;
 		colorMapOffset.y += tickDelta * colorMapDrift.y;
 
-		var segs = Math.floor(fftData.length / this.fftSize);
+		var segs = Math.floor( fftData.length / this.fftSize );
 
-		fftData = _.map(_.range(this.fftSize), function(i) {
-			return _.reduce(fftData.slice(i * segs, (i + 1) * segs), function(a, b) {
+		fftData = _.map( _.range( this.fftSize ), function( i ) {
+			return _.reduce( fftData.slice( i * segs, ( i + 1 ) * segs ), function( a, b ) {
 				return a + b;
-			}, 0) / segs;
-		});
+			}, 0 ) / segs;
+		} );
 
+		var lastRing = _.chain( activeParticles )
 
-
-		var lastRing = _.chain(activeParticles)
-
-		.each(function(p) {
-				updateParticle(p, tick, p.layerIndex === numLayers ? fftData[p.positionIndex] : 0);
-			})
+		.each( function( p ) {
+				updateParticle( p, tick, p.layerIndex === numLayers ? fftData[ p.positionIndex ] : 0 );
+			} )
 			.value();
-
 
 		// var cameraTick = Math.PI * 2 * ((tick % 2048) / 2048);
 		// camera.rotation.z =  cameraTick;
@@ -77,10 +64,7 @@ var Visualizer = function(options) {
 		// camera.lookAt(center);
 		prevTick = tick;
 
-
-
 		// normalize stream data
-
 
 		// streamData = new Uint8Array(
 		//     _.map(streamData, function(val, i, arr){
@@ -96,9 +80,8 @@ var Visualizer = function(options) {
 		// );
 	}
 
-
 	function render() {
-		renderer.render(scene, camera);
+		renderer.render( scene, camera );
 	}
 
 	// ------------------------------------
@@ -114,10 +97,10 @@ var Visualizer = function(options) {
 	var standardGeometry;
 
 	function setup() {
-		activeParticles.forEach(recycleParticle);
+		activeParticles.forEach( recycleParticle );
 		// set the scene size
-		center = new THREE.Vector3(0, 0, 0);
-		particleDestination = new THREE.Vector3(0, 0, 4000);
+		center = new THREE.Vector3( 0, 0, 0 );
+		particleDestination = new THREE.Vector3( 0, 0, 4000 );
 
 		// set some camera attributes
 		VIEW_ANGLE = 90;
@@ -127,32 +110,31 @@ var Visualizer = function(options) {
 
 		// create a WebGL renderer, camera
 		// and a scene
-		renderer = options.renderer || new THREE.WebGLRenderer({
+		renderer = options.renderer || new THREE.WebGLRenderer( {
 			preserveDrawingBuffer: true
-		});
+		} );
 		renderer.autoClear = true;
 		camera = new THREE.PerspectiveCamera(
 			VIEW_ANGLE,
 			ASPECT,
 			NEAR,
-			FAR);
+			FAR );
 
 		scene = new THREE.Scene();
-
 
 		// the camera starts at 0,0,0
 		// so pull it back
 		camera.position.x = 0;
 		camera.position.y = 0;
 		camera.position.z = 1500;
-		camera.lookAt(new THREE.Vector3(0, 0, 600));
+		camera.lookAt( new THREE.Vector3( 0, 0, 600 ) );
 
 		// add the camera to the scene
-		scene.add(camera);
+		scene.add( camera );
 
 		// add light to the scene
-		var light = new THREE.AmbientLight(0xffffff); // soft white light
-		scene.add(light);
+		var light = new THREE.AmbientLight( 0xffffff ); // soft white light
+		scene.add( light );
 
 		standardGeometry = new THREE.CylinderGeometry(
 			120, // upper radius
@@ -162,28 +144,25 @@ var Visualizer = function(options) {
 		);
 		// standardGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( Math.PI / 2 ) );
 
-
 		// start the renderer
-		renderer.setSize(WIDTH, HEIGHT);
+		renderer.setSize( WIDTH, HEIGHT );
 
 		loadColorMap();
 		return this;
 	}
 
-
 	// create the sphere's material
-	var standardMaterial = new THREE.MeshLambertMaterial({
+	var standardMaterial = new THREE.MeshLambertMaterial( {
 		color: 0xffffff,
 		transparent: true,
 		blending: THREE.AdditiveBlending,
 		opacity: 0,
 
-	});
+	} );
 
-
-	function setSize(WIDTH, HEIGHT) {
+	function setSize( WIDTH, HEIGHT ) {
 		camera.aspect = WIDTH / HEIGHT;
-		renderer.setSize(WIDTH, HEIGHT);
+		renderer.setSize( WIDTH, HEIGHT );
 		renderer.domElement.width = WIDTH;
 		renderer.domElement.height = HEIGHT;
 	}
@@ -194,20 +173,19 @@ var Visualizer = function(options) {
 	var availableParticles = [];
 	var activeParticles = [];
 
-
 	// ------------------------------------
 
-	function getParticles(quantity, options) {
+	function getParticles( quantity, options ) {
 		quantity = quantity || 1;
-		while (availableParticles.length < quantity) {
-			availableParticles.push(new Particle());
+		while ( availableParticles.length < quantity ) {
+			availableParticles.push( new Particle() );
 		}
-		var newParticles = availableParticles.splice(0, quantity);
-		newParticles.forEach(function(p) {
+		var newParticles = availableParticles.splice( 0, quantity );
+		newParticles.forEach( function( p ) {
 			// setupParticle(p, options);
-			scene.add(p);
-		});
-		activeParticles = activeParticles.concat(newParticles);
+			scene.add( p );
+		} );
+		activeParticles = activeParticles.concat( newParticles );
 		return newParticles;
 	}
 
@@ -218,20 +196,20 @@ var Visualizer = function(options) {
 		totalChannels = rows * cols;
 
 	function setupParticles() {
-		getParticles(numLayers * particlesPerLayer, {
+		getParticles( numLayers * particlesPerLayer, {
 				birthday: tick
-			})
-			.forEach(function(p, i) {
-				setupParticle(p, {
+			} )
+			.forEach( function( p, i ) {
+				setupParticle( p, {
 					index: i
-				});
-			});
+				} );
+			} );
 	}
 
 	// ------------------------------------
 
-	function setupParticle(particle, options) {
-		var p = _.extend(particle, options);
+	function setupParticle( particle, options ) {
+		var p = _.extend( particle, options );
 		p.geometry.dynamic = true;
 
 		// changes to the vertices
@@ -252,11 +230,11 @@ var Visualizer = function(options) {
 		// p.angle = Math.atan2(p.homePosition.y, p.homePosition.x);
 		p.speed = -100;
 
-		var color = getRGB(colorMap, colorMapData, p.homePosition.x * 2, p.homePosition.y * 2);
-		p.material.color = new THREE.Color(color);
+		var color = getRGB( colorMap, colorMapData, p.homePosition.x * 2, p.homePosition.y * 2 );
+		p.material.color = new THREE.Color( color );
 	}
 
-	function resizeParticle(p) {}
+	function resizeParticle( p ) {}
 
 	// ------------------------------------
 
@@ -266,44 +244,41 @@ var Visualizer = function(options) {
 	var particleDistance = layerSize / particlesPerLayer;
 	var layerDepth = 1200 / numLayers;
 
-	var buffers = _.map(_.range(numLayers), function() {
-		return _.filledArray(particlesPerLayer);
-	});
+	var buffers = _.map( _.range( numLayers ), function() {
+		return _.filledArray( particlesPerLayer );
+	} );
 
 	function computeGroundPosition() {
 		var p = this;
 
 		p.positionIndex = p.index % particlesPerLayer;
-		p.layerIndex = Math.floor(p.index / particlesPerLayer);
+		p.layerIndex = Math.floor( p.index / particlesPerLayer );
 
 		var dir = p.positionIndex % 2 === 1 ? 1 : -1;
 
 		p.homePosition = new THREE.Vector3(
-			dir * particleDistance * p.positionIndex + 5 * Math.cos(Math.TAU * p.layerIndex / numLayers),
+			dir * particleDistance * p.positionIndex + 5 * Math.cos( Math.TAU * p.layerIndex / numLayers ),
 			0, //-200 + p.positionIndex,
 			p.ringIndex * layerDepth
 		);
-
 
 		p.position.x = p.homePosition.x;
 		p.position.y = p.homePosition.y;
 		p.position.z = p.homePosition.z;
 	}
 
-
 	function computeRingPosition() {
 		var p = this;
 
 		p.positionIndex = p.index % particlesPerLayer;
 		p.angle = p.positionIndex * Math.TAU * 2.5 / particlesPerLayer;
-		p.ringIndex = Math.floor(p.index / particlesPerLayer);
+		p.ringIndex = Math.floor( p.index / particlesPerLayer );
 
 		p.homePosition = new THREE.Vector3(
-			Math.cos(p.angle) * ringRadius * 2,
-			Math.sin(p.angle) * ringRadius,
+			Math.cos( p.angle ) * ringRadius * 2,
+			Math.sin( p.angle ) * ringRadius,
 			p.ringIndex * layerDepth
 		);
-
 
 		p.position.x = p.homePosition.x;
 		p.position.y = p.homePosition.y;
@@ -313,18 +288,17 @@ var Visualizer = function(options) {
 
 	// ------------------------------------
 
-
 	var spiralStartIndex = 0;
 
 	function computeSpiralPosition() {
-		var finalRadius = Math.sqrt(activeParticles.length + spiralStartIndex);
+		var finalRadius = Math.sqrt( activeParticles.length + spiralStartIndex );
 		var p = this;
 
 		var angle = p.index * Math.PHI; //Golden angle relative to TWO_PI
 
 		p.homePosition = new THREE.Vector3(
-			Math.cos(angle) * Math.sqrt(p.index + spiralStartIndex) * 2 * (720 / finalRadius),
-			Math.sin(angle) * Math.sqrt(p.index + spiralStartIndex) * 2 * (480 / finalRadius),
+			Math.cos( angle ) * Math.sqrt( p.index + spiralStartIndex ) * 2 * ( 720 / finalRadius ),
+			Math.sin( angle ) * Math.sqrt( p.index + spiralStartIndex ) * 2 * ( 480 / finalRadius ),
 			0
 		);
 
@@ -336,15 +310,15 @@ var Visualizer = function(options) {
 
 	// ------------------------------------
 
-	function computeGridPosition(cols, rows) {
+	function computeGridPosition( cols, rows ) {
 		var p = this;
 		p.gridPosition = {
 			x: p.index % cols,
-			y: Math.floor(p.index / cols),
+			y: Math.floor( p.index / cols ),
 			z: 0
 		};
-		p.homePosition.x = ((p.gridPosition.x / cols) * WIDTH) - (WIDTH * 0.5);
-		p.homePosition.y = ((p.gridPosition.y / rows) * HEIGHT) - (HEIGHT * 0.5);
+		p.homePosition.x = ( ( p.gridPosition.x / cols ) * WIDTH ) - ( WIDTH * 0.5 );
+		p.homePosition.y = ( ( p.gridPosition.y / rows ) * HEIGHT ) - ( HEIGHT * 0.5 );
 		p.homePosition.z = 0;
 
 		p.position.x = p.homePosition.x;
@@ -355,51 +329,50 @@ var Visualizer = function(options) {
 	// ------------------------------------
 
 	var currentGridPosition = {
-		x: (cols / 2) - 1,
-		y: (rows / 2) - 1
+		x: ( cols / 2 ) - 1,
+		y: ( rows / 2 ) - 1
 	};
 	var sideIndex = 0;
 	var sideLength = 1;
 	var sidePosition = 0;
 
-
 	// ------------------------------------
 
-	function computeSpiralGridPosition(cols, rows) {
+	function computeSpiralGridPosition( cols, rows ) {
 		var p = this;
-		switch (sideIndex) {
+		switch ( sideIndex ) {
 			case 0:
-				p.gridPosition = _.extend({}, currentGridPosition);
+				p.gridPosition = _.extend( {}, currentGridPosition );
 				currentGridPosition.x++;
 				report();
-				if (++sidePosition >= sideLength) {
+				if ( ++sidePosition >= sideLength ) {
 					sidePosition = 0;
 					sideIndex++;
 				}
 				break;
 			case 1:
-				p.gridPosition = _.extend({}, currentGridPosition);
+				p.gridPosition = _.extend( {}, currentGridPosition );
 				currentGridPosition.y++;
 				report();
-				if (++sidePosition >= sideLength) {
+				if ( ++sidePosition >= sideLength ) {
 					sidePosition = 0;
 					sideIndex++;
 				}
 				break;
 			case 2:
-				p.gridPosition = _.extend({}, currentGridPosition);
+				p.gridPosition = _.extend( {}, currentGridPosition );
 				currentGridPosition.x--;
 				report();
-				if (++sidePosition >= sideLength) {
+				if ( ++sidePosition >= sideLength ) {
 					sidePosition = 0;
 					sideIndex++;
 				}
 				break;
 			case 3:
-				p.gridPosition = _.extend({}, currentGridPosition);
+				p.gridPosition = _.extend( {}, currentGridPosition );
 				currentGridPosition.y--;
 				report();
-				if (++sidePosition >= sideLength) {
+				if ( ++sidePosition >= sideLength ) {
 					sidePosition = 0;
 					sideIndex = 0;
 					currentGridPosition.x--;
@@ -410,11 +383,9 @@ var Visualizer = function(options) {
 				break;
 		}
 
-
-		p.homePosition.x = ((p.gridPosition.x / cols) * 3200) - (3200 / 2);
-		p.homePosition.y = ((p.gridPosition.y / rows) * 1800) - (1800 / 2);
+		p.homePosition.x = ( ( p.gridPosition.x / cols ) * 3200 ) - ( 3200 / 2 );
+		p.homePosition.y = ( ( p.gridPosition.y / rows ) * 1800 ) - ( 1800 / 2 );
 		p.homePosition.z = 0;
-
 
 		p.position.x = p.homePosition.x;
 		p.position.y = p.homePosition.y;
@@ -427,17 +398,17 @@ var Visualizer = function(options) {
 
 	// ------------------------------------
 
-	function recycleParticle(particle) {
-		scene.remove(particle);
-		var index = activeParticles.indexOf(particle);
-		activeParticles.splice(index, 1);
-		availableParticles.push(particle);
+	function recycleParticle( particle ) {
+		scene.remove( particle );
+		var index = activeParticles.indexOf( particle );
+		activeParticles.splice( index, 1 );
+		availableParticles.push( particle );
 	}
 
 	// ------------------------------------
 
-	var Particle = function(options) {
-		var p = _.extend(new THREE.Mesh(
+	var Particle = function( options ) {
+		var p = _.extend( new THREE.Mesh(
 			standardGeometry,
 			standardMaterial.clone()
 		), {
@@ -459,13 +430,12 @@ var Visualizer = function(options) {
 			// computeSpiralGridPosition: computeSpiralGridPosition,
 			// computeRingPosition: computeRingPosition,
 			computeGroundPosition: computeGroundPosition
-		}, options);
-
+		}, options );
 
 		// ------------------------------------
 
-		function setLevel(level) {
-			if (level > this.getLevel()) {
+		function setLevel( level ) {
+			if ( level > this.getLevel() ) {
 				//reset to new peak
 				this.peak = level;
 				this.age = 0;
@@ -474,7 +444,7 @@ var Visualizer = function(options) {
 		}
 
 		function getLevel() {
-			return this.peak * (1 - this.age);
+			return this.peak * ( 1 - this.age );
 		}
 
 		return p;
@@ -482,26 +452,22 @@ var Visualizer = function(options) {
 
 	// ------------------------------------
 
-	function updateParticle(p, tick, level) {
-		p.setLevel(level);
-		p.age = (tick - p.birthday) / p.lifespan;
+	function updateParticle( p, tick, level ) {
+		p.setLevel( level );
+		p.age = ( tick - p.birthday ) / p.lifespan;
 		var height = 150;
 		var peakLevel = p.peak / 255;
 
-
-
 		p.layerIndex = p.layerIndex - 1 >= 0 ? p.layerIndex - 1 : numLayers;
 
-		if (p.age === 0) {
+		if ( p.age === 0 ) {
 
 			var scale = 2 * peakLevel;
-			p.scale.set(1, scale + 0.05, 1);
+			p.scale.set( 1, scale + 0.05, 1 );
 			// p.position.y = ((scale * height * 0.5) + p.homePosition.y);
 			p.position.x = p.homePosition.x;
 			// p.position.y = p.homePosition.y;
 		}
-
-
 
 		p.position.z = p.layerIndex * layerDepth;
 
@@ -510,27 +476,21 @@ var Visualizer = function(options) {
 
 		p.material.opacity = 0.07 * peakLevel //Math.pow(peakLevel, 2);
 
-
-		var color = getRGB(colorMap, colorMapData, (p.homePosition.x + p.position.z) * 0.25, (p.homePosition.y + p.position.z) * 0.25);
-		p.material.color = new THREE.Color(color);
-
-
+		var color = getRGB( colorMap, colorMapData, ( p.homePosition.x + p.position.z ) * 0.25, ( p.homePosition.y + p.position.z ) * 0.25 );
+		p.material.color = new THREE.Color( color );
 
 		// p.lookAt(camera.position);
 	}
 
 	// ------------------------------------
 
-
 	function reset() {
-		activeParticles.forEach(function(p) {
+		activeParticles.forEach( function( p ) {
 			p.age = 0;
 			p.birthday = 0;
 			p.level = 0;
-		});
+		} );
 	}
-
-
 
 	// ----------------------
 
@@ -562,32 +522,29 @@ var Visualizer = function(options) {
 	}
 
 	function postColorMapLoad() {
-		var colorMapCanvas = document.createElement("canvas");
+		var colorMapCanvas = document.createElement( "canvas" );
 		colorMapCanvas.attributes.height = colorMapCanvas.attributes.width = 100;
-		colorMapCtx = colorMapCanvas.getContext("2d");
-		colorMapCtx.drawImage(colorMap, 0, 0, 100, 100);
-		colorMapData = colorMapCtx.getImageData(0, 0, 100, 100);
+		colorMapCtx = colorMapCanvas.getContext( "2d" );
+		colorMapCtx.drawImage( colorMap, 0, 0, 100, 100 );
+		colorMapData = colorMapCtx.getImageData( 0, 0, 100, 100 );
 		setupParticles();
 	}
 
-	function getRGB(colorMap, colorMapData, x, y) {
+	function getRGB( colorMap, colorMapData, x, y ) {
 		var data = colorMapData.data;
-		var propX = Math.abs(x / WIDTH) + colorMapOffset.x;
-		var propY = Math.abs(y / HEIGHT) + colorMapOffset.y;
+		var propX = Math.abs( x / WIDTH ) + colorMapOffset.x;
+		var propY = Math.abs( y / HEIGHT ) + colorMapOffset.y;
 		propX %= 1;
 		propY %= 1;
-		var col = (propX * colorMapData.width) << 2; // multiply by 4 per pixel to account for [r,g,b,a] order
-		var row = (propY * colorMapData.height) >> 0; // math.floor
+		var col = ( propX * colorMapData.width ) << 2; // multiply by 4 per pixel to account for [r,g,b,a] order
+		var row = ( propY * colorMapData.height ) >> 0; // math.floor
 		var rowWidth = colorMapData.width << 2;
-		return (data[col + (row * rowWidth) + 0] << 16) | (data[col + (row * rowWidth) + 1] << 8) | data[col + (row * rowWidth) + 2];
+		return ( data[ col + ( row * rowWidth ) + 0 ] << 16 ) | ( data[ col + ( row * rowWidth ) + 1 ] << 8 ) | data[ col + ( row * rowWidth ) + 2 ];
 	}
 
-
-	setup.call(this);
+	setup.call( this );
 	return this;
 
 };
-
-
 
 module.exports = Visualizer;

@@ -59,7 +59,7 @@ class Page extends View {
 		// load stuff in here
 		// resolve the deferred when load is complete
 		deferred.resolve();
-		return deferred;
+		return deferred.promise();
 	}
 
 	// ---------------------------------------------------

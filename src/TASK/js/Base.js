@@ -27,6 +27,9 @@ class TASK {
 	makeBoundFunctions( funcNames, context ) {
 		context = context || this;
 		_.each( funcNames, ( funcName ) => {
+			if ( !context[ funcName ] ) {
+				console.error( `You tried to bind "${funcName}", but it doesn't exist on `, context );
+			}
 			context[ funcName ] = context[ funcName ].bind( context );
 		} );
 		return context;
@@ -88,7 +91,7 @@ class TASK {
 		if ( _.isArray( objValue ) ) {
 			return objValue.concat( srcValue );
 		} else if ( typeof objValue === 'object' ) {
-			return _.extend( {}, objValue, srcValue )
+			return _.extend( {}, objValue, srcValue );
 		}
 	}
 }

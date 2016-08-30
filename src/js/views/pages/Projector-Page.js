@@ -29,6 +29,10 @@ class ProjectorPage extends ThreejsPage {
 				eventName: 'fullscreen',
 				target: 'transportBar',
 				handler: 'onFullscreen'
+			}, {
+				eventName: 'change',
+				target: 'select.cameraPosition',
+				handler: 'onChangeCameraPosition'
 			} ],
 
 			// ---------------------------------------------------
@@ -54,7 +58,7 @@ class ProjectorPage extends ThreejsPage {
 				'onFullscreen',
 				'onEnterFullscreen',
 				'onExitFullscreen',
-				'onChangeCheckbox'
+				'onChangeCameraPosition'
 			]
 		}, options, TASK.mergeRules ) );
 
@@ -86,16 +90,9 @@ class ProjectorPage extends ThreejsPage {
 	// ---------------------------------------------------
 	// Event Handlers
 
-	onChangeCheckbox( evt ) {
-		var target = evt.target;
-		if ( target.checked ) {
-			this.$( 'input:checkbox' )
-				.each( ( i, el ) => {
-					target.value === i ? el.checked = true : el.checked = false;
-				} );
-		} else {
-			$.get( `http://${this.localAddress}:${this.localPort}/led/${target.value}/off` );
-		}
+	onChangeCameraPosition( e ) {
+		var value = e.target.value;
+		this.threeView.setCameraPosition( parseInt( value, 10 ) );
 	}
 
 	// ---------------------------------------------------

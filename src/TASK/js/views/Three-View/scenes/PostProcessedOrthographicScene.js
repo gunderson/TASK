@@ -27,7 +27,7 @@ class PostProcessedOrthographicScene extends OrthographicScene {
 
 	setup() {
 		var promise = super.setup();
-		promise.then( () => this.setupRenderChain( this.options ) );
+		this.setupRenderChain( this.options );
 		return promise;
 	}
 

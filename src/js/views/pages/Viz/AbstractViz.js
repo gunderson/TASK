@@ -3,11 +3,6 @@ var Backbone = require( "backbone" );
 var THREE = require( "three.js" );
 require( "underscore.filledArray" );
 
-var prefixMethod = require( "../prefixmethod" );
-prefixMethod( "requestAnimationFrame" );
-prefixMethod( "cancelAnimationFrame" );
-
-
 THREE.THE_ORIGIN = new THREE.Vector3( 0, 0, 0 );
 Math.PHI = 2.399963229728653;
 Math.TAU = 2 * Math.PI;
@@ -51,8 +46,6 @@ var Visualizer = Backbone.View.extend( {
 		colormapScale: 0,
 		colormapMix: 0
 
-
-
 	}
 } );
 
@@ -77,7 +70,6 @@ var availableParticles = [],
 
 var standardGeometry,
 	standardMaterial;
-
 
 // ------------------------------------
 
@@ -108,7 +100,6 @@ function setup( options ) {
 	light.position.z = 100;
 	scene.add( light );
 
-
 	// setup shared particle stuff
 	standardGeometry = new THREE.CylinderGeometry(
 		this.controls.geometryWidth, // upper radius
@@ -124,7 +115,6 @@ function setup( options ) {
 		opacity: 0
 	} );
 
-
 	// standardGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( Math.PI / 2 ) );
 
 	// prep the renderer
@@ -135,7 +125,6 @@ function setup( options ) {
 	return this;
 }
 
-
 function update( fftData, time, _tick ) {
 	tick = _tick;
 	var tickDelta = tick - prevTick;
@@ -145,21 +134,18 @@ function update( fftData, time, _tick ) {
 
 	var segs = Math.floor( fftData.length / this.fftSize );
 
-	fftData = _.map( _.range( this.fftSize ), function ( i ) {
-		return _.reduce( fftData.slice( i * segs, ( i + 1 ) * segs ), function ( a, b ) {
+	fftData = _.map( _.range( this.fftSize ), function( i ) {
+		return _.reduce( fftData.slice( i * segs, ( i + 1 ) * segs ), function( a, b ) {
 			return a + b;
 		}, 0 ) / segs;
 	} );
 
-
-
 	var lastRing = _.chain( activeParticles )
 
-	.each( function ( p ) {
+	.each( function( p ) {
 			updateParticle( p, tick, p.layerIndex === numLayers ? fftData[ p.positionIndex ] : 0 );
 		} )
 		.value();
-
 
 	// var cameraTick = Math.PI * 2 * ((tick % 2048) / 2048);
 	// camera.rotation.z =  cameraTick;
@@ -168,10 +154,7 @@ function update( fftData, time, _tick ) {
 	// camera.lookAt(center);
 	prevTick = tick;
 
-
-
 	// normalize stream data
-
 
 	// streamData = new Uint8Array(
 	//     _.map(streamData, function(val, i, arr){
@@ -187,14 +170,11 @@ function update( fftData, time, _tick ) {
 	// );
 }
 
-
 function render() {
 	renderer.render( scene, camera );
 }
 
 // ------------------------------------
-
-
 
 function setSize( WIDTH, HEIGHT ) {
 	camera.aspect = WIDTH / HEIGHT;
@@ -243,7 +223,7 @@ function getParticles( quantity, options ) {
 		availableParticles.push( new Particle() );
 	}
 	var newParticles = availableParticles.splice( 0, quantity );
-	newParticles.forEach( function ( p ) {
+	newParticles.forEach( function( p ) {
 		// setupParticle(p, options);
 		scene.add( p );
 	} );
@@ -261,7 +241,7 @@ function setupParticles() {
 	getParticles( numLayers * particlesPerLayer, {
 			birthday: tick
 		} )
-		.forEach( function ( p, i ) {
+		.forEach( function( p, i ) {
 			setupParticle( p, {
 				index: i
 			} );
@@ -306,7 +286,7 @@ var layerSize = 1200;
 var particleDistance = layerSize / particlesPerLayer;
 var layerDepth = 1200 / numLayers;
 
-var buffers = _.map( _.range( numLayers ), function () {
+var buffers = _.map( _.range( numLayers ), function() {
 	return _.filledArray( particlesPerLayer );
 } );
 
@@ -324,12 +304,10 @@ function computeGroundPosition() {
 		p.ringIndex * layerDepth
 	);
 
-
 	p.position.x = p.homePosition.x;
 	p.position.y = p.homePosition.y;
 	p.position.z = p.homePosition.z;
 }
-
 
 function computeRingPosition() {
 	var p = this;
@@ -344,7 +322,6 @@ function computeRingPosition() {
 		p.ringIndex * layerDepth
 	);
 
-
 	p.position.x = p.homePosition.x;
 	p.position.y = p.homePosition.y;
 	p.position.z = p.homePosition.z;
@@ -352,7 +329,6 @@ function computeRingPosition() {
 }
 
 // ------------------------------------
-
 
 var spiralStartIndex = 0;
 
@@ -402,7 +378,6 @@ var sideIndex = 0;
 var sideLength = 1;
 var sidePosition = 0;
 
-
 // ------------------------------------
 
 function computeSpiralGridPosition( cols, rows ) {
@@ -450,11 +425,9 @@ function computeSpiralGridPosition( cols, rows ) {
 			break;
 	}
 
-
 	p.homePosition.x = ( ( p.gridPosition.x / cols ) * 3200 ) - ( 3200 / 2 );
 	p.homePosition.y = ( ( p.gridPosition.y / rows ) * 1800 ) - ( 1800 / 2 );
 	p.homePosition.z = 0;
-
 
 	p.position.x = p.homePosition.x;
 	p.position.y = p.homePosition.y;
@@ -476,7 +449,7 @@ function recycleParticle( particle ) {
 
 // ------------------------------------
 
-var Particle = function ( options ) {
+var Particle = function( options ) {
 	var p = _.extend( new THREE.Mesh(
 		standardGeometry,
 		standardMaterial.clone()
@@ -500,7 +473,6 @@ var Particle = function ( options ) {
 		// computeRingPosition: computeRingPosition,
 		computeGroundPosition: computeGroundPosition
 	}, options );
-
 
 	// ------------------------------------
 
@@ -528,8 +500,6 @@ function updateParticle( p, tick, level ) {
 	var height = 150;
 	var peakLevel = p.peak / 255;
 
-
-
 	p.layerIndex = p.layerIndex - 1 >= 0 ? p.layerIndex - 1 : numLayers;
 
 	if ( p.age === 0 ) {
@@ -541,8 +511,6 @@ function updateParticle( p, tick, level ) {
 		// p.position.y = p.homePosition.y;
 	}
 
-
-
 	p.position.z = p.layerIndex * layerDepth;
 
 	// less opaque with age
@@ -550,27 +518,21 @@ function updateParticle( p, tick, level ) {
 
 	p.material.opacity = 0.05 * peakLevel //Math.pow(peakLevel, 2);
 
-
 	var color = getRGB( colorMap, colorMapData, ( p.homePosition.x + p.position.z ) * 0.25, ( p.homePosition.y + p.position.z ) * 0.25 );
 	p.material.color = new THREE.Color( color );
-
-
 
 	// p.lookAt(camera.position);
 }
 
 // ------------------------------------
 
-
 function reset() {
-	activeParticles.forEach( function ( p ) {
+	activeParticles.forEach( function( p ) {
 		p.age = 0;
 		p.birthday = 0;
 		p.level = 0;
 	} );
 }
-
-
 
 // ----------------------
 
@@ -621,7 +583,5 @@ function getRGB( colorMap, colorMapData, x, y ) {
 	var rowWidth = colorMapData.width << 2;
 	return ( data[ col + ( row * rowWidth ) + 0 ] << 16 ) | ( data[ col + ( row * rowWidth ) + 1 ] << 8 ) | data[ col + ( row * rowWidth ) + 2 ];
 }
-
-
 
 module.exports = Visualizer;

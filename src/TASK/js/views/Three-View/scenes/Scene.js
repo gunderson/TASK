@@ -22,24 +22,30 @@ class Scene extends View {
 			meshes: {},
 			lights: {},
 			shaders: {},
-			textures: {}
+			textures: {},
+			isLoaded: false
 		}, options, View.mergeRules ) );
 	}
 
 	setup() {
 		// console.log( 'Scene::setup' );
+		// setup the framework
+		this.setupScene( this.options );
+		this.setupCamera( this.options );
+
+		// wait until assets are loaded to render the scene
 		return this.loadAssets()
 			.then( () => {
-				// this.renderer.setClearColor( this.options.clearColor, this.options.clearAlpha );
+				this.isLoaded = true;
+				this.trigger( 'loaded' );
 				this.setupShaders( this.options );
 				this.setupMaterials( this.options );
 				this.setupGeometry( this.options );
 				this.setupMeshes( this.options );
 				this.setupLights( this.options );
-				this.setupScene( this.options );
-				this.setupCamera( this.options );
 				this.layoutScene( this.options );
-			} );
+			} )
+			// .then( this.onResize );
 	}
 
 	// setup scene
@@ -54,8 +60,6 @@ class Scene extends View {
 
 	setupScene( options ) {
 		this.scene = new THREE.Scene();
-		_.each( this.meshes, ( m ) => this.scene.add( m ) );
-		_.each( this.lights, ( l ) => this.scene.add( l ) );
 		return this;
 	}
 
@@ -93,6 +97,8 @@ class Scene extends View {
 	}
 
 	layoutScene( options ) {
+		_.each( this.meshes, ( m ) => this.scene.add( m ) );
+		_.each( this.lights, ( l ) => this.scene.add( l ) );
 		this.camera.position.x = options.camera.position.x;
 		this.camera.position.y = options.camera.position.y;
 		this.camera.position.z = options.camera.position.z;

@@ -39,6 +39,7 @@ class OrthographicScene extends Scene {
 		this.camera.top = this.options.camera.zoom * this.halfHeight;
 		this.camera.bottom = this.options.camera.zoom * -this.halfHeight;
 		this.camera.updateProjectionMatrix();
+		return this;
 	}
 }
 
