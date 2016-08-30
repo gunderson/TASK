@@ -1,10 +1,5 @@
 var _ = require( 'lodash' );
 var AnimationPlayerPage = require( './Animation-Player-Page' );
-// TODO abstract three-view
-// var ThreeView = require( './Threejs-Page/Three-View' );
-// var TransportBar = require( '_TASK/views/ui/Transport-Bar' );
-// var MouseTelemetrics = require( '_art-kit/position/MouseTelemetrics' );
-
 import MouseTelemetrics from '_art-kit/io/MouseTelemetrics';
 
 class ThreejsPage extends AnimationPlayerPage {
@@ -20,6 +15,9 @@ class ThreejsPage extends AnimationPlayerPage {
 
 			// ---------------------------------------------------
 			// local Properties
+
+			threeView: null,
+			mouseTelemetrics: new MouseTelemetrics(),
 
 			// ---------------------------------------------------
 			// Bind Functions
@@ -37,7 +35,6 @@ class ThreejsPage extends AnimationPlayerPage {
 			// ---------------------------------------------------
 			// Event Listeners
 
-			// TODO: Build in a workaround in TASK/Base and TASK/View so all events can use the target name rather than the selector name of assigning events
 			events: [ {
 				eventName: 'mousemove',
 				target: '$el',
@@ -52,14 +49,12 @@ class ThreejsPage extends AnimationPlayerPage {
 
 		// ---------------------------------------------------
 		// Finish setup
-
-		this.mouseTelemetrics = new MouseTelemetrics();
 	}
 
 	// ---------------------------------------------------
 
 	setupThreeView() {
-		if ( !this.threeView.setup() ) {
+		if ( !this.threeView || !this.threeView.setup() ) {
 			throw new Error( 'threeView must be set by child class' );
 		}
 		return this;

@@ -5,7 +5,14 @@ var Events = require( 'backbone-events-standalone' );
 class TASK {
 	constructor( options ) {
 		this.options = _.mergeWith( {
+				// ---------------------------------------------------
+				// Event Listeners
+
 				events: [],
+
+				// ---------------------------------------------------
+				// Function Scope Binding
+
 				bindFunctions: []
 			},
 			options, TASK.mergeRules );
@@ -80,6 +87,8 @@ class TASK {
 	static mergeRules( objValue, srcValue ) {
 		if ( _.isArray( objValue ) ) {
 			return objValue.concat( srcValue );
+		} else if ( typeof objValue === 'object' ) {
+			return _.extend( {}, objValue, srcValue )
 		}
 	}
 }

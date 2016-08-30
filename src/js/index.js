@@ -2,22 +2,23 @@
 var $ = require( 'jquery' );
 var browser = require( 'jquery.browser' );
 var _ = require( 'lodash' );
-var TASKBase = require( '_TASK/Base' );
+var TASK = require( '_TASK/Base' );
 
 // ---------------------------------------------------
 // Distribute Global Vars
 
-TASKBase.prototype.TEMPLATES = require( './lib/templates' );
-TASKBase.prototype.ENV = window.env;
+TASK.prototype.TEMPLATES = require( './lib/templates' );
+TASK.prototype.ENV = window.env;
+window.$ = $;
 
 // ---------------------------------------------------
 // App Controller
 
 var AppController = require( './controllers/App-controller' );
 var appController = new AppController( {
-	browser: browser
+	browser: $.browser
 } );
-TASKBase.prototype.APP = appController;
+TASK.prototype.APP = appController;
 
 // ---------------------------------------------------
 // Main App View

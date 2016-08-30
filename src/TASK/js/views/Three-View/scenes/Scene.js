@@ -36,8 +36,8 @@ class Scene extends View {
 				this.setupGeometry( this.options );
 				this.setupMeshes( this.options );
 				this.setupLights( this.options );
-				this.setupCamera( this.options );
 				this.setupScene( this.options );
+				this.setupCamera( this.options );
 				this.layoutScene( this.options );
 			} );
 	}

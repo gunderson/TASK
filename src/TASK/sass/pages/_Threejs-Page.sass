@@ -5,3 +5,12 @@
 			width: 100%
 			background: #222
 			position: relative
+			margin: auto
+			&:after
+				margin-bottom: $transport-bar-height
+				content: '&nbsp;'
+			&.hide-transport-bar
+				&:after
+					margin-bottom: 0
+				.transport-bar
+					display: none

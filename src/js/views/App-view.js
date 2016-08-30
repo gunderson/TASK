@@ -12,13 +12,15 @@ class AppPage extends Page {
 			// Class Properties
 
 			name: 'app-page',
+			parentView: window,
+
 			// ---------------------------------------------------
 			// Local Properties
 
 			// ---------------------------------------------------
 			// Child Views
 
-			views: [].concat( uiViews, pageViews ),
+			views: _.extend( {}, uiViews, pageViews ),
 
 			// ---------------------------------------------------
 			// Event Listeners

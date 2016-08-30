@@ -1,13 +1,14 @@
 'use strict';
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
+var TASK = require( '_TASK/Base' );
 var ThreejsPage = require( '_TASK/views/pages/Threejs-Page' );
 var ThreeView = require( './Control-Panel-Page/Three-View' );
 var TransportBar = require( '_TASK/views/ui/Transport-Bar' );
 
 class ControlPanelPage extends ThreejsPage {
 	constructor( options ) {
-		super( _.merge( {
+		super( _.mergeWith( {
 
 			// ---------------------------------------------------
 			// Class Properties
@@ -37,16 +38,16 @@ class ControlPanelPage extends ThreejsPage {
 			// ---------------------------------------------------
 			// Child Views
 
-			views: [
-				new ThreeView( {
+			views: {
+				'threeView': new ThreeView( {
 					name: 'three-holder',
 					el: '.three-holder'
 				} ),
-				new TransportBar( {
+				'transportBar': new TransportBar( {
 					name: 'transport-bar',
 					el: '.transport-bar'
 				} )
-			],
+			},
 
 			// ---------------------------------------------------
 			// Bind Functions
@@ -59,7 +60,7 @@ class ControlPanelPage extends ThreejsPage {
 				'onExitFullscreen',
 				'onChangeCheckbox'
 			]
-		}, options, ThreejsPage.mergeRules ) );
+		}, options, TASK.mergeRules ) );
 
 		// ---------------------------------------------------
 		// finish setup

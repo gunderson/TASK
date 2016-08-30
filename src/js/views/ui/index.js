@@ -1,7 +1,7 @@
 // imports
 var MainMenuView = require( './Main-menu-view' );
 
-module.exports = [
+module.exports = {
 	// exports
-	new MainMenuView()
-];
+	'main-menu': new MainMenuView()
+};

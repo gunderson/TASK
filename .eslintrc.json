@@ -44,7 +44,7 @@
 			}
 		],
 		"comma-dangle": [
-			2,
+			0,
 			"never"
 		],
 		"comma-spacing": [

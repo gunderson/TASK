@@ -4,6 +4,7 @@
 	"description": "Tool Application Starter Kit",
 	"main": "dist/main.js",
 	"scripts": {
+		"addPage": "node ./custom_node_modules/addPage",
 		"start": "gulp --env prod && node --harmony ./dist/main --env prod",
 		"watch": "gulp --env dev && (gulp watch --env dev &) && node --harmony ./dist/main --env dev"
 	},

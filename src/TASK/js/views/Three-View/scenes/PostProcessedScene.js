@@ -32,11 +32,13 @@ class PostProcessedScene extends Scene {
 
 	setupRenderChain( options ) {
 		this.postProcessingPasses = {
-			render: new RenderPass( this.scene, this.camera )
+			renderPass: new RenderPass( this.scene, this.camera, {
+				renderToScreen: true
+			} )
 		};
 		this.composer = new EffectComposer( this.renderer );
 		// INITIALIZE COMPOSER w/ RENDER PASS
-		this.composer.addPass( this.postProcessingPasses.render );
+		this.composer.addPass( this.postProcessingPasses.renderPass );
 		return this;
 	}
 

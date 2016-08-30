@@ -17,22 +17,23 @@ class View extends TASK {
 			// hasRendered: false,
 			loadPromise: undefined,
 			parentView: undefined,
+			hasRendered: false,
 
 			// ---------------------------------------------------
 			// Child Views
 
-			views: [
+			views: {
 				/*
-					new ChildView0({
+					'childView0': new ChildView0({
 						el: '#child-id-0',
 						model: this.model.widgets.at(0)
 					}),
-					new ChildView1({
+					'childView1': new ChildView1({
 						el: '#child-id-1',
 						model: this.model.widgets.at(1)
 					}), ...
 				*/
-			],
+			},
 
 			// ---------------------------------------------------
 			// Event Listeners
@@ -71,6 +72,7 @@ class View extends TASK {
 				'delegateEvents',
 				'destroy',
 				'undelegateEvents',
+				'updateDOM',
 				'render',
 				'setupElement',
 				'onResize'
@@ -81,7 +83,7 @@ class View extends TASK {
 		// Finish setup
 
 		this.parseName( this.options );
-		this.setupElement();
+		this.domUpdates = [];
 	}
 
 	// ---------------------------------------------------
@@ -118,6 +120,7 @@ class View extends TASK {
 
 	beforeRender() {
 		// override me
+
 	}
 
 	// ---------------------------------------------------
@@ -131,7 +134,8 @@ class View extends TASK {
 	setupElement() {
 		// if an el property exists, attempt to find it
 		// otherwise, create one
-		this.$el = this.$( this.el )
+
+		this.$el = this.parentView.$( this.el )
 			.first() ||
 			$( this.el )
 			.first() ||
@@ -144,7 +148,8 @@ class View extends TASK {
 
 	render( parentView ) {
 		this.hasRendered = false;
-		this.parentView = parentView || this.parentView;
+		this.parentView = parentView || this.parentView || window;
+		this.setupElement();
 		this.undelegateEvents();
 		this.unbindData();
 		this.beforeRender();
@@ -155,9 +160,9 @@ class View extends TASK {
 			var html = View.getTemplate( this.template )( this.serialize() );
 			this.$el.html( html );
 		}
-		this.onResize();
 		// render child views
 		_.each( this.views, ( v ) => v.render( this ) );
+		this.onResize();
 
 		this.delegateEvents();
 		this.bindData();
@@ -170,14 +175,14 @@ class View extends TASK {
 	// bind the value of an HTMLElement to a model or collection
 
 	createDataBinding( hash ) {
-		var attributeName = hash.attributeName;
-		var element = hash.element;
-		var model = hash.model;
-		var elementChangeEventName = hash.elementChangeEventName;
-		var mode = hash.mode;
+		let attributeName = hash.attributeName;
+		let element = hash.element;
+		let model = hash.model;
+		let elementChangeEventName = hash.elementChangeEventName;
+		let mode = hash.mode;
 
 		// parse argument options
-		var $element = $( element );
+		let $element = $( element );
 		model = model || this[ model ] || this.model;
 		elementChangeEventName = elementChangeEventName || 'change';
 
@@ -190,12 +195,18 @@ class View extends TASK {
 
 		return hash;
 
+		// TODO document get/setElementData
+
 		function updateElement( event ) {
-			$element.val( event.value );
+			let fn = hash.setElementData || ( () => $element.val( event.value ) );
+			this.domUpdates.push( fn );
+			if ( !this.domUpdateRequest ) {
+				this.domUpdateRequest = requestAnimationFrame( this.updateDOM );
+			}
 		}
 
 		function updateModel( event ) {
-			model[ attributeName ] = $element.val();
+			model[ attributeName ] = hash.getElementData || $element.val();
 		}
 
 		function unbindData() {
@@ -217,6 +228,16 @@ class View extends TASK {
 	unbindData() {
 		_.each( this.dataBindings, ( hash ) => hash.unbindData && hash.unbindData() );
 		return this;
+	}
+
+	// ---------------------------------------------------
+	// batch DOM updates
+
+	updateDOM() {
+		this.domUpdateRequest = null;
+		this.domUpdates.foreach( ( fn ) => {
+			fn();
+		} );
 	}
 
 	// ---------------------------------------------------

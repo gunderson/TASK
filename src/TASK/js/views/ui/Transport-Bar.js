@@ -9,9 +9,8 @@ class TransportBar extends View {
 			// ---------------------------------------------------
 			// Class Properties
 
-			name: '',
+			name: undefined,
 			el: undefined,
-			views: [],
 
 			// ---------------------------------------------------
 			// Local Properties
@@ -64,12 +63,14 @@ class TransportBar extends View {
 	// Event Handlers
 
 	onPlayButtonClick() {
+		if ( this.target ) this.target.play();
 		this.trigger( 'play' );
 	}
 
 	// ---------------------------------------------------
 
 	onStopButtonClick() {
+		if ( this.target ) this.target.stop();
 		this.trigger( 'stop' );
 	}
 
@@ -82,7 +83,10 @@ class TransportBar extends View {
 	// ---------------------------------------------------
 
 	onChangeVolume( e ) {
-		this.model.volume = e.target.value;
+		if ( this.target ) this.target.volume = e.target.value;
+		this.trigger( 'volume', {
+			value: e.target.value
+		} );
 	}
 
 	// ---------------------------------------------------
