@@ -14,7 +14,7 @@ class TriangleViz extends PostProcessedScene {
 				fov: 50,
 				near: 0.1,
 				far: 10000,
-				position: new THREE.Vector3( 0, 0, 8000 ),
+				position: new THREE.Vector3( 0, 0, 5000 ),
 				lookAt: new THREE.Vector3( 0, 0, 0 )
 			},
 			colorMap: undefined,
@@ -31,8 +31,8 @@ class TriangleViz extends PostProcessedScene {
 			},
 			rows: 32,
 			cols: 32,
-			gridWidth: 10000,
-			gridHeight: 3000,
+			gridWidth: 18000,
+			gridHeight: 4500,
 
 			tick: 0,
 			prevTick: -1,
@@ -110,7 +110,8 @@ class TriangleViz extends PostProcessedScene {
 	}
 
 	update( data ) {
-		var fftData = _.map( _.range( 2048 ), () => 255 * Math.random() );
+		var fftData = data.fftData || this.streamData || _.range( 1024 );
+		// var fftData = _.map( _.range( 2048 ), () => 255 * Math.random() );
 		// console.log( this.activeParticles[ 0 ].position, this.activeParticles[ 0 ].material, this.activeParticles[ 0 ].geometry );
 		this.updateParticles( fftData, data.currentTime, data.currentTick );
 	}
@@ -167,7 +168,8 @@ class TriangleViz extends PostProcessedScene {
 
 	loadColorMap() {
 		var deferred = $.Deferred();
-		var imgSrc = 'http://www.theorigin.net/silkbrush/img/colormap.png';
+		// var imgSrc = 'http://www.theorigin.net/silkbrush/img/colormap.png';
+		var imgSrc = '/assets/images/colormap.png';
 		this.colorMap = new Image();
 		this.colorMap.crossOrigin = 'anonymous';
 		this.colorMap.src = imgSrc;

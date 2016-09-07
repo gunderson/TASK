@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "addPage": "node ./custom_node_modules/addPage",
-    "start": "gulp --env prod && node --harmony ./dist/main --env prod",
+    "start": "gulp --env dev && node --harmony ./dist/main --env dev",
     "watch": "gulp --env dev && (gulp watch --env dev &) && node --harmony ./dist/main --env dev"
   },
   "engines": {
@@ -59,6 +59,7 @@
   "dependencies": {
     "acorn": "^3.2.0",
     "art-kit": "^2.0.0",
+    "audio-analyser": "^1.0.2",
     "backbone-events-standalone": "^0.2.7",
     "body-parser": "^1.15.0",
     "domain": "0.0.1",
@@ -71,12 +72,13 @@
     "lodash": "^4.11.2",
     "marked": "^0.3.5",
     "method-override": "^2.3.5",
+    "mic": "^2.1.1",
     "multer": "^1.1.0",
     "npm": "^3.8.8",
     "page": "^1.7.1",
     "q": "^1.4.1",
     "serve-favicon": "^2.3.0",
-    "socketio": "^1.0.0",
+    "socket.io": "^1.4.8",
     "three": "*"
   },
   "autoupdate": {

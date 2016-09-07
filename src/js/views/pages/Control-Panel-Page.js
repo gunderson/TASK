@@ -32,7 +32,27 @@ class ControlPanelPage extends ThreejsPage {
 			}, {
 				eventName: 'fullscreen',
 				target: 'transportBar',
-				handler: 'onFullscreen'
+				handler: 'enterFullScreen'
+			}, {
+				eventName: 'click',
+				target: 'button.sync',
+				handler: 'onClickSync'
+			}, {
+				eventName: 'click',
+				target: 'button.restart',
+				handler: 'onClickRestart'
+			}, {
+				eventName: 'fft',
+				target: 'APP',
+				handler: 'onFFT'
+			}, {
+				eventName: 'sync',
+				target: 'APP',
+				handler: 'onSync'
+			}, {
+				eventName: 'restart',
+				target: 'APP',
+				handler: 'onRestart'
 			} ],
 
 			// ---------------------------------------------------
@@ -55,26 +75,46 @@ class ControlPanelPage extends ThreejsPage {
 			bindFunctions: [
 				'onPlay',
 				'onStop',
-				'onFullscreen',
-				'onEnterFullscreen',
-				'onExitFullscreen',
-				'onChangeCheckbox'
+				'onClickSync',
+				'onClickRestart',
+				'onFullScreen',
+				'onEnterFullScreen',
+				'onRestart',
+				'onFFT',
+				'onSync'
 			]
 		}, options, TASK.mergeRules ) );
 
 		// ---------------------------------------------------
 		// finish setup
 
-		this.threeView = _.find( this.views, {
-			name: 'three-holder'
-		} );
-		this.transportBar = _.find( this.views, {
-			name: 'transport-bar'
-		} );
+		this.threeView = this.views[ 'threeView' ];
+		this.transportBar = this.views[ 'transportBar' ];
+
 	}
 
 	// ---------------------------------------------------
 	// ThreeView Handlers
+
+	onRestart() {
+		this.animationPlayer.reset();
+		this.animationPlayer.play();
+	}
+
+	onFFT( data ) {
+		this.fftData = data.fftData;
+	}
+
+	onSync( data ) {
+		this.animationPlayer.currentTime = data.currentTime;
+		this.threeView.sync( data );
+	}
+
+	update( playerData ) {
+		this.threeView.update( _.extend( {}, playerData, {
+			fftData: this.fftData
+		} ) );
+	}
 
 	// ---------------------------------------------------
 	// TransportBar Handlers
@@ -87,31 +127,43 @@ class ControlPanelPage extends ThreejsPage {
 		this.stop();
 	}
 
-	onFullscreen() {
-		// make three-view full screen
+	onEnterFullScreen() {
+		this.threeView.el.webkitRequestFullScreen();
 	}
 
-	onEnterFullscreen() {
-
-	}
-
-	onExitFullscreen() {
-
+	onFullScreen() {
+		$( 'html' )
+			.toggleClass( 'fullscreen' );
+		this.threeView.$el.toggleClass( 'fullscreen' );
 	}
 
 	// ---------------------------------------------------
 	// ControlPanel Handlers
 
-	onChangeCheckbox( evt ) {
-		var target = evt.target;
-		if ( target.checked ) {
-			this.$( 'input:checkbox' )
-				.each( ( i, el ) => {
-					target.value === i ? el.checked = true : el.checked = false;
-				} );
-		} else {
-			$.get( `http://${this.localAddress}:${this.localPort}/led/${target.value}/off` );
-		}
+	onClickSync() {
+		console.log( this.threeView.scenes.TriangleViz.getColorMapOffset() )
+		this.trigger( 'sync', {
+			currentTime: this.player.currentTime,
+			colorMapOffset: this.threeView.scenes.TriangleViz.getColorMapOffset()
+		} );
+	}
+
+	onClickRestart() {
+		this.trigger( 'restart' );
+	}
+
+	transitionInComplete() {
+		super.transitionInComplete();
+
+		$( document )
+			.on( "webkitfullscreenchange fullscreenchange", this.onFullScreen );
+	}
+
+	transitionOut() {
+		super.transitionOut();
+
+		$( document )
+			.off( "webkitfullscreenchange fullscreenchange", this.onFullScreen );
 	}
 }
 

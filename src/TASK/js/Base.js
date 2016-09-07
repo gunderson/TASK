@@ -18,8 +18,10 @@ class TASK {
 			options, TASK.mergeRules );
 		_.extend( this, this.options );
 		this.makeBoundFunctions( this.options.bindFunctions, this );
-		window.TASKs = window.TASKs || [];
-		window.TASKs.push( this );
+		if ( typeof window !== 'undefined' ) {
+			window.TASKs = window.TASKs || [];
+			window.TASKs.push( this );
+		}
 	}
 
 	// ---------------------------------------------------
@@ -58,7 +60,12 @@ class TASK {
 	undelegateEvents() {
 		_( this.options.events )
 			.each( ( e ) => {
-				this.stopListening( e.target, e.eventName );
+				if ( typeof e.target === 'string' ) return;
+				if ( e.target instanceof $ ) {
+					e.target.off( e.eventName );
+				} else {
+					this.stopListening( e.target, e.eventName );
+				}
 			} );
 		return this;
 	}

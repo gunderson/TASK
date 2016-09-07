@@ -24,6 +24,7 @@ class ProjectorThreeView extends ThreeView {
 				'facebook': FacebookInstallation,
 				'Single Box': BasicScene,
 			},
+			fftData: _.map( _.range( 1024 ), () => 127 ),
 
 			// ---------------------------------------------------
 			// Event Listeners
@@ -39,6 +40,18 @@ class ProjectorThreeView extends ThreeView {
 
 	setCameraPosition( index ) {
 		if ( this.activeScene && this.activeScene.setCameraPosition ) this.activeScene.setCameraPosition( index );
+	}
+
+	sync( data ) {
+		this.activeScene.colorMapOffset = data.colorMapOffset;
+	}
+
+	update( data ) {
+		if ( data.fftData ) this.fftData = data.fftData;
+		data.fftData = this.fftData;
+		if ( this.activeScene && this.activeScene.isLoaded ) {
+			this.activeScene.update( data );
+		}
 	}
 
 }

@@ -31,15 +31,15 @@ class TransportBar extends View {
 
 			events: [ {
 				eventName: 'click',
-				selector: 'button.play',
+				target: 'button.play',
 				handler: 'onPlayButtonClick'
 			}, {
 				eventName: 'click',
-				selector: 'button.stop',
+				target: 'button.stop',
 				handler: 'onStopButtonClick'
 			}, {
 				eventName: 'click',
-				selector: 'button.fullscreen',
+				target: 'button.fullscreen',
 				handler: 'onFullscreenButtonClick'
 			} ],
 
@@ -77,6 +77,7 @@ class TransportBar extends View {
 	// ---------------------------------------------------
 
 	onFullscreenButtonClick() {
+		console.log( 'onFullscreenButtonClick' );
 		this.trigger( 'fullscreen' );
 	}
 

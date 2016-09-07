@@ -10,9 +10,13 @@ var methodOverride = require( 'method-override' );
 var path = require( 'path' );
 var chalk = require( 'chalk' );
 
+var SocketInterface = require( './controllers/Socket-Interface' );
+var MicrophoneDataService = require( './services/Microphone-Data' );
+
 class Server extends TASK {
 	constructor( env ) {
 		super();
+
 		var app = express();
 		app.set( 'env', env.name );
 
@@ -37,10 +41,23 @@ class Server extends TASK {
 
 		app.use( '/', router );
 		log( chalk.green( 'Front-end server' ), 'starting', __dirname );
-		app.listen( env.port, function() {
+		var server = app.listen( env.port, function() {
 			log( chalk.green( 'Front-end server' ), 'listening on port:', chalk.green( `${env.port}` ) );
 
 		} );
+
+		// ---------------------------------------------------------
+
+		this.micService = new MicrophoneDataService();
+		this.micService.start();
+
+		this.sockets = new SocketInterface( server, {
+			origins: '*'
+		} );
+
+		// ---------------------------------------------------------
+
+		this.micService.on( 'fft', this.sockets.broadcastFFT );
 	}
 }
 
