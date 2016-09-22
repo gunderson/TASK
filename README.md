@@ -4,7 +4,7 @@ TASK is based on loosely on the ethos of [Backbone.js](http://backbonejs.com), b
 
 ## Environment setup
 
-npm falafel currently only supports a very old version of acron that doesn't work well with es6 files. You'll need to manually bump versions in falafel, and acorn inside node_modules :(
+npm falafel currently only supports a very old version of acorn that doesn't work well with es6 files. You'll need to manually bump versions in falafel, and acorn inside node_modules :(
 
 We prefer [Atom](http://atom.io) as our IDE and have provided a number of package and configuration files to help ensure we're all using the same coding standards.
 
