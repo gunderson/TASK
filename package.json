@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "addPage": "node ./custom_node_modules/addPage",
-    "start": "gulp --env dev && node --harmony ./dist/main --env dev",
+    "start": "gulp --env prod && pm2 start ./dist/main.js --node-args='--harmony' -- --env prod",
     "watch": "gulp --env dev && (gulp watch --env dev &) && node --harmony ./dist/main --env dev"
   },
   "engines": {
@@ -66,6 +66,8 @@
     "express": "^4.13.4",
     "forever": "^0.15.1",
     "gsap": "^1.18.4",
+    "gulp-jst-concat": "github:gunderson/gulp-jst-concat",
+    "gulp-rename": "github:gunderson/gulp-rename",
     "howler": "^1.1.29",
     "jquery": "^2.2.3",
     "jquery.browser": "^0.1.0",
@@ -76,6 +78,7 @@
     "multer": "^1.1.0",
     "npm": "^3.8.8",
     "page": "^1.7.1",
+    "pm2": "^2.0.15",
     "q": "^1.4.1",
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.4.8",

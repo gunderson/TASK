@@ -1,0 +1,7 @@
+apps:
+  - name      : main
+    script    : ./dist/main.js
+    watch     : true
+    node-args : --harmony
+  - env:
+    env: "prod" 
