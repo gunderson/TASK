@@ -27,10 +27,10 @@ var argv = require( 'yargs' )
 	} )
 	.argv;
 
-process.on( 'SIGINT', function() {}
+process.on( 'SIGINT', function() {} );
 
-		// ----------------------------------------------------------------
-		// Server
+// ----------------------------------------------------------------
+// Server
 
-		var Server = require( './js/Server' );
-		var server = new Server( require( `../data/env/${argv.env}` ) );
+var Server = require( './js/Server' );
+var server = new Server( require( `../data/env/${argv.env}` ) );

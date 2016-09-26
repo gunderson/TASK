@@ -13,6 +13,8 @@ class HomePage extends Page {
 			// Class Properties
 
 			name: 'Home',
+			col: 0,
+			row: 0,
 
 			// ---------------------------------------------------
 			// Local Properties
