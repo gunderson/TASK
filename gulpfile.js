@@ -46,7 +46,7 @@ gulp.task( 'css', function() {
 		.pipe( plumber( onError ) )
 		.pipe( sass( {
 
-			includePaths: [ './src/sass/', './src/TASK/sass/' ],
+			includePaths: [ './src/sass/', './src/PEAK/sass/' ],
 			errLogToConsole: true
 		} ) )
 		// .pipe( csso() )
@@ -232,8 +232,8 @@ gulp.task( 'watch',
 			'./src/pug/dynamic/**/*.pug',
 			'./package.json', 'data/**/*.json'
 		], [ 'compile-js' ] );
-		gulp.watch( [ './src/pug/static/**/*.pug', './src/TASK/pug/static/**/*.pug' ], [ 'static-templates' ] );
-		gulp.watch( [ './src/sass/**/*.sass', './src/TASK/sass/**/*.sass' ], [ 'css' ] );
+		gulp.watch( [ './src/pug/static/**/*.pug', './src/PEAK/pug/static/**/*.pug' ], [ 'static-templates' ] );
+		gulp.watch( [ './src/sass/**/*.sass', './src/PEAK/sass/**/*.sass' ], [ 'css' ] );
 	} );
 
 // --------------------------------------------------

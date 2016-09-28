@@ -6,7 +6,7 @@ var FilmPass = require( 'postprocessing' )
 var ColorizePass = require( '../passes/ColorizePass' );
 var VerticalBlurPass = require( '../passes/VerticalBlurPass' );
 var HorizontalBlurPass = require( '../passes/HorizontalBlurPass' );
-var PostProcessedOrthographicScene = require( '_TASK/views/Three-View/scenes/PostProcessedOrthographicScene' );
+var PostProcessedOrthographicScene = require( '_PEAK/views/Three-View/scenes/PostProcessedOrthographicScene' );
 var THREE = require( 'three' );
 
 class BoxLineScene extends PostProcessedOrthographicScene {

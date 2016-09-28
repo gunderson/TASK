@@ -1,7 +1,7 @@
 var _ = require( 'lodash' );
-var ThreeView = require( '_TASK/views/Three-View/Three-View' );
+var ThreeView = require( '_PEAK/views/Three-View/Three-View' );
 
-var BasicScene = require( '_TASK/views/Three-View//scenes/BasicScene' );
+var BasicScene = require( '_PEAK/views/Three-View//scenes/BasicScene' );
 var TriangleViz = require( './scenes/TriangleViz' );
 var FacebookInstallation = require( './scenes/FacebookInstallation' );
 // TODO abstract three-view

@@ -1,7 +1,7 @@
 'use strict';
 // var _ = require( 'lodash' );
-var TASK = require( '../TASK/js/TASK-Base' );
-var log = require( '../TASK/utils/log' );
+var PEAK = require( '../PEAK/js/PEAK-Base' );
+var log = require( '../PEAK/utils/log' );
 var bodyParser = require( 'body-parser' );
 var express = require( 'express' );
 // var favicon = require( 'serve-favicon' );
@@ -13,7 +13,7 @@ var chalk = require( 'chalk' );
 var SocketInterface = require( './controllers/Socket-Interface' );
 var MicrophoneDataService = require( './services/Microphone-Data' );
 
-class Server extends TASK {
+class Server extends PEAK {
 	constructor( env ) {
 		super();
 

@@ -1,5 +1,5 @@
 var _ = require( 'lodash' );
-var Page = require( '_TASK/views/pages/Page' );
+var Page = require( '_PEAK/views/pages/Page' );
 var pageViews = require( './pages/index' );
 var uiViews = require( './ui/index' );
 var io = require( 'socket.io-client' );

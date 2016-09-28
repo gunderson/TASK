@@ -1,8 +1,8 @@
 var _ = require( 'lodash' );
-var TASK = require( '_TASK/Base' );
-var ThreeView = require( '_TASK/views/Three-View/Three-View' );
+var PEAK = require( '_PEAK/Base' );
+var ThreeView = require( '_PEAK/views/Three-View/Three-View' );
 
-var BasicScene = require( '_TASK/views/Three-View//scenes/BasicScene' );
+var BasicScene = require( '_PEAK/views/Three-View//scenes/BasicScene' );
 var TriangleViz = require( './scenes/TriangleViz' );
 var FacebookInstallation = require( './scenes/FacebookInstallation' );
 // TODO abstract three-view
@@ -34,7 +34,7 @@ class ProjectorThreeView extends ThreeView {
 			bindFunctions: [
 				'setCameraPosition'
 			]
-		}, options, TASK.mergeRules ) );
+		}, options, PEAK.mergeRules ) );
 
 	}
 

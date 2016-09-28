@@ -1,6 +1,6 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var Model = require( '_TASK/models/Model' );
+var Model = require( '_PEAK/models/Model' );
 var router = require( 'page' );
 
 class AppModel extends Model {

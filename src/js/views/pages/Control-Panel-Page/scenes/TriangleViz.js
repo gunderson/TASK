@@ -1,4 +1,4 @@
-var PostProcessedScene = require( '_TASK/views/Three-View/scenes/PostProcessedScene' );
+var PostProcessedScene = require( '_PEAK/views/Three-View/scenes/PostProcessedScene' );
 var _ = require( 'lodash' );
 var THREE = require( 'three' );
 var $ = require( 'jquery' );

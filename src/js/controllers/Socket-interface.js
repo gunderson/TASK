@@ -1,8 +1,8 @@
 var SocketIO = require( 'socket.io' );
 var _ = require( 'lodash' );
-var TASK = require( '../../TASK/js/Base' );
+var PEAK = require( '../../PEAK/js/Base' );
 
-class SocketInterface extends TASK {
+class SocketInterface extends PEAK {
 	constructor( server ) {
 		super( {
 			bindFunctions: [

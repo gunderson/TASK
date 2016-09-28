@@ -1,5 +1,5 @@
-var Model = require( '_TASK/models/Model' );
-var DataSource = require( '_TASK/services/Data-Sources/Microphone-Data-Source' );
+var Model = require( '_PEAK/models/Model' );
+var DataSource = require( '_PEAK/services/Data-Sources/Microphone-Data-Source' );
 
 class MicrophoneDataModel extends Model {
 	constructor() {

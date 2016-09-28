@@ -1,9 +1,9 @@
 var _ = require( 'lodash' );
-var TASK = require( '../../TASK/js/Base' );
+var PEAK = require( '../../PEAK/js/Base' );
 var Analyser = require( 'audio-analyser' );
 var mic = require( 'mic' );
 
-class MicrophoneDataService extends TASK {
+class MicrophoneDataService extends PEAK {
 	constructor() {
 		super( {
 			bindFunctions: [

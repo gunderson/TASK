@@ -1,6 +1,6 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var View = require( '_TASK/views/View' );
+var View = require( '_PEAK/views/View' );
 
 class Menu extends View {
 	constructor( options ) {
