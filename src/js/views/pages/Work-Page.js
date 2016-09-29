@@ -2,20 +2,23 @@ var $ = require( 'jquery' );
 var _ = require( 'lodash' );
 var PEAK = require( '_PEAK/Base' );
 var Page = require( '_PEAK/views/pages/Page' );
+var WorkDetail = require( './Work-Detail-Page' );
 
-class <%=name.replace('-', '')%>Page extends Page {
+class WorkPage extends Page {
 	constructor( options ) {
 
 		// ---------------------------------------------------
 		// Local Properties
 
 		super( _.mergeWith( {
-			name: '<%=name%>',
+			name: 'Work',
 
 			// ---------------------------------------------------
 			// Child Views
 
-			views: [],
+			views: {
+				'Work-Detail': new WorkDetail(),
+			},
 
 			// ---------------------------------------------------
 			// Event Listeners
@@ -44,4 +47,4 @@ class <%=name.replace('-', '')%>Page extends Page {
 	// Getters & Setters
 }
 
-module.exports = <%=name%>Page;
+module.exports = WorkPage;

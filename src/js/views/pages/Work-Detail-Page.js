@@ -3,14 +3,14 @@ var _ = require( 'lodash' );
 var PEAK = require( '_PEAK/Base' );
 var Page = require( '_PEAK/views/pages/Page' );
 
-class <%=name.replace('-', '')%>Page extends Page {
+class WorkDetailPage extends Page {
 	constructor( options ) {
 
 		// ---------------------------------------------------
 		// Local Properties
 
 		super( _.mergeWith( {
-			name: '<%=name%>',
+			name: 'Work-Detail',
 
 			// ---------------------------------------------------
 			// Child Views
@@ -44,4 +44,4 @@ class <%=name.replace('-', '')%>Page extends Page {
 	// Getters & Setters
 }
 
-module.exports = <%=name%>Page;
+module.exports = WorkDetailPage;

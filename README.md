@@ -4,37 +4,15 @@ PEAK is based on loosely on the ethos of [Backbone.js](http://backbonejs.com), b
 
 ## Environment setup
 
-npm falafel currently only supports a very old version of acorn that doesn't work well with [ES2015] files. You'll need to manually bump versions in falafel, and acorn inside node_modules :(
+----
+Unfortunately, a browserify plugin dependency (falafel) currently only supports a very old version of acorn (common.js parser) that doesn't work well with [ES2015] files. This breaks many browserify plugins. You'll need to manually bump versions in falafel, and acorn inside node_modules :(
+----
 
-We prefer [Atom](http://atom.io) as our IDE and have provided a number of package and configuration files to help ensure we're all using the same coding standards.
+It is recommended to run the development environment on MacOS or inside of a [Virtualbox VM](http://virtualbox.org) running [Ubuntu 16.04](http://www.ubuntu.com/download).
 
-You will need node.js and git to be able to setup, build and run this project.
+We prefer [Atom](http://atom.io) as our IDE and have provided a number of package and configuration files to help ensure we're all using the same coding standards. The install script will install it for you.
 
-### Requirements on OS X
-
-On **OS X** it's easy to install if you have [Homebrew]. (if not you should definitely get it!)
-
-````bash
-$ brew install nodejs git
-````
-
-### Requirements on Ubuntu
-
-Ubuntu is also fairly easy to setup:
-
-````bash
-$ sudo apt-get update && sudo apt-get install nodejs git
-````
-
-### Requirements on Windows
-
-Windows is a but more difficult to setup due to poor availability of package managers. We strongly recommend upgrading to the most recent version of windows and enabling the new "[Windows Subsystem for Linux](http://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/)"
-
-With this method, you can use the same commands as ubuntu to install your build dependencies:
-
-````bash
-$ apt-get update && apt-get install nodejs git
-````
+Simply run `$ bash install.sh` to install all project dependencies.
 
 ## Project setup
 
@@ -71,6 +49,11 @@ Inside of the `/sass` and `/pug/static` folders there are index files that link 
 These index files must reference any that define your components.
 
 ### Conventions
+
+#### Structure
+
+`/dist/main.js` launches the site server and will soon be depricated in favor of using pm2 to start the site servers
+
 Inside of the `/js/` folder there are files named `server.js` & `index.js`. The application is spawned (and compiled from) `index.js` while the server is optionally deployable, but mainly intended for development purposes.
 
 Javascript, stylesheets and template files are included for each part of the application, nested in their appropriate folders. Each file tree follows the same basic structure so files that are necessary for different modules are easy to find.
@@ -78,6 +61,14 @@ Javascript, stylesheets and template files are included for each part of the app
 Modules should use a consistent naming scheme throughout the application from the module name itself, to the related sass and pug files, to the classnames and IDs in the HTML itself. A custom node module is included to create new Pages for convenience `$ npm add-page <Pagename>`. This script will create necessary folder structure and add the created files to their relevant index files. Conventionally every word in a Pagenames is capitalized and words are separated by hyphens.
 
 To remove a page from the site you should use `$ npm run add-page <Pagename> -d`.
+
+#### Javascript
+
+Please use the style as defined in .jsbeautifyrc
+
+#### SASS
+
+Style units that are not proportions (e.g. not %, vw or vh) should be defined in `rem` units. This enables all elements to scale uniformly. This technique helps to simplify media queries and can often make media query definitions as simple as  changing the `font-size` (defined in px) of the `<html>` node.
 
 ## Abstract classes
 
