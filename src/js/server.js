@@ -10,9 +10,6 @@ var methodOverride = require( 'method-override' );
 var path = require( 'path' );
 var chalk = require( 'chalk' );
 
-// var SocketInterface = require( './controllers/Socket-Interface' );
-// var MicrophoneDataService = require( './services/Microphone-Data' );
-
 class Server extends PEAK {
 	constructor( env ) {
 		super();

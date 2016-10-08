@@ -7,6 +7,7 @@ var PEAK = require( '_PEAK/Base' );
 // ---------------------------------------------------
 // Distribute Global Vars
 
+PEAK.prototype.browser = $.browser;
 PEAK.prototype.TEMPLATES = require( './lib/templates' );
 PEAK.prototype.ENV = window.env;
 window.$ = $;
@@ -15,9 +16,7 @@ window.$ = $;
 // App Controller
 
 var AppController = require( './controllers/App-controller' );
-var appController = new AppController( {
-	browser: $.browser
-} );
+var appController = new AppController( {} );
 PEAK.prototype.APP = appController;
 
 // ---------------------------------------------------

@@ -34,6 +34,10 @@ PEAK uses a build system and compiles **[ES2015]**, **[PUG]** & **[Sass]** to Ja
 
 We chose **[PUG]** & **[Sass]** because the syntaxes are similar enough that once you've created your **[PUG]** markup, you can mostly copy and paste that code directly to create **[Sass]** code, instantly giving you an identical hierarchy to style against your markup.
 
+### Controller
+
+The front-end is started via `/src/js/index.js`. This file creates an application controller (`AppController`) that can be reached universally via `PEAK.APP`. Application level events like routing and resizing are handled through AppController. Individual views should listen for these events through `AppController` rather than through the window object in order to minimize the number of listeners.
+
 ### Views
 
 Anything you can interact with, or that is contains dynamic content, should be made into a view. Views are made up of 3 parts distributed into three locations. The file name and folder structure of each location should be identical.
