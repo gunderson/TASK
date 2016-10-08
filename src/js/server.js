@@ -1,6 +1,6 @@
 'use strict';
 // var _ = require( 'lodash' );
-var PEAK = require( '../PEAK/js/PEAK-Base' );
+var PEAK = require( '../PEAK/js/Base' );
 var log = require( '../PEAK/utils/log' );
 var bodyParser = require( 'body-parser' );
 var express = require( 'express' );
@@ -10,8 +10,8 @@ var methodOverride = require( 'method-override' );
 var path = require( 'path' );
 var chalk = require( 'chalk' );
 
-var SocketInterface = require( './controllers/Socket-Interface' );
-var MicrophoneDataService = require( './services/Microphone-Data' );
+// var SocketInterface = require( './controllers/Socket-Interface' );
+// var MicrophoneDataService = require( './services/Microphone-Data' );
 
 class Server extends PEAK {
 	constructor( env ) {
@@ -48,16 +48,6 @@ class Server extends PEAK {
 
 		// ---------------------------------------------------------
 
-		this.micService = new MicrophoneDataService();
-		this.micService.start();
-
-		this.sockets = new SocketInterface( server, {
-			origins: '*'
-		} );
-
-		// ---------------------------------------------------------
-
-		this.micService.on( 'fft', this.sockets.broadcastFFT );
 	}
 }
 
