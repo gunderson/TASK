@@ -27,7 +27,10 @@ var argv = require( 'yargs' )
 	} )
 	.argv;
 
-process.on( 'SIGINT', function() {}
+process.on( 'SIGINT', function() {
+
+	server.stop();
+});
 
 		// ----------------------------------------------------------------
 		// Server
