@@ -1,66 +1,67 @@
 {
-	"author": {
-		"name": "pat@theorigin.net"
-	},
-	"dependencies": {
-		"art-kit": "^2.0.0",
-		"backbone-events-standalone": "^0.2.7",
-		"chalk": "^1.1.3",
-		"gsap": "^1.19.0",
-		"jquery": "^3.1.1",
-		"lodash": "^4.16.4",
-		"three": "*"
-	},
-	"description": "framework lib for front-end applications",
-	"devDependencies": {
-		"aliasify": "^2.0.0",
-		"babel-cli": "^6.16.0",
-		"babel-preset-es2015": "^6.18.0",
-		"babelify": "^7.3.0",
-		"stringify": "^5.1.0"
-	},
-	"license": "MIT",
-	"main": "./js/",
-	"name": "peak",
-	"optionalDependencies": {},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"version": "1.1.1",
-	"browserify": {
-		"transform": [
-			[
-				"babelify", {
-					"presets": [
-						"es2015"
-					],
-					"extensions": [
-						".js"
-					]
-				}
-			]
-		]
-	},
-	"stringify": {
-		"appliesTo": {
-			"includeExtensions": [
-				".txt",
-				".vert",
-				".frag"
-			]
-		}
-	},
-	"aliasify": {
-		"aliases": {
-			"underscore": "lodash"
-		},
-		"replacements": {
-			"_art-kit/(\\w+)": "/Users/pg/Development/repositories/art-kit/src/$1",
-			"_gsap/(\\w+)": "./node_modules/gsap/src/uncompressed/$1",
-			"postprocessing": "/Users/pg/Development/repositories/postprocessing/src/index.js"
-		}
-	},
-	"browser": {
-		"jquery.gsap": "./node_modules/gsap/src/minified/jquery.gsap.min.js"
-	}
+  "author": {
+    "name": "pat@theorigin.net"
+  },
+  "dependencies": {
+    "art-kit": "^2.0.0",
+    "backbone-events-standalone": "^0.2.7",
+    "chalk": "^1.1.3",
+    "gsap": "^1.19.0",
+    "jquery": "^3.1.1",
+    "lodash": "^4.16.4",
+    "three": "*"
+  },
+  "description": "framework lib for front-end applications",
+  "devDependencies": {
+    "aliasify": "^2.0.0",
+    "babel-cli": "^6.16.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babelify": "^7.3.0",
+    "stringify": "^5.1.0"
+  },
+  "license": "MIT",
+  "main": "./js/",
+  "name": "peak",
+  "optionalDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.1.2",
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ],
+          "extensions": [
+            ".js"
+          ]
+        }
+      ]
+    ]
+  },
+  "stringify": {
+    "appliesTo": {
+      "includeExtensions": [
+        ".txt",
+        ".vert",
+        ".frag"
+      ]
+    }
+  },
+  "aliasify": {
+    "aliases": {
+      "underscore": "lodash"
+    },
+    "replacements": {
+      "_art-kit/(\\w+)": "/Users/pg/Development/repositories/art-kit/src/$1",
+      "_gsap/(\\w+)": "./node_modules/gsap/src/uncompressed/$1",
+      "postprocessing": "/Users/pg/Development/repositories/postprocessing/src/index.js"
+    }
+  },
+  "browser": {
+    "jquery.gsap": "./node_modules/gsap/src/minified/jquery.gsap.min.js"
+  }
 }
