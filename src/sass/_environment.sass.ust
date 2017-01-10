@@ -1,4 +1,0 @@
-// this file generates _environment.sass
-
-$cdn: "<%= cdn %>"
-$environment: "<%= environment %>"
