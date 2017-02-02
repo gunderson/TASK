@@ -5,6 +5,7 @@ function log() {
 	var ts = '[' + chalk.gray( getTimestamp() ) + ']';
 	var args = Array.prototype.slice.apply( arguments );
 	args.unshift( ts );
+	if ( log.prototype.silent ) return args;
 	return console.log.apply( console, args );
 }
 
@@ -21,5 +22,7 @@ function getTimestamp() {
 
 	return `${tz} ${h}:${i}:${s}.${ml}`;
 }
+
+log.protoype.silent = false;
 
 module.exports = log;

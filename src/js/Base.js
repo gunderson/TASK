@@ -1,6 +1,6 @@
-const _ = require('lodash');
-const $ = require('jquery');
-const Events = require('backbone-events-standalone');
+const _ = require( 'lodash' );
+const $ = require( 'jquery' );
+const Events = require( 'backbone-events-standalone' );
 
 class Base {
 	constructor( options ) {

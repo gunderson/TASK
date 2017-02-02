@@ -4,32 +4,31 @@ var io = require( 'socket-io/client' );
 
 class SocketModel extends Model {
 	constructor( attributes, options ) {
-		super( _.mergeWith( {
-			// default attributes
-		}, attributes, Model.mergeRules ), _.mergeWith( {
-			// default options
-		}, options, Model.mergeRules ) );
+		super( Model.merge( {
+				// default attributes
+			}, attributes ),
+			Model.merge( {
+				events: {
+					target: 'io',
+					eventName: 'connect',
+					handler: 'onConnect'
+				},
+				bindFunctions: [
+					'onConnect'
+				]
+			}, options )
+		);
 
 		// ---------------------------------------------------
 		// Local Properties
 
-		this.socket = io.socket();
-
-		// ---------------------------------------------------
-		// Bind Functions
-
-		Model.bindFunctions( this, [
-			'onConnect'
-		] );
-
-		// ---------------------------------------------------
-		// Event Handlers
-
-		io.on( 'connect', this.onConnect );
+		this.socket = io.socket( this.url );
 	}
 
 	onConnect() {
-		// do something
+		_.each( this._attributes, ( val, name ) => {
+			this.socket.on( `change:${name}`, ( data ) => this[ name ] = data );
+		} )
 	}
 }
 

@@ -1,11 +1,11 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
-var PEAK = require( '../Base' );
+var Base = require( '../Base' );
 var Collection = require( '../collections/Collection' );
 
-class Model extends PEAK {
+class Model extends Base {
 	constructor( attributes, options ) {
-		super( _.mergeWith( {
+		super( Base.merge( {
 
 			// ---------------------------------------------------
 			// Local Properties
@@ -37,7 +37,7 @@ class Model extends PEAK {
 				'removeFromCollection',
 				'set'
 			]
-		}, options, PEAK.mergeRules ) );
+		}, options ) );
 
 		// ---------------------------------------------------
 		// Non-attribute Properties
@@ -47,14 +47,14 @@ class Model extends PEAK {
 		// ---------------------------------------------------
 		// Record Attributes
 		let defaultAttributes = {};
-		defaultAttributes[this.idField] = _.uniqueId();
+		defaultAttributes[ this.idField ] = _.uniqueId();
 		this._attributes = _.extend( defaultAttributes, attributes );
 
 		// ---------------------------------------------------
 		// Make Attribute getters & setters
 
 		_.each( this._attributes, this.makeAttribute );
-
+		this.delegateEvents();
 	}
 
 	[ Symbol.iterator ]() {
@@ -69,7 +69,9 @@ class Model extends PEAK {
 
 		if ( this.url ) {
 			// get the data at the url
-			return $.get( this.url, { id: this[ this.idField ] } )
+			return $.get( this.url, {
+					id: this[ this.idField ]
+				} )
 				.then( ( data ) => {
 					data = this.parse( data );
 					_.each( data, this.makeAttribute );
@@ -174,6 +176,7 @@ class Model extends PEAK {
 	// ---------------------------------------------------
 
 	destroy() {
+		this.undelegateEvents();
 		this.stopListening();
 		_.each( this._collections, ( c ) => {
 			// create forwarder on collection for attribute
@@ -225,7 +228,7 @@ class Model extends PEAK {
 
 	forwardEvent( data ) {
 		if ( data.forward === false ) return this;
-		if ( this.ignoreEvents.indexOf( data.type ) > -1) return this;
+		if ( this.ignoreEvents.indexOf( data.type ) > -1 ) return this;
 		data.parents = data.parents || [];
 		data.parents = data.parents || [];
 		data.parents.push( this );
@@ -238,7 +241,7 @@ class Model extends PEAK {
 	set( data, name ) {
 		if ( name ) {
 			data = {
-				[name]: data
+				[ name ]: data
 			};
 		}
 		_.each( data, this.makeAttribute );

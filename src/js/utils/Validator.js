@@ -1,11 +1,11 @@
-function validate ( data, type, minLength, maxLength ) {
+function validate( data, type, minLength, maxLength ) {
 	// TODO: allow type to be a string that acts as a global type
 	if ( typeof type === 'string' ) {
 		return validate( data, type );
 	}
 	let invalid = [];
 	for ( let key in data ) {
-		invalid.push( validateItem( data[key], type[key], key, minLength, maxLength ) );
+		invalid.push( validateItem( data[ key ], type[ key ], key, minLength, maxLength ) );
 	}
 	return invalid;
 }
@@ -14,18 +14,18 @@ function validateItem( data, type, key, minLength, maxLength ) {
 	// any piece of data that doesn't have an expectation is deemed not invalid
 	if ( type === undefined ) return [];
 	if ( minLength && data.length < minLength ) {
-		return [{
+		return [ {
 			code: 0,
 			key: key,
 			message: `${key} needs to be at least ${minLength} characters.`
-		}];
+		} ];
 	}
 	if ( maxLength && data.length < minLength ) {
-		return [{
+		return [ {
 			code: 0,
 			key: key,
 			message: `${key} cannot be longer than ${maxLength} characters.`
-		}];
+		} ];
 	}
 	return validateType[ type ]( data, key );
 }
@@ -88,7 +88,7 @@ var validateType = {
 			} );
 			return invalid;
 		}
-		parts = parts[1].split( '.' );
+		parts = parts[ 1 ].split( '.' );
 		if ( parts.length < 2 ) {
 			// no dot
 			invalid.push( {
@@ -122,7 +122,6 @@ var validateType = {
 		return invalid;
 	}
 };
-
 
 module.exports = {
 	validate,
