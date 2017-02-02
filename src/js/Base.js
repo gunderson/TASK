@@ -1,10 +1,10 @@
-var _ = require( 'lodash' );
-var $ = require( 'jquery' );
-var Events = require( 'backbone-events-standalone' );
+const _ = require('lodash');
+const $ = require('jquery');
+const Events = require('backbone-events-standalone');
 
-class PEAK {
+class Base {
 	constructor( options ) {
-		this.options = PEAK.merge( {
+		this.options = Base.merge( {
 			// ---------------------------------------------------
 			// Event Listeners
 
@@ -108,14 +108,13 @@ class PEAK {
 			return target;
 		}
 
-
 		return name;
 	}
 
 	// ---------------------------------------------------
 
 	static merge( ...opts ) {
-		opts.push( PEAK.mergeRules );
+		opts.push( Base.mergeRules );
 		let m = _.mergeWith.apply( this, opts );
 		return m;
 	}
@@ -133,7 +132,5 @@ class PEAK {
 		return srcValue;
 	}
 }
-
-Events.mixin( PEAK.prototype );
-
-module.exports = PEAK;
+Base.prototype.templates = [];
+Events.mixin( Base.prototype );

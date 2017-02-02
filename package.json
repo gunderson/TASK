@@ -3,13 +3,9 @@
     "name": "pat@theorigin.net"
   },
   "dependencies": {
-    "art-kit": "^2.0.0",
     "backbone-events-standalone": "^0.2.7",
-    "chalk": "^1.1.3",
-    "gsap": "^1.19.0",
     "jquery": "^3.1.1",
-    "lodash": "^4.16.4",
-    "three": "*"
+    "lodash": "^4.16.4"
   },
   "description": "framework lib for front-end applications",
   "devDependencies": {
@@ -19,14 +15,16 @@
     "babelify": "^7.3.0",
     "stringify": "^5.1.0"
   },
-  "license": "MIT",
-  "main": "./js/",
+  "license": "GPLv3",
+  "main": "./build/js/",
+  "main:next": "./src/js/",
   "name": "peak",
   "optionalDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "version": "1.2.0",
+  "TODO": "Swap rollup for browserify",
   "browserify": {
     "transform": [
       [
@@ -54,14 +52,6 @@
   "aliasify": {
     "aliases": {
       "underscore": "lodash"
-    },
-    "replacements": {
-      "_art-kit/(\\w+)": "/Users/pg/Development/repositories/art-kit/src/$1",
-      "_gsap/(\\w+)": "./node_modules/gsap/src/uncompressed/$1",
-      "postprocessing": "/Users/pg/Development/repositories/postprocessing/src/index.js"
     }
-  },
-  "browser": {
-    "jquery.gsap": "./node_modules/gsap/src/minified/jquery.gsap.min.js"
   }
 }
