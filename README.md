@@ -1,6 +1,6 @@
-# Tool Application Starter Kit (TASK)
+# PEAK Experiential Application Kit (PEAK)
 
-TASK is based on loosely on the ethos of [Backbone.js](http://backbonejs.com), but has eliminated functionality that is unnecessary in a fully compiled, self contained build. We have extended it to be a full framework supporting multiple languages running on node.js.
+PEAK is based on loosely on the ethos of [Backbone.js](http://backbonejs.com), but has eliminated functionality that is unnecessary in a fully compiled, self contained build. We have extended it to be a full framework supporting multiple languages running on node.js.
 
 ## Environment setup
 
@@ -74,11 +74,14 @@ These index files must reference any that define your components.
 
 
 ### Conventions
+
+#### Common Files
 Inside of the `/js/` folder there are files named `server.js` & `index.js`. The application is spawned (and compiled from) `index.js` while the server is optionally deployable, but mainly intended for development purposes.
 
-
+#### Separate concerns, uniform organization
 Javascript, stylesheets and template files are included for each part of the application, nested in their appropriate folders. Each file tree follows the same basic structure so files that are necessary for different modules are easy to find.
 
+#### Filenames for all elements of the same component should match
 Modules should use a consistent naming scheme throughout the application from the module name itself, to the related sass and pug files, to the classnames and IDs in the HTML itself. A custom node module is included to create new Pages for convenience `npm add-page pagename`. This script will create necessary folder structure and add the created files to their relevant index files.
 
 **TODO:** add a 'remove page' custom module
@@ -92,10 +95,10 @@ Modules should use a consistent naming scheme throughout the application from th
 
  TASK provides basic MVC components via Abstract Classes in the TASK foler. They are meant to be subclassed for convenience and framework functionality. To access TASK classes via `import` or `require()` refer to the `_TASK` package. ex `import Base from '_TASK/Base'`
 
-## TASK Class Structure
+## PEAK Class Structure
 
 ### Base
-TASK Components all inherit from the `Base` class. It primarily provides the event system ( [backbone-events-standalone] ) and a few utilities.
+PEAK Components all inherit from the `Base` class. It primarily provides the event system ( [backbone-events-standalone] ) and a few utilities.
 
 Extending the prototype of the `Base` class is a convenient way to inject global variables into all TASK objects.
 
@@ -110,7 +113,7 @@ Views are used to control pixels on screen, and receive user input.
 
 **TODO:** UPDATE THIS SECTION TO HAVE ACCURATE PATHS TO COPY OBJECT
 
-TASK supports multiple locales that can be defined by adding sub-folders to the `./data/copy` folder with the locale designation as the folder name. JSON files in this folder will be concatenated and accessible through the `window.GLOBALS.COPY` variable. Each locale must use a consistent variable name structure to ensure that templating works across all locales.
+PEAK supports multiple locales that can be defined by adding sub-folders to the `./data/copy` folder with the locale designation as the folder name. JSON files in this folder will be concatenated and accessible through the `window.GLOBALS.COPY` variable. Each locale must use a consistent variable name structure to ensure that templating works across all locales.
 
 At compile-time each locale has a localized version of the static template files rendered for that locale, accessed to the root of the dist folder. For "en" or "es", you would get: `index.en.html` or `index.es.html`. Additionally, the hero language for the site is copied to `index.html`.
 

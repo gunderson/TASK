@@ -1,0 +1,27 @@
+html
+	head
+		include _head
+		style
+			| html {
+			| 	background-color: #000;
+			| }
+			| body {
+			| 	display: none;
+			| 	background-color: #000;
+			| }
+	body
+		a#saver
+		#main
+			include ui/_site-loader
+			include ui/_main-menu
+			include ui/_header
+			include ui/_footer
+			#pages
+				include pages/_soundcloud
+				include pages/_file-player-page
+				include pages/_microphone-page
+				include pages/_home
+				.cover
+
+		script(src="http://connect.soundcloud.com/sdk.js")
+		script(src="index.js")

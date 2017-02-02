@@ -1,0 +1,17 @@
+#soundcloud.page
+	.background
+	.content
+		h1 Soundcloud Page
+		h2.now-playing 
+			| Now Playing: 
+			a(href="") 
+		h3.up-next 
+			| Up Next: 
+			a(href="")  
+		select#vis-picker
+		button.play.button.button-0 Play
+		button.stop.button.button-0 Stop
+		button.advance.button.button-0 Advance
+		button.goFullScreen.button.button-0() Go Full Screen
+		
+		#visualizer

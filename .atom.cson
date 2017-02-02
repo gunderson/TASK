@@ -1,9 +1,0 @@
-"*":
-	core:
-		customFileTypes:
-			"text.html.jsp": ["ust"]
-		editor:
-			softTabs: false
-			tabLength: 4
-			tabType: "hard"
-			tabType: "hard"

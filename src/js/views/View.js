@@ -140,28 +140,9 @@ class View extends Base {
 		// use a template if defined
 		// only render it if it hasn't been rendered before && it's not marked for keeping
 		if ( !this.hasRendered || !this.keep ) {
-			if ( this.template ) {
-				let $prev, $next;
-				if ( this.$el && this.$el.parent() ) {
-					$prev = this.$el.prev();
-					$next = this.$el.next();
-					this.$el.remove( this.$el );
-					this.insert = true;
-				}
-				var html = View.getTemplate( this.template )( this.serialize() );
-				this.$el = $( html );
-				// if it was already in the view, attempt to put the new element where the old one was
-				if ( this.insert ) {
-					if ( $prev ) {
-						$prev.after( this.$el );
-					} else if ( $next ) {
-						$next.before( this.$el );
-					} else {
-						this.parentView.$el.append( this.$el );
-					}
-				}
-			// if an el exists
-			} else if ( this.el ) {
+
+
+			if ( this.el ) {
 				// try to find it locally
 				this.el = this.parentView.$( this.el ).first()[ 0 ] ||
 				// try to find it globally
@@ -169,6 +150,33 @@ class View extends Base {
 				// create one
 				$( `<${this.tagname} class='${this.classname}' id='${this.id}' />` ).first()[ 0 ];
 				this.$el = $( this.el );
+			}
+
+			if ( this.template ) {
+				let $prev, $next;
+				if ( this.$el && this.$el.parent() ) {
+					$prev = this.$el.prev();
+					$next = this.$el.next();
+					this.$el.remove();
+					this.insert = true;
+				}
+
+				var templateFn = View.getTemplate( this.template );
+				if ( !templateFn ) {
+					console.warn( `PEAK: Could not find template named ${this.template}.` );
+				}
+				var html = templateFn( this.serialize() );
+				this.$el = $( html );
+				// if it was already in the view, attempt to put the new element where the old one was
+				if ( this.insert ) {
+					if ( $prev && $prev.length ) {
+						$prev.after( this.$el );
+					} else if ( $prev && $next.length ) {
+						$next.before( this.$el );
+					} else {
+						this.parentView.$el.append( this.$el );
+					}
+				}
 			}
 			// save the primary element
 			this.el = this.$el[ 0 ];
@@ -182,9 +190,9 @@ class View extends Base {
 
 	render( parentView ) {
 		this.parentView = parentView instanceof View ? parentView : this.parentView || window;
-		this.setupElement();
 		this.undelegateEvents();
 		this.unbindData();
+		this.setupElement();
 		this.beforeRender();
 		this.trigger( 'beforeRender', this );
 

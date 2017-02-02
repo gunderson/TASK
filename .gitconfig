@@ -3,9 +3,9 @@
 [alias]
 	add-commit = !git add -A && git commit
 [merge]
-	tool = atom
+	tool = code --wait --diff
 [core]
-	editor = atop
+	editor = code --wait
 	ignorecase = false
 [push]
 	default = simple

@@ -62,11 +62,13 @@ class PEAK {
 	undelegateEvents() {
 		_( this.options.events )
 			.each( ( e ) => {
+				// check to see if event has been delegated
 				if ( typeof e.target === 'string' ) return;
-				if ( e.target instanceof $ ) {
-					e.target.off( e.eventName );
+				let target = this.getLocalObject( e.target );
+				if ( target instanceof $ ) {
+					target.off( e.eventName );
 				} else {
-					this.stopListening( e.target, e.eventName );
+					this.stopListening( target, e.eventName );
 				}
 			} );
 		return this;
@@ -86,7 +88,7 @@ class PEAK {
 			if ( !target && this.$ ) target = this.$( name );
 
 			// consider it a global selector and use jquery to find it
-			if ( !target || target instanceof $ && target.length === 0 ) {
+			if ( ( !target || target instanceof $ ) && target.length === 0 && this.$ ) {
 				target = $( name );
 			}
 
