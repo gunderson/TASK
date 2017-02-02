@@ -5,7 +5,7 @@ var THREE = require( 'three' );
 
 class Scene extends View {
 	constructor( options ) {
-		super( _.mergeWith( {
+		super( View.merge( {
 
 			// ---------------------------------------------------
 			// Local Properties
@@ -24,7 +24,7 @@ class Scene extends View {
 			shaders: {},
 			textures: {},
 			isLoaded: false
-		}, options, View.mergeRules ) );
+		}, options ) );
 	}
 
 	setup() {
@@ -45,7 +45,7 @@ class Scene extends View {
 				this.setupLights( this.options );
 				this.layoutScene( this.options );
 			} );
-			// .then( this.onResize );
+		// .then( this.onResize );
 	}
 
 	// setup scene

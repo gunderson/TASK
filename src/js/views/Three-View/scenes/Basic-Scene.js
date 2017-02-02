@@ -1,7 +1,6 @@
-var PostProcessedScene = require( './PostProcessedScene' );
+var PostProcessedScene = require( './Post-Processed-Scene' );
 var _ = require( 'lodash' );
 var THREE = require( 'three' );
-// var TweenLite = require( 'TweenLite' );
 
 class BasicScene extends PostProcessedScene {
 	constructor( options ) {

@@ -1,12 +1,10 @@
 var _ = require( 'lodash' );
 var Page = require( './Page' );
-// var AnimationPlayer = require( '_art-kit/media/AnimationPlayer' );
-
 import AnimationPlayer from 'art-kit/src/media/AnimationPlayer';
 
 class AnimationPlayerPage extends Page {
 	constructor( options ) {
-		super( _.mergeWith( {
+		super( Page.merge( {
 
 			// ---------------------------------------------------
 			// Classs Properties
@@ -30,7 +28,7 @@ class AnimationPlayerPage extends Page {
 				'transitionInComplete',
 				'transitionOut'
 			]
-		}, options, Page.mergeRules ) );
+		}, options ) );
 
 		this.player = new AnimationPlayer( this.update, this.draw );
 	}

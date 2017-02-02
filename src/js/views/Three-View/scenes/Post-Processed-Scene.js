@@ -10,7 +10,7 @@ window.THREE = THREE;
 
 class PostProcessedScene extends Scene {
 	constructor( options ) {
-		super( PostProcessedScene.merge( {
+		super( Scene.merge( {
 			// ---------------------------------------------------
 			// Class Properties
 

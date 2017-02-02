@@ -1,3 +1,5 @@
+import AnimationPlayer from 'art-kit/src/media/AnimationPlayer';
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
@@ -822,11 +824,6 @@ var ThreeView$1 = Object.freeze({
 var _$4 = require('lodash');
 var $$2 = require('jquery');
 var View$3 = require('../View');
-var TweenLite = require('gsap/src/uncompressed/TweenLite');
-var CSSPlugin = require('gsap/src/uncompressed/plugins/CSSPlugin');
-var Easing = require('gsap/src/uncompressed/easing/EasePack');
-
-var PAGE_TRANSITION_DURATION = 1.5;
 
 var Page = function (_View) {
 	inherits(Page, _View);
@@ -843,11 +840,6 @@ var Page = function (_View) {
 
 			// ---------------------------------------------------
 			// Local Properties
-
-			col: 0,
-			row: 0,
-			page: null,
-			layerAnimationOffset: 0.25,
 
 			// ---------------------------------------------------
 			// Event Listeners
@@ -895,7 +887,7 @@ var Page = function (_View) {
 		value: function fetch(params, promise) {
 			var _this2 = this;
 
-			promise = promise || new $$2.Deferred();
+			promise = promise || $$2.Deferred();
 
 			var recallFetch = function recallFetch() {
 				_this2.fetch(params, promise);
@@ -1021,8 +1013,104 @@ var Page = function (_View) {
 		value: function clearSubPage() {}
 	}, {
 		key: 'transitionIn',
+		value: function transitionIn() {
+			var deferred = $$2.Deferred();
+			this.trigger('transitionIn');
+			this.$el.show({
+				complete: deferred.resolve
+			});
+			return deferred.promise().then(this.transitionInComplete);
+		}
+	}, {
+		key: 'transitionOut',
+		value: function transitionOut() {
+			var deferred = $$2.Deferred();
+			// override me
+			this.trigger('transitionOut');
+			this.$el.hide({
+				complete: deferred.resolve
+			});
+			return deferred.promise().then(this.transitionOutComplete);
+		}
+	}, {
+		key: 'transitionInComplete',
+		value: function transitionInComplete() {
+			// override me
+			this.trigger('transitionInComplete');
+		}
+	}, {
+		key: 'transitionOutComplete',
+		value: function transitionOutComplete() {
+			// override me
+			this.trigger('transitionOutComplete');
+		}
+	}]);
+	return Page;
+}(View$3);
+
+module.exports = Page;
+
+
+
+var Page$1 = Object.freeze({
+
+});
+
+var _$5 = require('lodash');
+var $$3 = require('jquery');
+var Page$2 = require('./Page');
+var TweenLite = require('gsap/src/uncompressed/TweenLite');
+var CSSPlugin = require('gsap/src/uncompressed/plugins/CSSPlugin');
+var Easing = require('gsap/src/uncompressed/easing/EasePack');
+
+var PAGE_TRANSITION_DURATION = 1.5;
+
+var GridPage = function (_Page) {
+	inherits(GridPage, _Page);
+
+	function GridPage(options) {
+		classCallCheck(this, GridPage);
+		return possibleConstructorReturn(this, (GridPage.__proto__ || Object.getPrototypeOf(GridPage)).call(this, Page$2.merge({
+
+			// ---------------------------------------------------
+			// Class Properties
+
+			name: '',
+
+			// ---------------------------------------------------
+			// Local Properties
+
+			col: 0,
+			row: 0,
+			page: null,
+			layerAnimationOffset: 0.25,
+
+			// ---------------------------------------------------
+			// Event Listeners
+
+			events: [],
+			bindFunctions: []
+		}, options)));
+	}
+
+	// ---------------------------------------------------
+
+	createClass(GridPage, [{
+		key: 'loadAssets',
+		value: function loadAssets() {
+			var deferred = $$3.Deferred();
+			// load stuff in here
+			// resolve the deferred when load is complete
+			deferred.resolve();
+			return deferred.promise();
+		}
+
+		// ---------------------------------------------------
+
+	}, {
+		key: 'transitionIn',
 		value: function transitionIn(prev) {
-			var _this4 = this;
+			var _this2 = this;
 
 			this.$('.cover').on('mousewheel', function (e) {
 				e.preventDefault();
@@ -1077,10 +1165,10 @@ var Page = function (_View) {
 				y: '0%',
 				ease: Easing.Power4.easeOut,
 				onComplete: function onComplete() {
-					_this4.$el.css({
+					_this2.$el.css({
 						transform: ''
 					});
-					_this4.trigger('transitionInComplete');
+					_this2.trigger('transitionInComplete');
 				},
 				overwrite: true
 			});
@@ -1102,7 +1190,7 @@ var Page = function (_View) {
 	}, {
 		key: 'transitionOut',
 		value: function transitionOut(next) {
-			var _this5 = this;
+			var _this3 = this;
 
 			this.$el.removeClass('active');
 			this.$('.cover').off('mousewheel');
@@ -1138,8 +1226,8 @@ var Page = function (_View) {
 				y: endY + '%',
 				ease: Easing.Power4.easeOut,
 				onComplete: function onComplete() {
-					_this5.$el.hide();
-					_this5.trigger('transitionOutComplete');
+					_this3.$el.hide();
+					_this3.trigger('transitionOutComplete');
 				},
 				overwrite: true
 			});
@@ -1173,18 +1261,18 @@ var Page = function (_View) {
 			this.$('.cover').off('mousewheel');
 		}
 	}]);
-	return Page;
-}(View$3);
+	return GridPage;
+}(Page$2);
 
-module.exports = Page;
+module.exports = GridPage;
 
 
 
-var Page$1 = Object.freeze({
+var GridPage$1 = Object.freeze({
 
 });
 
-var _$5 = require('lodash');
+var _$6 = require('lodash');
 var AnimationPlayerPage = require('./Animation-Player-Page');
 
 var ThreejsPage = function (_AnimationPlayerPage) {
@@ -1192,7 +1280,7 @@ var ThreejsPage = function (_AnimationPlayerPage) {
 
 	function ThreejsPage(options) {
 		classCallCheck(this, ThreejsPage);
-		return possibleConstructorReturn(this, (ThreejsPage.__proto__ || Object.getPrototypeOf(ThreejsPage)).call(this, _$5.mergeWith({
+		return possibleConstructorReturn(this, (ThreejsPage.__proto__ || Object.getPrototypeOf(ThreejsPage)).call(this, AnimationPlayerPage.merge({
 
 			// ---------------------------------------------------
 			// Class Properties
@@ -1220,7 +1308,7 @@ var ThreejsPage = function (_AnimationPlayerPage) {
 			// Data Binding
 
 			dataBindings: []
-		}, options, ThreejsPage.mergeRules)));
+		}, options)));
 
 		// ---------------------------------------------------
 		// Finish setup
@@ -1304,7 +1392,7 @@ var ThreejsPage = function (_AnimationPlayerPage) {
 		key: 'update',
 		value: function update(data) {
 			// console.log( 'update' )
-			this.threeView.update(_$5.extend({
+			this.threeView.update(_$6.extend({
 				mouseTelemetrics: this.mouseTelemetrics
 			}, data));
 			return this;
@@ -1322,8 +1410,89 @@ var ThreejsPage = function (_AnimationPlayerPage) {
 
 module.exports = ThreejsPage;
 
-var _$6 = require('lodash');
-var $$3 = require('jquery');
+var _$7 = require('lodash');
+var Page$3 = require('./Page');
+var AnimationPlayerPage$1 = function (_Page) {
+	inherits(AnimationPlayerPage, _Page);
+
+	function AnimationPlayerPage(options) {
+		classCallCheck(this, AnimationPlayerPage);
+
+		var _this = possibleConstructorReturn(this, (AnimationPlayerPage.__proto__ || Object.getPrototypeOf(AnimationPlayerPage)).call(this, Page$3.merge({
+
+			// ---------------------------------------------------
+			// Classs Properties
+
+			name: 'Animation-Player',
+
+			// ---------------------------------------------------
+			// Local Properties
+
+			autoPlay: false,
+			autoStop: true,
+
+			// ---------------------------------------------------
+			// Bind Functions
+
+			bindFunctions: ['play', 'stop', 'update', 'draw', 'transitionInComplete', 'transitionOut']
+		}, options)));
+
+		_this.player = new AnimationPlayer(_this.update, _this.draw);
+		return _this;
+	}
+
+	createClass(AnimationPlayerPage, [{
+		key: 'transitionInComplete',
+		value: function transitionInComplete() {
+			get$1(AnimationPlayerPage.prototype.__proto__ || Object.getPrototypeOf(AnimationPlayerPage.prototype), 'transitionInComplete', this).call(this);
+			if (this.autoPlay) this.play();
+		}
+
+		// transitionIn() {
+		// 	super.transitionIn();
+		// }
+
+	}, {
+		key: 'transitionOut',
+		value: function transitionOut() {
+			get$1(AnimationPlayerPage.prototype.__proto__ || Object.getPrototypeOf(AnimationPlayerPage.prototype), 'transitionOut', this).call(this);
+			if (this.autoStop) this.stop();
+		}
+	}, {
+		key: 'play',
+		value: function play() {
+			this.player.play();
+			this.trigger('play');
+		}
+	}, {
+		key: 'stop',
+		value: function stop() {
+			this.player.stop();
+			this.trigger('stop');
+		}
+	}, {
+		key: 'update',
+		value: function update(data) {}
+	}, {
+		key: 'draw',
+		value: function draw() {}
+	}, {
+		key: 'currentTime',
+		get: function get() {
+			return this.player.currentTime;
+		},
+		set: function set(val) {
+			this.player.currentTime = val;
+			return val;
+		}
+	}]);
+	return AnimationPlayerPage;
+}(Page$3);
+
+module.exports = AnimationPlayerPage$1;
+
+var _$8 = require('lodash');
+var $$4 = require('jquery');
 var Base$3 = require('../Base');
 var Collection = require('../collections/Collection');
 
@@ -1366,13 +1535,13 @@ var Model = function (_Base) {
 		// ---------------------------------------------------
 		// Record Attributes
 		var defaultAttributes = {};
-		defaultAttributes[_this.idField] = _$6.uniqueId();
-		_this._attributes = _$6.extend(defaultAttributes, attributes);
+		defaultAttributes[_this.idField] = _$8.uniqueId();
+		_this._attributes = _$8.extend(defaultAttributes, attributes);
 
 		// ---------------------------------------------------
 		// Make Attribute getters & setters
 
-		_$6.each(_this._attributes, _this.makeAttribute);
+		_$8.each(_this._attributes, _this.makeAttribute);
 		_this.delegateEvents();
 		return _this;
 	}
@@ -1395,15 +1564,15 @@ var Model = function (_Base) {
 
 			if (this.url) {
 				// get the data at the url
-				return $$3.get(this.url, {
+				return $$4.get(this.url, {
 					id: this[this.idField]
 				}).then(function (data) {
 					data = _this2.parse(data);
-					_$6.each(data, _this2.makeAttribute);
+					_$8.each(data, _this2.makeAttribute);
 				});
 			} else {
 				// we're all set!
-				var deferred = $$3.Deferred();
+				var deferred = $$4.Deferred();
 				deferred.resolve(this);
 				return deferred;
 			}
@@ -1426,7 +1595,7 @@ var Model = function (_Base) {
 
 			if (this.options.url) {
 				// set the data at the url
-				return $$3.ajax(_$6.defaults(options, {
+				return $$4.ajax(_$8.defaults(options, {
 					type: 'POST',
 					url: this.options.url,
 					data: JSON.stringify(this.toJSON()),
@@ -1436,7 +1605,7 @@ var Model = function (_Base) {
 				}));
 			} else {
 				// we're all set!
-				var deferred = $$3.Deferred();
+				var deferred = $$4.Deferred();
 				deferred.resolve(this);
 				return deferred;
 			}
@@ -1451,7 +1620,7 @@ var Model = function (_Base) {
 
 			if (justId) return this._attributes.id;
 
-			return _$6(this._attributes).omit(this.options.omitAttributes).cloneDeepWith(function (a) {
+			return _$8(this._attributes).omit(this.options.omitAttributes).cloneDeepWith(function (a) {
 				// pass toJSONRefs to tell collections that may be children of this model whether to
 				// save their children as objects or just IDs that can be picked up as references from a master collection when rebuilding
 				if (a.toJSON) {
@@ -1477,7 +1646,7 @@ var Model = function (_Base) {
 				this._collections.push(collection);
 
 				// create listeners on collection for attribute changes
-				_$6.each(this._attributes, function (val, key) {
+				_$8.each(this._attributes, function (val, key) {
 					collection.listenTo(_this4, 'change:' + key, collection.forwardEvent);
 				});
 
@@ -1498,7 +1667,7 @@ var Model = function (_Base) {
 		key: 'removeFromCollection',
 		value: function removeFromCollection(collection, options) {
 			if (this._collections.indexOf(collection) > -1) {
-				_$6.remove(this._collections, collection);
+				_$8.remove(this._collections, collection);
 				// only trigger if model is a member
 				if (!options.silent) {
 					this.trigger('removeFromCollection', {
@@ -1519,7 +1688,7 @@ var Model = function (_Base) {
 
 			this.undelegateEvents();
 			this.stopListening();
-			_$6.each(this._collections, function (c) {
+			_$8.each(this._collections, function (c) {
 				// create forwarder on collection for attribute
 				c.remove(_this5);
 			});
@@ -1543,7 +1712,7 @@ var Model = function (_Base) {
 			}
 
 			// // if it's already defined, just set the new value
-			_$6.each(this._collections, function (c) {
+			_$8.each(this._collections, function (c) {
 				// create forwarder on collection for attribute
 				c.listenTo(_this6, 'change:' + name, c.forwardEvent);
 			});
@@ -1559,7 +1728,7 @@ var Model = function (_Base) {
 					_this6.trigger(event.type, event, val);
 
 					// if it is an emitter, listen for change events
-					if (val && _$6.isFunction(val.trigger)) {
+					if (val && _$8.isFunction(val.trigger)) {
 						_this6.listenTo(val, 'change', _this6.forwardEvent);
 					}
 				},
@@ -1593,7 +1762,7 @@ var Model = function (_Base) {
 			if (name) {
 				data = defineProperty({}, name, data);
 			}
-			_$6.each(data, this.makeAttribute);
+			_$8.each(data, this.makeAttribute);
 		}
 
 		// ---------------------------------------------------
@@ -1620,7 +1789,7 @@ var Model$1 = Object.freeze({
 
 });
 
-var _$7 = require('lodash');
+var _$9 = require('lodash');
 var Model$2 = require('./Model');
 var io = require('socket-io/client');
 
@@ -1653,7 +1822,7 @@ var SocketModel = function (_Model) {
 		value: function onConnect() {
 			var _this2 = this;
 
-			_$7.each(this._attributes, function (val, name) {
+			_$9.each(this._attributes, function (val, name) {
 				_this2.socket.on('change:' + name, function (data) {
 					return _this2[name] = data;
 				});
@@ -1671,8 +1840,8 @@ var SocketModel$1 = Object.freeze({
 
 });
 
-var _$8 = require('lodash');
-var $$4 = require('jquery');
+var _$10 = require('lodash');
+var $$5 = require('jquery');
 var Base$4 = require('../Base');
 var Model$3 = require('../models/Model');
 
@@ -1683,12 +1852,12 @@ var Collection$1 = function (_Base) {
 		classCallCheck(this, Collection);
 
 		// make models array optional
-		if (!_$8.isArray(models) && (typeof models === 'undefined' ? 'undefined' : _typeof(models)) === 'object' && typeof options === 'undefined') {
+		if (!_$10.isArray(models) && (typeof models === 'undefined' ? 'undefined' : _typeof(models)) === 'object' && typeof options === 'undefined') {
 			options = models;
 			models = [];
 		}
 
-		var _this = possibleConstructorReturn(this, (Collection.__proto__ || Object.getPrototypeOf(Collection)).call(this, _$8.mergeWith({
+		var _this = possibleConstructorReturn(this, (Collection.__proto__ || Object.getPrototypeOf(Collection)).call(this, _$10.mergeWith({
 			model: Model$3,
 			url: null,
 			idField: 'id',
@@ -1724,7 +1893,7 @@ var Collection$1 = function (_Base) {
 			// kill existing models
 			this.empty();
 			// create new models
-			_$8.each(models, function (m) {
+			_$10.each(models, function (m) {
 				return _this2.add(m, options);
 			});
 			if (!options.silent) {
@@ -1742,12 +1911,12 @@ var Collection$1 = function (_Base) {
 
 			options = options || {};
 			if (options.reset === true) this.empty();
-			models = _$8.isArray(models) ? models : [models];
-			_$8.each(models, function (attributes) {
+			models = _$10.isArray(models) ? models : [models];
+			_$10.each(models, function (attributes) {
 				var found = _this3.get(attributes.id);
 				if (found[0]) {
 					// if the model exists, update it's attributes
-					_$8.extend(found[0], attributes);
+					_$10.extend(found[0], attributes);
 				} else {
 					// otherwise, add it
 					_this3.add(attributes);
@@ -1765,8 +1934,8 @@ var Collection$1 = function (_Base) {
 
 			options = options || {};
 			// if models isn't an array, make it one
-			models = _$8.isArray(models) ? models : [models];
-			var updated = _$8.map(models, function (attributes) {
+			models = _$10.isArray(models) ? models : [models];
+			var updated = _$10.map(models, function (attributes) {
 				// create new models
 				if (attributes[_this4.idField]) {
 					var existingModels = _this4.get(attributes[_this4.idField]);
@@ -1783,7 +1952,7 @@ var Collection$1 = function (_Base) {
 					}
 				} else {
 					// create a unique id
-					attributes[_this4.idField] = _$8.uniqueId();
+					attributes[_this4.idField] = _$10.uniqueId();
 				}
 				// create new model
 				var Model = _this4.model;
@@ -1820,8 +1989,8 @@ var Collection$1 = function (_Base) {
 			options = options || {};
 			// if models isn't an array, make it one
 			// create an internal copy of the models array to iterate on
-			models = _$8.isArray(models) ? models.slice() : [models];
-			_$8.each(models, function (model) {
+			models = _$10.isArray(models) ? models.slice() : [models];
+			_$10.each(models, function (model) {
 				// allow ids to be passed
 				if ((typeof model === 'undefined' ? 'undefined' : _typeof(model)) !== 'object') {
 					model = _this5.get(model);
@@ -1861,23 +2030,23 @@ var Collection$1 = function (_Base) {
 			var _this6 = this;
 
 			// make sure match conditions is an array
-			matchConditions = _$8.isArray(matchConditions) ? matchConditions : [matchConditions];
+			matchConditions = _$10.isArray(matchConditions) ? matchConditions : [matchConditions];
 
 			// an array of objects is assumed to be a list of match condition objects
 			// an array of non-objects is assumed to be a list of ids
 			if (_typeof(matchConditions[0]) !== 'object') {
 				// convert to match condition objects
-				matchConditions = _$8.map(matchConditions, function (_id) {
+				matchConditions = _$10.map(matchConditions, function (_id) {
 					var cond = {};
 					cond[_this6.idField] = _id;
 					return cond;
 				});
 			}
 
-			var models = _$8.chain(matchConditions)
+			var models = _$10.chain(matchConditions)
 			// for each condition, find a list of models that matches
 			.map(function (condition) {
-				return _$8.filter(_this6._models, condition);
+				return _$10.filter(_this6._models, condition);
 			}).flatten()
 			// only include models once in list
 			.uniq().value();
@@ -1899,7 +2068,7 @@ var Collection$1 = function (_Base) {
 		value: function fetch(options) {
 			var _this7 = this;
 
-			options = _$8.defaults(options, {
+			options = _$10.defaults(options, {
 				reset: true,
 				merge: false,
 				parse: this.parse,
@@ -1910,14 +2079,14 @@ var Collection$1 = function (_Base) {
 
 			if (options.url) {
 				// get the data at the url
-				return $$4.get(options.url, options.query).then(options.reset ? function (data) {
+				return $$5.get(options.url, options.query).then(options.reset ? function (data) {
 					return _this7.reset(options.parse(data), options);
 				} : function (data) {
-					return _$8.each(options.parse(data), options.merge ? _this7.add : _this7.set);
+					return _$10.each(options.parse(data), options.merge ? _this7.add : _this7.set);
 				});
 			} else {
 				// we're all set!
-				var deferred = $$4.Deferred();
+				var deferred = $$5.Deferred();
 				deferred.resolve(this);
 				return deferred;
 			}
@@ -1949,7 +2118,7 @@ var Collection$1 = function (_Base) {
 	}, {
 		key: 'toJSON',
 		value: function toJSON(refs) {
-			return _$8.map(this._models, function (m) {
+			return _$10.map(this._models, function (m) {
 				return m.toJSON(refs);
 			});
 		}
@@ -1959,7 +2128,7 @@ var Collection$1 = function (_Base) {
 	}, {
 		key: 'getRefs',
 		value: function getRefs() {
-			return _$8.map(this._models, function (m) {
+			return _$10.map(this._models, function (m) {
 				return m.id;
 			});
 		}
@@ -1971,33 +2140,33 @@ var Collection$1 = function (_Base) {
 	}, {
 		key: 'map',
 		value: function map(fn) {
-			return _$8.map(this.models, fn);
+			return _$10.map(this.models, fn);
 		}
 	}, {
 		key: 'each',
 		value: function each(fn) {
-			_$8.each(this.models, fn);
+			_$10.each(this.models, fn);
 			return this;
 		}
 	}, {
 		key: 'where',
 		value: function where(fn) {
-			return _$8.filter(this.models, fn);
+			return _$10.filter(this.models, fn);
 		}
 	}, {
 		key: 'find',
 		value: function find(fn) {
-			return _$8.find(this.models, fn);
+			return _$10.find(this.models, fn);
 		}
 	}, {
 		key: 'filter',
 		value: function filter(fn) {
-			return _$8.filter(this.models, fn);
+			return _$10.filter(this.models, fn);
 		}
 	}, {
 		key: 'reduce',
 		value: function reduce(fn, init) {
-			return _$8.reduce(this.models, fn, init);
+			return _$10.reduce(this.models, fn, init);
 		}
 
 		// ---------------------------------------------------
@@ -2424,8 +2593,8 @@ var Social = Object.freeze({
 
 });
 
-var _$9 = require('underscore');
-var $$5 = require('jquery');
+var _$11 = require('underscore');
+var $$6 = require('jquery');
 var log = require('../utils/log');
 
 var GA_ACCOUNTS = ["UA-xxxxxxxx-1"];
@@ -2497,7 +2666,7 @@ var Analytics = function () {
 	}, {
 		key: 'trackPageview',
 		value: function trackPageview(data) {
-			_$9.each(this.trackers, function (tracker) {
+			_$11.each(this.trackers, function (tracker) {
 				tracker.trackPageview(data);
 			});
 			Analytics.report(data);
@@ -2506,7 +2675,7 @@ var Analytics = function () {
 	}, {
 		key: 'trackEvent',
 		value: function trackEvent(data) {
-			_$9.each(this.trackers, function (tracker) {
+			_$11.each(this.trackers, function (tracker) {
 				try {
 					tracker.trackEvent(data);
 				} catch (e) {}
@@ -2741,12 +2910,369 @@ var AudioPlayerDataSource$1 = Object.freeze({
 
 });
 
+var View$4 = require('peak/js/views/View');
+var _$12 = require('lodash');
+var $$7 = require('jquery');
+var THREE$1 = require('three');
+
+var Scene = function (_View) {
+	inherits(Scene, _View);
+
+	function Scene(options) {
+		classCallCheck(this, Scene);
+		return possibleConstructorReturn(this, (Scene.__proto__ || Object.getPrototypeOf(Scene)).call(this, View$4.merge({
+
+			// ---------------------------------------------------
+			// Local Properties
+
+			camera: {
+				fov: 75,
+				near: 1,
+				far: 100000
+			},
+			clearColor: 0xffffff,
+			clearAlpha: 1,
+			geometry: {},
+			materials: {},
+			meshes: {},
+			lights: {},
+			shaders: {},
+			textures: {},
+			isLoaded: false
+		}, options)));
+	}
+
+	createClass(Scene, [{
+		key: 'setup',
+		value: function setup() {
+			var _this2 = this;
+
+			// console.log( 'Scene::setup' );
+			// setup the framework
+			this.setupScene(this.options);
+			this.setupCamera(this.options);
+
+			// wait until assets are loaded to render the scene
+			return this.loadAssets().then(function () {
+				_this2.isLoaded = true;
+				_this2.trigger('loaded');
+				_this2.setupShaders(_this2.options);
+				_this2.setupMaterials(_this2.options);
+				_this2.setupGeometry(_this2.options);
+				_this2.setupMeshes(_this2.options);
+				_this2.setupLights(_this2.options);
+				_this2.layoutScene(_this2.options);
+			});
+			// .then( this.onResize );
+		}
+
+		// setup scene
+
+	}, {
+		key: 'loadAssets',
+		value: function loadAssets() {
+			var deferred = $$7.Deferred();
+			// load stuff in here
+			// resolve the deferred when load is complete
+			deferred.notify(1);
+			deferred.resolve();
+			return deferred.promise();
+		}
+	}, {
+		key: 'setupScene',
+		value: function setupScene(options) {
+			this.scene = new THREE$1.Scene();
+			return this;
+		}
+
+		// setup camera
+
+	}, {
+		key: 'setupCamera',
+		value: function setupCamera(options) {
+			this.camera = new THREE$1.PerspectiveCamera(options.camera.fov, options.el.innerWidth / options.el.innerHeight, options.camera.near, options.camera.far);
+			return this;
+		}
+
+		// setup elements
+
+	}, {
+		key: 'setupGeometry',
+		value: function setupGeometry(options) {
+			return this;
+		}
+	}, {
+		key: 'setupMaterials',
+		value: function setupMaterials(options) {
+			return this;
+		}
+	}, {
+		key: 'setupShaders',
+		value: function setupShaders(options) {
+			return this;
+		}
+	}, {
+		key: 'setupMeshes',
+		value: function setupMeshes(options) {
+			return this;
+		}
+	}, {
+		key: 'setupLights',
+		value: function setupLights(options) {
+			return this;
+		}
+	}, {
+		key: 'layoutScene',
+		value: function layoutScene(options) {
+			var _this3 = this;
+
+			_$12.each(this.meshes, function (m) {
+				return _this3.scene.add(m);
+			});
+			_$12.each(this.lights, function (l) {
+				return _this3.scene.add(l);
+			});
+			this.camera.position.x = options.camera.position.x;
+			this.camera.position.y = options.camera.position.y;
+			this.camera.position.z = options.camera.position.z;
+			this.camera.lookAt(options.camera.lookAt || this.scene.position);
+			return this;
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			this.renderer.render();
+		}
+	}, {
+		key: 'onResize',
+		value: function onResize() {
+			// console.trace( 'Scene onResize' );
+			this.renderer.setPixelRatio(window.devicePixelRatio);
+			this.camera.aspect = this.width / this.height;
+			this.camera.updateProjectionMatrix();
+		}
+	}, {
+		key: 'update',
+		value: function update(data) {}
+	}]);
+	return Scene;
+}(View$4);
+
+module.exports = Scene;
+
+
+
+var Scene$1 = Object.freeze({
+
+});
+
+var Scene$2 = require('./Scene');
+var _$13 = require('lodash');
+var THREE$2 = require('three');
+
+var OrthographicScene = function (_Scene) {
+	inherits(OrthographicScene, _Scene);
+
+	function OrthographicScene(options) {
+		classCallCheck(this, OrthographicScene);
+		return possibleConstructorReturn(this, (OrthographicScene.__proto__ || Object.getPrototypeOf(OrthographicScene)).call(this, _$13.merge({
+			// ---------------------------------------------------
+			// Class Properties
+
+			camera: {
+				near: 1,
+				far: 10000,
+				zoom: 5,
+				position: new THREE$2.Vector3(0, 1, -1)
+			}
+		}, options)));
+	}
+
+	createClass(OrthographicScene, [{
+		key: 'setupCamera',
+		value: function setupCamera(options) {
+			this.camera = new THREE$2.OrthographicCamera(options.camera.zoom * -this.halfWidth, // left
+			options.camera.zoom * this.halfWidth, // right
+			options.camera.zoom * this.halfHeight, // top
+			options.camera.zoom * -this.halfHeight, // bottom
+			options.camera.near, options.camera.far);
+
+			this.camera.position.x = options.camera.position.x;
+			this.camera.position.y = options.camera.position.y;
+			this.camera.position.z = options.camera.position.z;
+			this.camera.lookAt(options.lookAt || this.scene.position);
+			return this;
+		}
+	}, {
+		key: 'onResize',
+		value: function onResize() {
+			this.camera.left = this.options.camera.zoom * -this.halfWidth;
+			this.camera.right = this.options.camera.zoom * this.halfWidth;
+			this.camera.top = this.options.camera.zoom * this.halfHeight;
+			this.camera.bottom = this.options.camera.zoom * -this.halfHeight;
+			this.camera.updateProjectionMatrix();
+			return this;
+		}
+	}]);
+	return OrthographicScene;
+}(Scene$2);
+
+module.exports = OrthographicScene;
+
+
+
+var OrthographicScene$1 = Object.freeze({
+
+});
+
+var OrthographicScene$2 = require('./Orthographic-Scene');
+var EffectComposer = require('postprocessing').EffectComposer;
+var RenderPass = require('postprocessing').RenderPass;
+var _$14 = require('lodash');
+var THREE$3 = require('three');
+
+window.THREE = THREE$3;
+
+var PostProcessedOrthographicScene = function (_OrthographicScene) {
+	inherits(PostProcessedOrthographicScene, _OrthographicScene);
+
+	function PostProcessedOrthographicScene(options) {
+		classCallCheck(this, PostProcessedOrthographicScene);
+		return possibleConstructorReturn(this, (PostProcessedOrthographicScene.__proto__ || Object.getPrototypeOf(PostProcessedOrthographicScene)).call(this, OrthographicScene$2.merge({
+			// ---------------------------------------------------
+			// Class Properties
+
+			camera: {
+				fov: 10,
+				near: 1,
+				far: 100000,
+				zoom: 1,
+				position: new THREE$3.Vector3(0, 1, -1)
+			}
+		}, options)));
+	}
+
+	createClass(PostProcessedOrthographicScene, [{
+		key: 'setup',
+		value: function setup() {
+			var promise = get$1(PostProcessedOrthographicScene.prototype.__proto__ || Object.getPrototypeOf(PostProcessedOrthographicScene.prototype), 'setup', this).call(this);
+			this.setupRenderChain(this.options);
+			return promise;
+		}
+	}, {
+		key: 'setupRenderChain',
+		value: function setupRenderChain(options) {
+			this.postProcessingPasses = {
+				render: new RenderPass(this.scene, this.camera)
+			};
+			this.composer = new EffectComposer(this.renderer);
+			// INITIALIZE COMPOSER w/ RENDER PASS
+			this.composer.addPass(this.postProcessingPasses.render);
+			return this;
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			this.composer.render();
+		}
+	}, {
+		key: 'onResize',
+		value: function onResize() {
+			get$1(PostProcessedOrthographicScene.prototype.__proto__ || Object.getPrototypeOf(PostProcessedOrthographicScene.prototype), 'onResize', this).call(this);
+			this.composer.setSize(this.width, this.height);
+		}
+	}]);
+	return PostProcessedOrthographicScene;
+}(OrthographicScene$2);
+
+module.exports = PostProcessedOrthographicScene;
+
+
+
+var PostprocessedOrthographicScene = Object.freeze({
+
+});
+
+var Scene$3 = require('./Scene');
+var EffectComposer$1 = require('postprocessing').EffectComposer;
+var RenderPass$1 = require('postprocessing').RenderPass;
+var _$15 = require('lodash');
+var THREE$4 = require('three');
+
+window.THREE = THREE$4;
+
+var PostProcessedScene = function (_Scene) {
+	inherits(PostProcessedScene, _Scene);
+
+	function PostProcessedScene(options) {
+		classCallCheck(this, PostProcessedScene);
+		return possibleConstructorReturn(this, (PostProcessedScene.__proto__ || Object.getPrototypeOf(PostProcessedScene)).call(this, Scene$3.merge({
+			// ---------------------------------------------------
+			// Class Properties
+
+			camera: {
+				fov: 10,
+				near: 1,
+				far: 100000,
+				zoom: 1,
+				position: new THREE$4.Vector3(0, 1, -1)
+			}
+		}, options)));
+	}
+
+	createClass(PostProcessedScene, [{
+		key: 'setup',
+		value: function setup() {
+			var promise = get$1(PostProcessedScene.prototype.__proto__ || Object.getPrototypeOf(PostProcessedScene.prototype), 'setup', this).call(this);
+			this.setupRenderChain(this.options);
+			return promise;
+		}
+	}, {
+		key: 'setupRenderChain',
+		value: function setupRenderChain(options) {
+			this.postProcessingPasses = {
+				renderPass: new RenderPass$1(this.scene, this.camera, {
+					renderToScreen: true
+				})
+			};
+			this.composer = new EffectComposer$1(this.renderer);
+			// INITIALIZE COMPOSER w/ RENDER PASS
+			this.composer.addPass(this.postProcessingPasses.renderPass);
+			return this;
+		}
+	}, {
+		key: 'activatePass',
+		value: function activatePass(name) {}
+	}, {
+		key: 'deactivatePass',
+		value: function deactivatePass(name) {}
+	}, {
+		key: 'render',
+		value: function render() {
+			this.composer.render();
+		}
+	}, {
+		key: 'onResize',
+		value: function onResize() {
+			get$1(PostProcessedScene.prototype.__proto__ || Object.getPrototypeOf(PostProcessedScene.prototype), 'onResize', this).call(this);
+			this.composer.setSize(this.width, this.height);
+		}
+	}]);
+	return PostProcessedScene;
+}(Scene$3);
+
+module.exports = PostProcessedScene;
+
+
+
+var PostprocessedScene = Object.freeze({
+
+});
+
 module.exports = {
 	Base: Base$1,
 	View: View$1,
-	ThreeView: ThreeView$1,
 	Page: Page$1,
-	ThreePage: ThreePage,
 	Model: Model$1,
 	SocketModel: SocketModel$1,
 	Collection: Collection$2,
@@ -2757,6 +3283,13 @@ module.exports = {
 	Analytics: Analytics$1,
 	DataSource: DataSource$1,
 	MicrophoneDataSource: MicrophoneDataSource$1,
-	AudioPlayerDataSource: AudioPlayerDataSource$1
+	AudioPlayerDataSource: AudioPlayerDataSource$1,
+	ThreePage: ThreePage,
+	GridPage: GridPage$1,
+	ThreeView: ThreeView$1,
+	Scene: Scene$1,
+	OrthographicScene: OrthographicScene$1,
+	PostprocessedOrthographicScene: PostprocessedOrthographicScene,
+	PostprocessedScene: PostprocessedScene
 };
 //# sourceMappingURL=index.js.map

@@ -3,7 +3,7 @@ var AnimationPlayerPage = require( './Animation-Player-Page' );
 
 class ThreejsPage extends AnimationPlayerPage {
 	constructor( options ) {
-		super( _.mergeWith( {
+		super( AnimationPlayerPage.merge( {
 
 			// ---------------------------------------------------
 			// Class Properties
@@ -38,7 +38,7 @@ class ThreejsPage extends AnimationPlayerPage {
 			// Data Binding
 
 			dataBindings: []
-		}, options, ThreejsPage.mergeRules ) );
+		}, options ) );
 
 		// ---------------------------------------------------
 		// Finish setup

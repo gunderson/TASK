@@ -1,7 +1,7 @@
-var OrthographicScene = require( './OrthographicScene' );
-var EffectComposer = require( '../../../../../../lib/postprocessing' )
+var OrthographicScene = require( './Orthographic-Scene' );
+var EffectComposer = require( 'postprocessing' )
 	.EffectComposer;
-var RenderPass = require( '../../../../../../lib/postprocessing' )
+var RenderPass = require( 'postprocessing' )
 	.RenderPass;
 var _ = require( 'lodash' );
 var THREE = require( 'three' );
@@ -10,7 +10,7 @@ window.THREE = THREE;
 
 class PostProcessedOrthographicScene extends OrthographicScene {
 	constructor( options ) {
-		super( _.merge( {
+		super( OrthographicScene.merge( {
 			// ---------------------------------------------------
 			// Class Properties
 
