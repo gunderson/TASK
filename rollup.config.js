@@ -1,17 +1,12 @@
-import {
-	rollup
-} from 'rollup';
 import babel from 'rollup-plugin-babel';
+import babelrc from 'babelrc-rollup';
 let pkg = require( './package.json' );
 let external = Object.keys( pkg.dependencies );
 
 export default {
-	entry: './src/index.js',
+	entry: './src/js/index.js',
 	plugins: [
-		babel( {
-			externalHelpers: true,
-			exclude: 'node_modules/**'
-		} ),
+		babel( babelrc() ),
 	],
 	external: external,
 	targets: [ {
