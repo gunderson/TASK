@@ -33,5 +33,5 @@
     "build": "rollup -c",
     "watch": "rollup -c -w"
   },
-  "version": "1.2.0"
+  "version": "1.2.1"
 }
