@@ -1,6 +1,6 @@
 var _ = require( 'lodash' );
 var Model = require( './Model' );
-var io = require( 'socket-io/client' );
+var io = require( 'socket.io/client' );
 
 class SocketModel extends Model {
 	constructor( attributes, options ) {

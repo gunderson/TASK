@@ -1790,7 +1790,7 @@ var Model$1 = Object.freeze({
 
 var _$9 = require('lodash');
 var Model$2 = require('./Model');
-var io = require('socket-io/client');
+var io = require('socket.io/client');
 
 var SocketModel = function (_Model) {
 	inherits(SocketModel, _Model);
