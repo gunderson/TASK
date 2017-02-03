@@ -1,4 +1,4 @@
-var View = require( 'peak/js/views/View' );
+var View = require( '../../View' );
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
 var THREE = require( 'three' );
