@@ -21,7 +21,7 @@ import * as OrthographicScene from './views/three-view/scenes/Orthographic-Scene
 import * as PostprocessedOrthographicScene from './views/three-view/scenes/Post-Processed-Orthographic-Scene';
 import * as PostprocessedScene from './views/three-view/scenes/Post-Processed-Scene';
 
-module.exports = {
+export {
 	Base,
 	View,
 	Page,

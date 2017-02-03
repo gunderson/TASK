@@ -3188,7 +3188,7 @@ module.exports = PostProcessedOrthographicScene;
 
 
 
-var PostprocessedOrthographicScene = Object.freeze({
+var PostProcessedOrthographicScene$1 = Object.freeze({
 
 });
 
@@ -3264,31 +3264,9 @@ module.exports = PostProcessedScene;
 
 
 
-var PostprocessedScene = Object.freeze({
+var PostProcessedScene$1 = Object.freeze({
 
 });
 
-module.exports = {
-	Base: Base$1,
-	View: View$1,
-	Page: Page$1,
-	Model: Model$1,
-	SocketModel: SocketModel$1,
-	Collection: Collection$2,
-	Constants: Constants,
-	Validator: Validator,
-	prefixmethod: prefixmethod,
-	Social: Social,
-	Analytics: Analytics$1,
-	DataSource: DataSource$1,
-	MicrophoneDataSource: MicrophoneDataSource$1,
-	AudioPlayerDataSource: AudioPlayerDataSource$1,
-	ThreePage: ThreePage,
-	GridPage: GridPage$1,
-	ThreeView: ThreeView$1,
-	Scene: Scene$1,
-	OrthographicScene: OrthographicScene$1,
-	PostprocessedOrthographicScene: PostprocessedOrthographicScene,
-	PostprocessedScene: PostprocessedScene
-};
+export { Base$1 as Base, View$1 as View, Page$1 as Page, Model$1 as Model, SocketModel$1 as SocketModel, Collection$2 as Collection, Constants, Validator, prefixmethod, Social, Analytics$1 as Analytics, DataSource$1 as DataSource, MicrophoneDataSource$1 as MicrophoneDataSource, AudioPlayerDataSource$1 as AudioPlayerDataSource, ThreePage, GridPage$1 as GridPage, ThreeView$1 as ThreeView, Scene$1 as Scene, OrthographicScene$1 as OrthographicScene, PostProcessedOrthographicScene$1 as PostprocessedOrthographicScene, PostProcessedScene$1 as PostprocessedScene };
 //# sourceMappingURL=index.js.map
