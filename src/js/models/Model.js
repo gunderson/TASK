@@ -3,7 +3,7 @@ var $ = require( 'jquery' );
 var Base = require( '../Base' );
 var Collection = require( '../collections/Collection' );
 
-class Model extends Base {
+export default class Model extends Base {
 	constructor( attributes, options ) {
 		super( Base.merge( {
 

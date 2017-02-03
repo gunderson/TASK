@@ -2,7 +2,7 @@ var _ = require( 'lodash' );
 var Model = require( './Model' );
 var io = require( 'socket.io/client' );
 
-class SocketModel extends Model {
+export default class SocketModel extends Model {
 	constructor( attributes, options ) {
 		super( Model.merge( {
 				// default attributes
@@ -31,5 +31,3 @@ class SocketModel extends Model {
 		} )
 	}
 }
-
-module.exports = SocketModel;
