@@ -10,7 +10,7 @@ import * as SocketModel from './models/SocketModel';
 import * as Collection from './collections/Collection';
 import * as Constants from './data/Constants';
 import * as Validator from './utils/Validator';
-import * as prefixmethod from './lib/prefixmethod';
+import * as prefixmethod from './utils/prefixmethod';
 import * as Social from './services/Social';
 import * as Analytics from './services/Analytics';
 import * as DataSource from './services/Data-Source';

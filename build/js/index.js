@@ -2466,8 +2466,6 @@ var prefixmethod = Object.freeze({
 
 });
 
-var constants = require("constants")[environment];
-
 var SocialService = {
 
 	// this should only be used for main site share
@@ -2493,23 +2491,6 @@ var SocialService = {
 		var shareURL = 'https://plus.google.com/share?url=' + site;
 		openWindow(shareURL, 'GooglePlus');
 	},
-
-	// shareFacebookDynamic: function (options) {
-	// 	var title = 'title=' + encodeURIComponent(options.title);
-	// 	var message = 'description=' + encodeURIComponent(options.message);
-	// 	var img = 'img=' + encodeURIComponent(options.img);
-	// 	var redirURL = 'redirectURL=' + encodeURIComponent(options.redirectURL);
-	// 	var params = [redirURL, title, message, img];
-
-	// 	// generic share url
-	// 	var shareUrl = constants.site_root + 'share?' + params.join('&');
-
-	// 	//    console.log(params);
-	// 	console.log(shareUrl);
-	// 	SocialService.shareFacebook({
-	// 		url: shareUrl
-	// 	});
-	// },
 
 	shareTwitter: function shareTwitter(options) {
 		// console.log('shareTwitter', options);
@@ -2590,7 +2571,7 @@ var Social = Object.freeze({
 
 });
 
-var _$11 = require('underscore');
+var _$11 = require('lodash');
 var $$5 = require('jquery');
 var log = require('../utils/log');
 

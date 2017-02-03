@@ -1,4 +1,4 @@
-var prefixMethod = require( 'peak/js/lib/prefixmethod' );
+var prefixMethod = require( '../utils/prefixmethod' );
 
 prefixMethod( 'getUserMedia', {
 	parent: navigator
