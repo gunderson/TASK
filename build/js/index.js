@@ -2738,7 +2738,7 @@ var DataSource$1 = Object.freeze({
  */
 
 var DataSource$2 = require('../Data-Source');
-var prefixMethod$1 = require('peak/js/lib/prefixmethod');
+var prefixMethod$1 = require('../../utils/prefixmethod');
 
 prefixMethod$1('getUserMedia', {
 	parent: navigator
@@ -2813,7 +2813,7 @@ var MicrophoneDataSource$1 = Object.freeze({
  */
 
 var DataSource$3 = require('../Data-Source');
-var prefixMethod$2 = require('peak/js/lib/prefixmethod');
+var prefixMethod$2 = require('../../utils/prefixmethod');
 
 prefixMethod$2('getUserMedia', {
 	parent: navigator
