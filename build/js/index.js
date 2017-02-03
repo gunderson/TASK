@@ -2888,7 +2888,7 @@ var AudioPlayerDataSource$1 = Object.freeze({
 
 });
 
-var View$4 = require('peak/js/views/View');
+var View$4 = require('../../View');
 var _$12 = require('lodash');
 var $$6 = require('jquery');
 var THREE$1 = require('three');
