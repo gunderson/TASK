@@ -59,7 +59,7 @@ var defineProperty = function (obj, key, value) {
   return obj;
 };
 
-var get$1 = function get$1(object, property, receiver) {
+var get = function get(object, property, receiver) {
   if (object === null) object = Function.prototype;
   var desc = Object.getOwnPropertyDescriptor(object, property);
 
@@ -69,7 +69,7 @@ var get$1 = function get$1(object, property, receiver) {
     if (parent === null) {
       return undefined;
     } else {
-      return get$1(parent, property, receiver);
+      return get(parent, property, receiver);
     }
   } else if ("value" in desc) {
     return desc.value;
@@ -119,7 +119,7 @@ var possibleConstructorReturn = function (self, call) {
 };
 
 var _$1 = require('lodash');
-var $$1 = require('jquery');
+var $ = require('jquery');
 var Events = require('backbone-events-standalone');
 
 var Base = function () {
@@ -171,7 +171,7 @@ var Base = function () {
 				var target = _this.getLocalObject(e.target);
 
 				// use jquery for ui events
-				if (target instanceof $$1) {
+				if (target instanceof $) {
 					target.on(e.eventName, handler);
 				} else {
 					// use backbone for all other events
@@ -192,7 +192,7 @@ var Base = function () {
 				// check to see if event has been delegated
 				if (typeof e.target === 'string') return;
 				var target = _this2.getLocalObject(e.target);
-				if (target instanceof $$1) {
+				if (target instanceof $) {
 					target.off(e.eventName);
 				} else {
 					_this2.stopListening(target, e.eventName);
@@ -217,12 +217,12 @@ var Base = function () {
 				if (!target && this.$) target = this.$(name);
 
 				// consider it a global selector and use jquery to find it
-				if ((!target || target instanceof $$1) && target.length === 0 && this.$) {
-					target = $$1(name);
+				if ((!target || target instanceof $) && target.length === 0 && this.$) {
+					target = $(name);
 				}
 
 				// Shaka. When the walls fell
-				if (!target || target instanceof $$1 && target.length === 0) {
+				if (!target || target instanceof $ && target.length === 0) {
 					console.warn('Peak was unable to delegate event to ' + name + ' on ' + this.name);
 				}
 
@@ -232,7 +232,7 @@ var Base = function () {
 					target = name;
 				} else {
 					// last ditch effort to catch window/document events;
-					target = $$1(name);
+					target = $(name);
 				}
 				return target;
 			}
@@ -250,8 +250,7 @@ var Base = function () {
 			}
 
 			opts.push(Base.mergeRules);
-			var m = _$1.mergeWith.apply(this, opts);
-			return m;
+			return _$1.mergeWith.apply(this, opts);
 		}
 
 		// ---------------------------------------------------
@@ -596,7 +595,7 @@ var View = function (_Base) {
 			}).each(function (e) {
 				e.target = e.selector;
 			});
-			get$1(View.prototype.__proto__ || Object.getPrototypeOf(View.prototype), 'delegateEvents', this).call(this);
+			get(View.prototype.__proto__ || Object.getPrototypeOf(View.prototype), 'delegateEvents', this).call(this);
 			return this;
 		}
 
@@ -610,7 +609,7 @@ var View = function (_Base) {
 			}).each(function (e) {
 				e.target = e.selector;
 			});
-			get$1(View.prototype.__proto__ || Object.getPrototypeOf(View.prototype), 'undelegateEvents', this).call(this);
+			get(View.prototype.__proto__ || Object.getPrototypeOf(View.prototype), 'undelegateEvents', this).call(this);
 			return this;
 		}
 
@@ -805,7 +804,7 @@ var ThreeView = function (_View) {
 	}, {
 		key: 'serialize',
 		value: function serialize() {
-			return _$3.extend(get$1(ThreeView.prototype.__proto__ || Object.getPrototypeOf(ThreeView.prototype), 'serialize', this).call(this), {
+			return _$3.extend(get(ThreeView.prototype.__proto__ || Object.getPrototypeOf(ThreeView.prototype), 'serialize', this).call(this), {
 				sceneNames: _$3.keys(this.scenes)
 			});
 		}
@@ -822,7 +821,7 @@ var ThreeView$1 = Object.freeze({
 });
 
 var _$4 = require('lodash');
-var $$2 = require('jquery');
+var $$1 = require('jquery');
 var View$3 = require('../View');
 
 var Page = function (_View) {
@@ -862,7 +861,7 @@ var Page = function (_View) {
 	createClass(Page, [{
 		key: 'loadAssets',
 		value: function loadAssets() {
-			var deferred = $$2.Deferred();
+			var deferred = $$1.Deferred();
 			// load stuff in here
 			// resolve the deferred when load is complete
 			deferred.resolve();
@@ -887,7 +886,7 @@ var Page = function (_View) {
 		value: function fetch(params, promise) {
 			var _this2 = this;
 
-			promise = promise || $$2.Deferred();
+			promise = promise || $$1.Deferred();
 
 			var recallFetch = function recallFetch() {
 				_this2.fetch(params, promise);
@@ -965,10 +964,10 @@ var Page = function (_View) {
 			if (route.parts.length > 0 && route.parts[0] !== prevRoute.parts[0]) {
 
 				// remove the old page
-				$$2('html').removeClass(prevRoute.parts[0] + '-page');
+				$$1('html').removeClass(prevRoute.parts[0] + '-page');
 
 				if (route) {
-					$$2('html').addClass(route.parts[0] + '-page');
+					$$1('html').addClass(route.parts[0] + '-page');
 
 					// determine new page
 					newPage = _$4.find(this.views, {
@@ -1014,7 +1013,7 @@ var Page = function (_View) {
 	}, {
 		key: 'transitionIn',
 		value: function transitionIn() {
-			var deferred = $$2.Deferred();
+			var deferred = $$1.Deferred();
 			this.trigger('transitionIn');
 			this.$el.show({
 				complete: deferred.resolve
@@ -1024,7 +1023,7 @@ var Page = function (_View) {
 	}, {
 		key: 'transitionOut',
 		value: function transitionOut() {
-			var deferred = $$2.Deferred();
+			var deferred = $$1.Deferred();
 			// override me
 			this.trigger('transitionOut');
 			this.$el.hide({
@@ -1057,7 +1056,7 @@ var Page$1 = Object.freeze({
 });
 
 var _$5 = require('lodash');
-var $$3 = require('jquery');
+var $$2 = require('jquery');
 var Page$2 = require('./Page');
 var TweenLite = require('gsap/src/uncompressed/TweenLite');
 var CSSPlugin = require('gsap/src/uncompressed/plugins/CSSPlugin');
@@ -1098,7 +1097,7 @@ var GridPage = function (_Page) {
 	createClass(GridPage, [{
 		key: 'loadAssets',
 		value: function loadAssets() {
-			var deferred = $$3.Deferred();
+			var deferred = $$2.Deferred();
 			// load stuff in here
 			// resolve the deferred when load is complete
 			deferred.resolve();
@@ -1364,7 +1363,7 @@ var ThreejsPage = function (_AnimationPlayerPage) {
 	}, {
 		key: 'afterRender',
 		value: function afterRender() {
-			get$1(ThreejsPage.prototype.__proto__ || Object.getPrototypeOf(ThreejsPage.prototype), 'afterRender', this).call(this);
+			get(ThreejsPage.prototype.__proto__ || Object.getPrototypeOf(ThreejsPage.prototype), 'afterRender', this).call(this);
 			this.setupThreeView();
 		}
 	}, {
@@ -1375,7 +1374,7 @@ var ThreejsPage = function (_AnimationPlayerPage) {
 		// PEAK/AnimationPlayerPage Overrides
 
 		value: function play() {
-			get$1(ThreejsPage.prototype.__proto__ || Object.getPrototypeOf(ThreejsPage.prototype), 'play', this).call(this);
+			get(ThreejsPage.prototype.__proto__ || Object.getPrototypeOf(ThreejsPage.prototype), 'play', this).call(this);
 			return this;
 		}
 	}, {
@@ -1385,7 +1384,7 @@ var ThreejsPage = function (_AnimationPlayerPage) {
 		// ---------------------------------------------------
 
 		value: function stop() {
-			get$1(ThreejsPage.prototype.__proto__ || Object.getPrototypeOf(ThreejsPage.prototype), 'stop', this).call(this);
+			get(ThreejsPage.prototype.__proto__ || Object.getPrototypeOf(ThreejsPage.prototype), 'stop', this).call(this);
 			return this;
 		}
 	}, {
@@ -1444,7 +1443,7 @@ var AnimationPlayerPage$1 = function (_Page) {
 	createClass(AnimationPlayerPage, [{
 		key: 'transitionInComplete',
 		value: function transitionInComplete() {
-			get$1(AnimationPlayerPage.prototype.__proto__ || Object.getPrototypeOf(AnimationPlayerPage.prototype), 'transitionInComplete', this).call(this);
+			get(AnimationPlayerPage.prototype.__proto__ || Object.getPrototypeOf(AnimationPlayerPage.prototype), 'transitionInComplete', this).call(this);
 			if (this.autoPlay) this.play();
 		}
 
@@ -1455,7 +1454,7 @@ var AnimationPlayerPage$1 = function (_Page) {
 	}, {
 		key: 'transitionOut',
 		value: function transitionOut() {
-			get$1(AnimationPlayerPage.prototype.__proto__ || Object.getPrototypeOf(AnimationPlayerPage.prototype), 'transitionOut', this).call(this);
+			get(AnimationPlayerPage.prototype.__proto__ || Object.getPrototypeOf(AnimationPlayerPage.prototype), 'transitionOut', this).call(this);
 			if (this.autoStop) this.stop();
 		}
 	}, {
@@ -1478,10 +1477,10 @@ var AnimationPlayerPage$1 = function (_Page) {
 		value: function draw() {}
 	}, {
 		key: 'currentTime',
-		get: function get() {
+		get: function get$$1() {
 			return this.player.currentTime;
 		},
-		set: function set(val) {
+		set: function set$$1(val) {
 			this.player.currentTime = val;
 			return val;
 		}
@@ -1492,7 +1491,7 @@ var AnimationPlayerPage$1 = function (_Page) {
 module.exports = AnimationPlayerPage$1;
 
 var _$8 = require('lodash');
-var $$4 = require('jquery');
+var $$3 = require('jquery');
 var Base$3 = require('../Base');
 var Collection = require('../collections/Collection');
 
@@ -1564,7 +1563,7 @@ var Model = function (_Base) {
 
 			if (this.url) {
 				// get the data at the url
-				return $$4.get(this.url, {
+				return $$3.get(this.url, {
 					id: this[this.idField]
 				}).then(function (data) {
 					data = _this2.parse(data);
@@ -1572,7 +1571,7 @@ var Model = function (_Base) {
 				});
 			} else {
 				// we're all set!
-				var deferred = $$4.Deferred();
+				var deferred = $$3.Deferred();
 				deferred.resolve(this);
 				return deferred;
 			}
@@ -1595,7 +1594,7 @@ var Model = function (_Base) {
 
 			if (this.options.url) {
 				// set the data at the url
-				return $$4.ajax(_$8.defaults(options, {
+				return $$3.ajax(_$8.defaults(options, {
 					type: 'POST',
 					url: this.options.url,
 					data: JSON.stringify(this.toJSON()),
@@ -1605,7 +1604,7 @@ var Model = function (_Base) {
 				}));
 			} else {
 				// we're all set!
-				var deferred = $$4.Deferred();
+				var deferred = $$3.Deferred();
 				deferred.resolve(this);
 				return deferred;
 			}
@@ -1717,7 +1716,7 @@ var Model = function (_Base) {
 				c.listenTo(_this6, 'change:' + name, c.forwardEvent);
 			});
 			Object.defineProperty(this, name, {
-				set: function set(val) {
+				set: function set$$1(val) {
 					_this6._attributes[name] = val;
 					var event = {
 						model: _this6,
@@ -1732,7 +1731,7 @@ var Model = function (_Base) {
 						_this6.listenTo(val, 'change', _this6.forwardEvent);
 					}
 				},
-				get: function get() {
+				get: function get$$1() {
 					return _this6._attributes[name];
 				}
 			});
@@ -1758,7 +1757,7 @@ var Model = function (_Base) {
 
 	}, {
 		key: 'set',
-		value: function set(data, name) {
+		value: function set$$1(data, name) {
 			if (name) {
 				data = defineProperty({}, name, data);
 			}
@@ -1769,7 +1768,7 @@ var Model = function (_Base) {
 
 	}, {
 		key: 'attributes',
-		get: function get() {
+		get: function get$$1() {
 			return this._attributes;
 		}
 	}], [{
@@ -1841,7 +1840,7 @@ var SocketModel$1 = Object.freeze({
 });
 
 var _$10 = require('lodash');
-var $$5 = require('jquery');
+var $$4 = require('jquery');
 var Base$4 = require('../Base');
 var Model$3 = require('../models/Model');
 
@@ -1906,7 +1905,7 @@ var Collection$1 = function (_Base) {
 
 	}, {
 		key: 'set',
-		value: function set(models, options) {
+		value: function set$$1(models, options) {
 			var _this3 = this;
 
 			options = options || {};
@@ -2026,7 +2025,7 @@ var Collection$1 = function (_Base) {
 
 	}, {
 		key: 'get',
-		value: function get(matchConditions) {
+		value: function get$$1(matchConditions) {
 			var _this6 = this;
 
 			// make sure match conditions is an array
@@ -2079,14 +2078,14 @@ var Collection$1 = function (_Base) {
 
 			if (options.url) {
 				// get the data at the url
-				return $$5.get(options.url, options.query).then(options.reset ? function (data) {
+				return $$4.get(options.url, options.query).then(options.reset ? function (data) {
 					return _this7.reset(options.parse(data), options);
 				} : function (data) {
 					return _$10.each(options.parse(data), options.merge ? _this7.add : _this7.set);
 				});
 			} else {
 				// we're all set!
-				var deferred = $$5.Deferred();
+				var deferred = $$4.Deferred();
 				deferred.resolve(this);
 				return deferred;
 			}
@@ -2173,12 +2172,12 @@ var Collection$1 = function (_Base) {
 
 	}, {
 		key: 'length',
-		get: function get() {
+		get: function get$$1() {
 			return this._models.length;
 		}
 	}, {
 		key: 'models',
-		get: function get() {
+		get: function get$$1() {
 			return this._models;
 		}
 
@@ -2186,7 +2185,7 @@ var Collection$1 = function (_Base) {
 
 	}, {
 		key: 'sortBy',
-		set: function set(attr) {
+		set: function set$$1(attr) {
 			this._options.sort = function (a, b) {
 				return b[attr] - a[attr];
 			};
@@ -2594,7 +2593,7 @@ var Social = Object.freeze({
 });
 
 var _$11 = require('underscore');
-var $$6 = require('jquery');
+var $$5 = require('jquery');
 var log = require('../utils/log');
 
 var GA_ACCOUNTS = ["UA-xxxxxxxx-1"];
@@ -2735,7 +2734,7 @@ var DataSource = function () {
 		value: function destroy() {}
 	}, {
 		key: "currentTime",
-		get: function get() {
+		get: function get$$1() {
 			return Date.now() - this.startTime;
 		}
 	}]);
@@ -2810,7 +2809,7 @@ var MicrophoneDataSource = function (_DataSource) {
 		}
 	}, {
 		key: 'currentTime',
-		get: function get() {
+		get: function get$$1() {
 			return (Date.now() - this.startTime) / 1000;
 		}
 	}]);
@@ -2895,7 +2894,7 @@ var AudioPlayerDataSource = function (_DataSource) {
 		}
 	}, {
 		key: 'currentTime',
-		get: function get() {
+		get: function get$$1() {
 			return this.player.currentTime;
 		}
 	}]);
@@ -2912,7 +2911,7 @@ var AudioPlayerDataSource$1 = Object.freeze({
 
 var View$4 = require('peak/js/views/View');
 var _$12 = require('lodash');
-var $$7 = require('jquery');
+var $$6 = require('jquery');
 var THREE$1 = require('three');
 
 var Scene = function (_View) {
@@ -2971,7 +2970,7 @@ var Scene = function (_View) {
 	}, {
 		key: 'loadAssets',
 		value: function loadAssets() {
-			var deferred = $$7.Deferred();
+			var deferred = $$6.Deferred();
 			// load stuff in here
 			// resolve the deferred when load is complete
 			deferred.notify(1);
@@ -3155,7 +3154,7 @@ var PostProcessedOrthographicScene = function (_OrthographicScene) {
 	createClass(PostProcessedOrthographicScene, [{
 		key: 'setup',
 		value: function setup() {
-			var promise = get$1(PostProcessedOrthographicScene.prototype.__proto__ || Object.getPrototypeOf(PostProcessedOrthographicScene.prototype), 'setup', this).call(this);
+			var promise = get(PostProcessedOrthographicScene.prototype.__proto__ || Object.getPrototypeOf(PostProcessedOrthographicScene.prototype), 'setup', this).call(this);
 			this.setupRenderChain(this.options);
 			return promise;
 		}
@@ -3178,7 +3177,7 @@ var PostProcessedOrthographicScene = function (_OrthographicScene) {
 	}, {
 		key: 'onResize',
 		value: function onResize() {
-			get$1(PostProcessedOrthographicScene.prototype.__proto__ || Object.getPrototypeOf(PostProcessedOrthographicScene.prototype), 'onResize', this).call(this);
+			get(PostProcessedOrthographicScene.prototype.__proto__ || Object.getPrototypeOf(PostProcessedOrthographicScene.prototype), 'onResize', this).call(this);
 			this.composer.setSize(this.width, this.height);
 		}
 	}]);
@@ -3223,7 +3222,7 @@ var PostProcessedScene = function (_Scene) {
 	createClass(PostProcessedScene, [{
 		key: 'setup',
 		value: function setup() {
-			var promise = get$1(PostProcessedScene.prototype.__proto__ || Object.getPrototypeOf(PostProcessedScene.prototype), 'setup', this).call(this);
+			var promise = get(PostProcessedScene.prototype.__proto__ || Object.getPrototypeOf(PostProcessedScene.prototype), 'setup', this).call(this);
 			this.setupRenderChain(this.options);
 			return promise;
 		}
@@ -3254,7 +3253,7 @@ var PostProcessedScene = function (_Scene) {
 	}, {
 		key: 'onResize',
 		value: function onResize() {
-			get$1(PostProcessedScene.prototype.__proto__ || Object.getPrototypeOf(PostProcessedScene.prototype), 'onResize', this).call(this);
+			get(PostProcessedScene.prototype.__proto__ || Object.getPrototypeOf(PostProcessedScene.prototype), 'onResize', this).call(this);
 			this.composer.setSize(this.width, this.height);
 		}
 	}]);
