@@ -276,13 +276,13 @@ Events.mixin(Base.prototype);
 
 
 
-var Base$1 = Object.freeze({
-
+var Base$2 = Object.freeze({
+	default: Base
 });
 
 var _$2 = require('lodash');
 var _$ = require('jquery');
-var Base$2 = require('../Base');
+var Base$3 = require('../Base');
 
 var View = function (_Base) {
 	inherits(View, _Base);
@@ -293,7 +293,7 @@ var View = function (_Base) {
 		// ---------------------------------------------------
 		// Finish setup
 
-		var _this = possibleConstructorReturn(this, (View.__proto__ || Object.getPrototypeOf(View)).call(this, Base$2.merge({
+		var _this = possibleConstructorReturn(this, (View.__proto__ || Object.getPrototypeOf(View)).call(this, Base$3.merge({
 			// ---------------------------------------------------
 			// Local Properties
 
@@ -652,7 +652,7 @@ var View = function (_Base) {
 		key: 'getTemplate',
 		value: function getTemplate(name) {
 			// TEMPLATES is a global object on window
-			return name ? Base$2.prototype.TEMPLATES[name] : function () {
+			return name ? Base$3.prototype.TEMPLATES[name] : function () {
 				return '';
 			};
 		}
@@ -666,7 +666,7 @@ var View = function (_Base) {
 		}
 	}]);
 	return View;
-}(Base$2);
+}(Base$3);
 
 module.exports = View;
 
@@ -1492,7 +1492,7 @@ module.exports = AnimationPlayerPage$1;
 
 var _$8 = require('lodash');
 var $$3 = require('jquery');
-var Base$3 = require('../Base');
+var Base$4 = require('../Base');
 var Collection = require('../collections/Collection');
 
 var Model = function (_Base) {
@@ -1504,7 +1504,7 @@ var Model = function (_Base) {
 		// ---------------------------------------------------
 		// Non-attribute Properties
 
-		var _this = possibleConstructorReturn(this, (Model.__proto__ || Object.getPrototypeOf(Model)).call(this, Base$3.merge({
+		var _this = possibleConstructorReturn(this, (Model.__proto__ || Object.getPrototypeOf(Model)).call(this, Base$4.merge({
 
 			// ---------------------------------------------------
 			// Local Properties
@@ -1778,18 +1778,18 @@ var Model = function (_Base) {
 		}
 	}]);
 	return Model;
-}(Base$3);
+}(Base$4);
 
 module.exports = Model;
 
 
 
-var Model$1 = Object.freeze({
-
+var Model$2 = Object.freeze({
+	default: Model
 });
 
 var _$9 = require('lodash');
-var Model$2 = require('./Model');
+var Model$3 = require('./Model');
 var io = require('socket.io/client');
 
 var SocketModel = function (_Model) {
@@ -1801,9 +1801,9 @@ var SocketModel = function (_Model) {
 		// ---------------------------------------------------
 		// Local Properties
 
-		var _this = possibleConstructorReturn(this, (SocketModel.__proto__ || Object.getPrototypeOf(SocketModel)).call(this, Model$2.merge({
+		var _this = possibleConstructorReturn(this, (SocketModel.__proto__ || Object.getPrototypeOf(SocketModel)).call(this, Model$3.merge({
 			// default attributes
-		}, attributes), Model$2.merge({
+		}, attributes), Model$3.merge({
 			events: {
 				target: 'io',
 				eventName: 'connect',
@@ -1829,20 +1829,18 @@ var SocketModel = function (_Model) {
 		}
 	}]);
 	return SocketModel;
-}(Model$2);
-
-module.exports = SocketModel;
+}(Model$3);
 
 
 
-var SocketModel$1 = Object.freeze({
-
+var SocketModel$2 = Object.freeze({
+	default: SocketModel
 });
 
 var _$10 = require('lodash');
 var $$4 = require('jquery');
-var Base$4 = require('../Base');
-var Model$3 = require('../models/Model');
+var Base$5 = require('../Base');
+var Model$4 = require('../models/Model');
 
 var Collection$1 = function (_Base) {
 	inherits(Collection, _Base);
@@ -1857,12 +1855,12 @@ var Collection$1 = function (_Base) {
 		}
 
 		var _this = possibleConstructorReturn(this, (Collection.__proto__ || Object.getPrototypeOf(Collection)).call(this, _$10.mergeWith({
-			model: Model$3,
+			model: Model$4,
 			url: null,
 			idField: 'id',
 			ignoreEvents: [],
 			bindFunctions: ['reset', 'get', 'set', 'add', 'remove', 'empty', 'parse', 'fetch', 'getRefs', 'forwardEvent', 'toJSON']
-		}, options, Base$4.mergeRules)));
+		}, options, Base$5.mergeRules)));
 
 		_this.sort = _this.getLocalObject(_this.sort);
 
@@ -2193,7 +2191,7 @@ var Collection$1 = function (_Base) {
 		}
 	}]);
 	return Collection;
-}(Base$4);
+}(Base$5);
 
 module.exports = Collection$1;
 
@@ -3268,5 +3266,5 @@ var PostProcessedScene$1 = Object.freeze({
 
 });
 
-export { Base$1 as Base, View$1 as View, Page$1 as Page, Model$1 as Model, SocketModel$1 as SocketModel, Collection$2 as Collection, Constants, Validator, prefixmethod, Social, Analytics$1 as Analytics, DataSource$1 as DataSource, MicrophoneDataSource$1 as MicrophoneDataSource, AudioPlayerDataSource$1 as AudioPlayerDataSource, ThreePage, GridPage$1 as GridPage, ThreeView$1 as ThreeView, Scene$1 as Scene, OrthographicScene$1 as OrthographicScene, PostProcessedOrthographicScene$1 as PostprocessedOrthographicScene, PostProcessedScene$1 as PostprocessedScene };
+export { Base$2 as Base, View$1 as View, Page$1 as Page, Model$2 as Model, SocketModel$2 as SocketModel, Collection$2 as Collection, Constants, Validator, prefixmethod, Social, Analytics$1 as Analytics, DataSource$1 as DataSource, MicrophoneDataSource$1 as MicrophoneDataSource, AudioPlayerDataSource$1 as AudioPlayerDataSource, ThreePage, GridPage$1 as GridPage, ThreeView$1 as ThreeView, Scene$1 as Scene, OrthographicScene$1 as OrthographicScene, PostProcessedOrthographicScene$1 as PostprocessedOrthographicScene, PostProcessedScene$1 as PostprocessedScene };
 //# sourceMappingURL=index.js.map
