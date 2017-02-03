@@ -115,8 +115,7 @@ class Base {
 
 	static merge( ...opts ) {
 		opts.push( Base.mergeRules );
-		let m = _.mergeWith.apply( this, opts );
-		return m;
+		return _.mergeWith.apply( this, opts );
 	}
 
 	// ---------------------------------------------------
