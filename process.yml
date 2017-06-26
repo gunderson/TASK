@@ -4,4 +4,4 @@ apps:
     watch     : true
     node-args : --harmony
   - env:
-    env: "prod" 
+    env: prod

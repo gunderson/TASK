@@ -16,10 +16,10 @@ prefixMethod( 'getUserMedia', {
 prefixMethod( 'AudioContext' );
 
 class MicrophoneDataSource extends DataSource {
-	constructor( options ) {
+	constructor( options = {} ) {
 		super( options );
 		this.startTime = Date.now();
-		this.fftsize = 2048;
+		this.fftsize = options.dataSize || 2048;
 		this.volume = 0;
 		this.analyser;
 
@@ -32,7 +32,7 @@ class MicrophoneDataSource extends DataSource {
 			this.analyser.fftSize = this.fftsize;
 			this.mic.connect( this.analyser );
 			this.streamData = new Uint8Array( this.analyser.frequencyBinCount );
-			this.intervalId = setInterval( this.sampleAudioStream, 1000 / 60 );
+			this.intervalId = setInterval( this.sampleAudioStream.bind( this ), 1000 / 60 );
 		}, function() {
 			alert( 'error getting microphone input.' );
 		} );
@@ -40,6 +40,7 @@ class MicrophoneDataSource extends DataSource {
 
 	sampleAudioStream() {
 		this.analyser.getByteFrequencyData( this.streamData );
+		this.trigger( 'data', this.streamData );
 	};
 
 	get currentTime() {

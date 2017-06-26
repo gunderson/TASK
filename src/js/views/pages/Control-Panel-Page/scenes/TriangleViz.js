@@ -1,20 +1,20 @@
-var PostProcessedScene = require( '_TASK/views/Three-View/scenes/PostProcessedScene' );
+var Scene = require( '_TASK/views/Three-View/scenes/Scene' );
 var _ = require( 'lodash' );
 var THREE = require( 'three' );
 var $ = require( 'jquery' );
 // var TweenLite = require( 'TweenLite' );
 
-class TriangleViz extends PostProcessedScene {
+class TriangleViz extends Scene {
 	constructor( options ) {
 		super( _.mergeWith( {
 			// ---------------------------------------------------
 			// Local Properties
-
+			fftData: [],
 			camera: {
-				fov: 50,
+				fov: 45,
 				near: 0.1,
 				far: 10000,
-				position: new THREE.Vector3( 0, 0, 5000 ),
+				position: new THREE.Vector3( 0, 0, 8000 ),
 				lookAt: new THREE.Vector3( 0, 0, 0 )
 			},
 			colorMap: undefined,
@@ -31,8 +31,8 @@ class TriangleViz extends PostProcessedScene {
 			},
 			rows: 32,
 			cols: 32,
-			gridWidth: 18000,
-			gridHeight: 4500,
+			gridWidth: 15000,
+			gridHeight: 3500,
 
 			tick: 0,
 			prevTick: -1,
@@ -45,6 +45,7 @@ class TriangleViz extends PostProcessedScene {
 			// create object pool
 			availableParticles: [],
 			activeParticles: [],
+			events: [],
 			bindFunctions: [
 				'loadColorMap',
 				'postColorMapLoad',
@@ -61,9 +62,9 @@ class TriangleViz extends PostProcessedScene {
 				'computeSpiralPosition',
 				'setLevel',
 				'getLevel',
-				'getColorMapOffset'
+				'setCameraPosition'
 			],
-		}, options, PostProcessedScene.mergeRules ) );
+		}, options, Scene.mergeRules ) );
 
 		// Dependent Local Properties
 
@@ -75,6 +76,13 @@ class TriangleViz extends PostProcessedScene {
 		this.sideIndex = 0;
 		this.sideLength = 1;
 		this.sidePosition = 0;
+
+		this.APP.microphoneModel.on( 'change:streamData', ( event ) => {
+			// normalize stream data
+			this.fftData = event.value;
+			let scale = 300 / _.max( this.fftData );
+			this.fftData = _.map( this.fftData, ( v, i ) => Math.sqrt( ( i / 128 ) + 1 ) * v * scale );
+		} );
 	}
 
 	setup() {
@@ -82,11 +90,37 @@ class TriangleViz extends PostProcessedScene {
 			.then( this.setupParticles );
 	}
 
+	setupCamera( options ) {
+		this.camera = new THREE.PerspectiveCamera(
+			options.camera.fov,
+			3 * options.el.innerWidth / options.el.innerHeight,
+			options.camera.near,
+			options.camera.far );
+		this.camera.setViewOffset( 1024, 768, 0, 0, 1024, 768 );
+
+		return this;
+	}
+
+	setCameraPosition( index ) {
+		switch ( index ) {
+			case 0:
+				this.camera.setViewOffset( 1024, 768, 0, 0, 1024, 768 );
+				break;
+			case -1:
+				this.camera.setViewOffset( 1024, 768, -1024, 0, 1024, 768 );
+				break;
+			case 1:
+				this.camera.setViewOffset( 1024, 768, 1024, 0, 1024, 768 );
+				break;
+		}
+		// this.camera.updateProjectionMatrix();
+		return this;
+	}
+
 	update( data ) {
-		var fftData = data.fftData || this.streamData || _.range( 1024 );
 		// var fftData = _.map( _.range( 2048 ), () => 255 * Math.random() );
 		// console.log( this.activeParticles[ 0 ].position, this.activeParticles[ 0 ].material, this.activeParticles[ 0 ].geometry );
-		this.updateParticles( fftData, data.currentTime, data.currentTick );
+		this.updateParticles( this.fftData, data.currentTime, data.currentTick );
 	}
 
 	updateParticles( fftData, currentTime, currentTick ) {
@@ -119,20 +153,6 @@ class TriangleViz extends PostProcessedScene {
 		this.prevStreamData = this.streamData;
 		this.streamData = fftData;
 
-		// normalize stream data
-
-		// streamData = new Uint8Array(
-		//     _.map(streamData, function(val, i, arr){
-		//         var len = arr.length;
-		//         var prop = i / len;
-		//         if (prop < 0.5){
-		//             val *= 0.5 * (0.5 - prop);
-		//         } else {
-		//             val *= 4 * (prop - 0.5);
-		//         }
-		//         return val;
-		//     })
-		// );
 	}
 
 	loadAssets() {
@@ -141,7 +161,7 @@ class TriangleViz extends PostProcessedScene {
 
 	loadColorMap() {
 		var deferred = $.Deferred();
-		var imgSrc = '/assets/images/colormap.png';
+		var imgSrc = 'http://www.theorigin.net/silkbrush/img/colormap.png';
 		this.colorMap = new Image();
 		this.colorMap.crossOrigin = 'anonymous';
 		this.colorMap.src = imgSrc;
@@ -175,7 +195,7 @@ class TriangleViz extends PostProcessedScene {
 	// setup elements
 
 	setupRenderChain( options ) {
-		super.setupRenderChain( options );
+		// super.setupRenderChain( options );
 		// this.postProcessingPasses.renderPass.renderToScreen = false;
 		let passes = {
 
@@ -202,9 +222,9 @@ class TriangleViz extends PostProcessedScene {
 			// cylindarGeometry: new THREE.CylinderGeometry(),
 			// planeGeometry: new THREE.PlaneGeometry( 1500, 1500 ),
 			standardGeometry: new THREE.CylinderGeometry(
-				260, // upper radius
-				260, // lower radius
-				620, // height
+				400, // upper radius
+				400, // lower radius
+				1000, // height
 				3 // segments
 			)
 		} );
@@ -212,10 +232,6 @@ class TriangleViz extends PostProcessedScene {
 			.makeRotationX( Math.PI / 2 ) );
 
 		return this;
-	}
-
-	getColorMapOffset() {
-		return this.colorMapOffset;
 	}
 
 	setupMaterials( options ) {
@@ -290,7 +306,7 @@ class TriangleViz extends PostProcessedScene {
 		// ---------------------------------------------------
 		// Position Meshes
 		this.activeParticles.forEach( this.recycleParticle );
-		this.particleDestination = new THREE.Vector3( 0, 0, 5000 );
+		this.particleDestination = new THREE.Vector3( 0, 0, 4000 );
 
 		return this;
 	}

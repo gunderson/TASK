@@ -45,7 +45,7 @@ class Scene extends View {
 				this.setupLights( this.options );
 				this.layoutScene( this.options );
 			} )
-			// .then( this.onResize );
+		// .then( this.onResize );
 	}
 
 	// setup scene
@@ -107,7 +107,7 @@ class Scene extends View {
 	}
 
 	render() {
-		this.renderer.render();
+		this.renderer.render( this.scene, this.camera );
 	}
 
 	onResize() {

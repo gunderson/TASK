@@ -2,6 +2,8 @@ var _ = require( 'lodash' );
 var $ = require( 'jquery' );
 var Events = require( 'backbone-events-standalone' );
 
+let context = typeof window != 'undefined' ? window : global;
+
 class TASK {
 	constructor( options ) {
 		this.options = _.mergeWith( {
@@ -18,10 +20,9 @@ class TASK {
 			options, TASK.mergeRules );
 		_.extend( this, this.options );
 		this.makeBoundFunctions( this.options.bindFunctions, this );
-		if ( typeof window !== 'undefined' ) {
-			window.TASKs = window.TASKs || [];
-			window.TASKs.push( this );
-		}
+		// memory leak here, fixed in later versions by eliminating this block and not tracking TASK instances
+		if ( !context.TASKs ) context.TASKs = [];
+		context.TASKs.push( this );
 	}
 
 	// ---------------------------------------------------
@@ -60,12 +61,7 @@ class TASK {
 	undelegateEvents() {
 		_( this.options.events )
 			.each( ( e ) => {
-				if ( typeof e.target === 'string' ) return;
-				if ( e.target instanceof $ ) {
-					e.target.off( e.eventName );
-				} else {
-					this.stopListening( e.target, e.eventName );
-				}
+				this.stopListening( e.target, e.eventName );
 			} );
 		return this;
 	}
@@ -91,6 +87,10 @@ class TASK {
 		}
 		return name;
 	}
+
+	// ---------------------------------------------------
+
+	static mergeOptions( a, b ) {}
 
 	// ---------------------------------------------------
 

@@ -28,23 +28,11 @@ class ProjectorPage extends ThreejsPage {
 			}, {
 				eventName: 'fullscreen',
 				target: 'transportBar',
-				handler: 'enterFullScreen'
+				handler: 'onFullscreen'
 			}, {
 				eventName: 'change',
 				target: 'select.cameraPosition',
 				handler: 'onChangeCameraPosition'
-			}, {
-				eventName: 'fft',
-				target: 'APP',
-				handler: 'onFFT'
-			}, {
-				eventName: 'sync',
-				target: 'APP',
-				handler: 'onSync'
-			}, {
-				eventName: 'restart',
-				target: 'APP',
-				handler: 'onRestart'
 			} ],
 
 			// ---------------------------------------------------
@@ -67,23 +55,22 @@ class ProjectorPage extends ThreejsPage {
 			bindFunctions: [
 				'onPlay',
 				'onStop',
-				'onFullScreen',
-				'enterFullScreen',
-				'onChangeCameraPosition',
-				'onFFT',
-				'onSync'
+				'onFullscreen',
+				'onEnterFullscreen',
+				'onExitFullscreen',
+				'onChangeCameraPosition'
 			]
 		}, options, TASK.mergeRules ) );
 
 		// ---------------------------------------------------
 		// Finish Setup
 
-		this.threeView = this.views[ 'threeView' ];
-		this.transportBar = this.views[ 'transportBar' ];
-
-		this.$( '.transport-bar button.enter-fullscreen' )
-			.on( 'click', this.enterFullScreen );
-
+		this.threeView = _.find( this.views, {
+			name: 'three-holder'
+		} );
+		this.transportBar = _.find( this.views, {
+			name: 'transport-bar'
+		} );
 	}
 
 	// ---------------------------------------------------
@@ -108,26 +95,6 @@ class ProjectorPage extends ThreejsPage {
 		this.threeView.setCameraPosition( parseInt( value, 10 ) );
 	}
 
-	onRestart() {
-		this.animationPlayer.reset();
-		this.animationPlayer.play();
-	}
-
-	onFFT( data ) {
-		this.fftData = data.fftData;
-	}
-
-	onSync( data ) {
-		this.animationPlayer.currentTime = data.currentTime;
-		this.threeView.sync( data );
-	}
-
-	update( playerData ) {
-		this.threeView.update( _.extend( {}, playerData, {
-			fftData: this.fftData
-		} ) );
-	}
-
 	// ---------------------------------------------------
 	// TransportBar Handlers
 
@@ -139,30 +106,16 @@ class ProjectorPage extends ThreejsPage {
 		this.stop();
 	}
 
-	enterFullScreen() {
-		console.log( 'enterFullScreen' );
-		this.$( this.threeView.el )[ 0 ].webkitRequestFullScreen();
+	onFullscreen() {
+		// make three-view full screen
 	}
 
-	onFullScreen() {
-		$( 'html' )
-			.toggleClass( 'fullscreen' );
-		this.$( this.threeView.el )
-			.toggleClass( 'fullscreen' );
+	onEnterFullscreen() {
+
 	}
 
-	transitionInComplete() {
-		super.transitionInComplete();
+	onExitFullscreen() {
 
-		$( document )
-			.on( "webkitfullscreenchange fullscreenchange", this.onFullScreen );
-	}
-
-	transitionOut() {
-		super.transitionOut();
-
-		$( document )
-			.off( "webkitfullscreenchange fullscreenchange", this.onFullScreen );
 	}
 
 	// ---------------------------------------------------

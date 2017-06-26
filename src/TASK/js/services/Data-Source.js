@@ -6,16 +6,21 @@
  *
  * The MicrophoneAudioSource uses the getUserMedia interface to get real-time data from the user's microphone. Not used currently but included for possible future use.
  */
+var TASK = require( '_TASK/Base' );
+var _ = require( 'lodash' );
 
-class DataSource {
+class DataSource extends TASK {
 	constructor( options ) {
-		this.dataSize = options.dataSize || 2048;
-		this.startTime = Date.now();
+		super( _.mergeWith( {
+			dataSize: 2048,
+			startTime: Date.now()
+		}, options, TASK.mergeRules ) )
 	}
 	update() {}
 	onUpdate() {
 		this.update();
 	}
+	startSampling() {}
 	stopSampling() {}
 	destroy() {}
 	get currentTime() {

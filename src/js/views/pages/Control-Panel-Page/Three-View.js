@@ -22,8 +22,7 @@ class ControlPanelThreeView extends ThreeView {
 				'TriangleViz': TriangleViz,
 				'facebook': FacebookInstallation,
 				'Single Box': BasicScene,
-			},
-			fftData: _.map( _.range( 1024 ), () => 127 ),
+			}
 
 			// ---------------------------------------------------
 			// Event Listeners
@@ -32,18 +31,6 @@ class ControlPanelThreeView extends ThreeView {
 		}, options, ThreeView.mergeRules ) );
 
 	}
-
-	sync( data ) {
-		this.activeScene.colorMapOffset = data.colorMapOffset;
-	}
-
-	update( data ) {
-		if ( data.fftData ) this.fftData = data.fftData;
-		data.fftData = this.fftData;
-		if ( this.activeScene && this.activeScene.isLoaded ) {
-			this.activeScene.update( data );
-		}
-	};
 }
 
 module.exports = ControlPanelThreeView;

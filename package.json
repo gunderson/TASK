@@ -59,7 +59,6 @@
   "dependencies": {
     "acorn": "^3.2.0",
     "art-kit": "^2.0.0",
-    "audio-analyser": "^1.0.2",
     "backbone-events-standalone": "^0.2.7",
     "body-parser": "^1.15.0",
     "domain": "0.0.1",
@@ -74,14 +73,13 @@
     "lodash": "^4.11.2",
     "marked": "^0.3.5",
     "method-override": "^2.3.5",
-    "mic": "^2.1.1",
     "multer": "^1.1.0",
     "npm": "^3.8.8",
     "page": "^1.7.1",
     "pm2": "^2.0.15",
     "q": "^1.4.1",
     "serve-favicon": "^2.3.0",
-    "socket.io": "^1.4.8",
+    "socketio": "^1.0.0",
     "three": "*"
   },
   "autoupdate": {

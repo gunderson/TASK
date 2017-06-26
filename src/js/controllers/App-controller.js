@@ -1,11 +1,14 @@
 var _ = require( 'lodash' );
 var $ = require( 'jquery' );
 var Model = require( '_TASK/models/Model' );
+var MicrophoneModel = require( '../models/Microphone-data' );
 var router = require( 'page' );
 
 class AppModel extends Model {
 	constructor( options ) {
 		super( {}, _.mergeWith( {
+
+			microphoneModel: new MicrophoneModel(),
 
 			// ---------------------------------------------------------
 			// Local Properties

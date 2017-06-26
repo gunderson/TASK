@@ -1,6 +1,6 @@
 {
 	"indent_size": 1,
-	"indent_char": "	",
+	"indent_char": "\t",
 	"eol": "\n",
 	"indent_level": 0,
 	"indent_with_tabs": true,
